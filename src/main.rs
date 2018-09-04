@@ -8,13 +8,25 @@ extern crate diesel;
 #[macro_use]
 extern crate diesel_migrations;
 
+#[macro_use]
+extern crate graphql_client;
+
+extern crate reqwest;
+extern crate serde;
+extern crate serde_json;
+
+#[macro_use]
+extern crate serde_derive;
+
 extern crate dotenv;
 
 mod action;
 mod db_utils;
 mod init;
+mod repository_query;
 mod resources;
 mod schema;
+mod test_query;
 
 #[derive(StructOpt)]
 #[structopt(name = "ghe", about = "Github events manager")]

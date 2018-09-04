@@ -1,34 +1,34 @@
-extern crate github_gql as gh;
-extern crate serde_json;
-
-use self::gh::client::Github;
-use self::gh::mutation::Mutation;
-use self::gh::query::Query;
-use self::serde_json::Value;
 use diesel;
 use diesel::RunQueryDsl;
 use dotenv::dotenv;
+use graphql_client::*;
+use reqwest;
 use std::env;
 
 use db_utils::*;
+use repository_query;
 use resources::*;
+use test_query;
 
-fn get_client() -> gh::client::Github {
+pub fn token_test() {
     dotenv().ok();
     let token =
         env::var("GITHUB_ENVENTS_MANAGER_TOKEN").expect("GITHUB_ENVENTS_MANAGER_TOKEN must be set");
-    Github::new(token).unwrap()
-}
+    let q = test_query::TestQuery::build_query(test_query::test_query::Variables {});
+    let client = reqwest::Client::new();
+    let res = client
+        .post("https://api.github.com/graphql")
+        .header(reqwest::header::Authorization(format!("bearer {}", token)))
+        .json(&q)
+        .send();
 
-pub fn token_test() {
-    let mut client = get_client();
-    let (_, _, json) = client
-        .query::<Value>(&Query::new_raw("query { viewer { login } }"))
-        .unwrap();
-
-    if let Some(json) = json {
-        println!("{}", json);
-    }
+    match res {
+        Ok(mut res) => {
+            let body: GraphQLResponse<test_query::test_query::ResponseData> = res.json().expect("");
+            println!("{:?}", body);
+        }
+        Err(e) => println!("{:?}", e),
+    };
 }
 
 pub fn add_repository(repo_name: &String) {
@@ -43,15 +43,45 @@ pub fn add_repository(repo_name: &String) {
     let name = splitted[1];
 
     if !owner.is_empty() && !name.is_empty() {
+        dotenv().ok();
+        let token = env::var("GITHUB_ENVENTS_MANAGER_TOKEN")
+            .expect("GITHUB_ENVENTS_MANAGER_TOKEN must be set");
+        let q = repository_query::RepositoryQuery::build_query(
+            repository_query::repository_query::Variables {
+                owner: owner.to_string(),
+                name: name.to_string(),
+            },
+        );
+        let client = reqwest::Client::new();
+        let res = client
+            .post("https://api.github.com/graphql")
+            .header(reqwest::header::Authorization(format!("bearer {}", token)))
+            .json(&q)
+            .send();
+
+        let repository = match res {
+            Ok(mut res) => {
+                let body: GraphQLResponse<
+                    repository_query::repository_query::ResponseData,
+                > = res.json().unwrap();
+                body.data.unwrap().repository.unwrap()
+            }
+            Err(e) => panic!("{:?}", e),
+        };
+
+        let repository_id = repository.id.clone();
+        let url = repository.url.clone();
         let connection = establish_connection();
         let new_repository = NewRepository {
-            owner: owner,
-            name: name,
+            owner,
+            name,
+            repository_id: repository_id.as_str(),
+            url: url.as_str(),
         };
 
         diesel::insert_into(repositories::table)
             .values(&new_repository)
             .execute(&connection)
-            .expect("Error saving new post");
+            .expect("Error saving new repository");
     }
 }

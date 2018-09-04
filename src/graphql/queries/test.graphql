@@ -1,0 +1,6 @@
+query GrtLoginUser {
+  viewer {
+    login
+  }
+}
+
