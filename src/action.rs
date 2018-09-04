@@ -11,16 +11,8 @@ use resources::*;
 use test_query;
 
 pub fn token_test() {
-    dotenv().ok();
-    let token =
-        env::var("GITHUB_ENVENTS_MANAGER_TOKEN").expect("GITHUB_ENVENTS_MANAGER_TOKEN must be set");
     let q = test_query::TestQuery::build_query(test_query::test_query::Variables {});
-    let client = reqwest::Client::new();
-    let res = client
-        .post("https://api.github.com/graphql")
-        .header(reqwest::header::Authorization(format!("bearer {}", token)))
-        .json(&q)
-        .send();
+    let res = request(&q);
 
     match res {
         Ok(mut res) => {
@@ -39,25 +31,18 @@ pub fn add_repository(repo_name: &String) {
     if splitted.len() != 2 {
         panic!("Argument must be formated with \"owner/name\" ");
     }
+
     let owner = splitted[0];
     let name = splitted[1];
 
     if !owner.is_empty() && !name.is_empty() {
-        dotenv().ok();
-        let token = env::var("GITHUB_ENVENTS_MANAGER_TOKEN")
-            .expect("GITHUB_ENVENTS_MANAGER_TOKEN must be set");
         let q = repository_query::RepositoryQuery::build_query(
             repository_query::repository_query::Variables {
                 owner: owner.to_string(),
                 name: name.to_string(),
             },
         );
-        let client = reqwest::Client::new();
-        let res = client
-            .post("https://api.github.com/graphql")
-            .header(reqwest::header::Authorization(format!("bearer {}", token)))
-            .json(&q)
-            .send();
+        let res = request(&q);
 
         let repository = match res {
             Ok(mut res) => {
@@ -69,14 +54,12 @@ pub fn add_repository(repo_name: &String) {
             Err(e) => panic!("{:?}", e),
         };
 
-        let repository_id = repository.id.clone();
-        let url = repository.url.clone();
         let connection = establish_connection();
         let new_repository = NewRepository {
             owner,
             name,
-            repository_id: repository_id.as_str(),
-            url: url.as_str(),
+            repository_id: &repository.id.as_str(),
+            url: &repository.url.as_str(),
         };
 
         diesel::insert_into(repositories::table)
@@ -85,6 +68,8 @@ pub fn add_repository(repo_name: &String) {
             .expect("Error saving new repository");
     }
 }
+
+pub fn watch(repo_name: &String, issue_flag: &bool, pr_flag: &bool) {}
 
 pub fn show_repository_list() {
     use super::diesel::prelude::*;
@@ -99,4 +84,22 @@ pub fn show_repository_list() {
     for repository in results {
         println!("{}/{}", repository.owner, repository.name);
     }
+}
+
+fn get_token() -> String {
+    dotenv().ok();
+    env::var("GITHUB_ENVENTS_MANAGER_TOKEN").expect("GITHUB_ENVENTS_MANAGER_TOKEN must be set")
+}
+
+fn request<T: super::serde::Serialize>(
+    query: &GraphQLQueryBody<T>,
+) -> std::result::Result<reqwest::Response, reqwest::Error> {
+    let client = reqwest::Client::new();
+    client
+        .post("https://api.github.com/graphql")
+        .header(reqwest::header::Authorization(format!(
+            "bearer {}",
+            get_token()
+        ))).json(query)
+        .send()
 }

@@ -1,3 +1,4 @@
+#![feature(extern_prelude)]
 #[macro_use]
 extern crate quicli;
 use quicli::prelude::*;
@@ -12,6 +13,7 @@ extern crate diesel_migrations;
 extern crate graphql_client;
 
 extern crate reqwest;
+
 extern crate serde;
 extern crate serde_json;
 
