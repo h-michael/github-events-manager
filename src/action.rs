@@ -85,3 +85,18 @@ pub fn add_repository(repo_name: &String) {
             .expect("Error saving new repository");
     }
 }
+
+pub fn show_repository_list() {
+    use super::diesel::prelude::*;
+    use super::schema::repositories::dsl::*;
+    let connection = establish_connection();
+
+    let results = repositories
+        .filter(owner.eq("h-michael"))
+        .load::<Repository>(&connection)
+        .expect("Error loading posts");
+
+    for repository in results {
+        println!("{}/{}", repository.owner, repository.name);
+    }
+}

@@ -46,6 +46,8 @@ enum Command {
         repo_flag: bool,
         repo_name: String,
     },
+    #[structopt(name = "list")]
+    List {},
 }
 
 main!(|args: Ghe| match &args.cmd {
@@ -58,4 +60,5 @@ main!(|args: Ghe| match &args.cmd {
         true => action::add_repository(repo_name),
         _ => panic!("set repository name"),
     },
+    Command::List {} => action::show_repository_list(),
 });
