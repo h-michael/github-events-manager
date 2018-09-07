@@ -1,0 +1,15 @@
+query WatchingRepositories($first: Int!, $after: String){
+  viewer {
+    watching(after: $after, first: $first) {
+      nodes {
+        id,
+        nameWithOwner,
+        url
+      }
+      pageInfo {
+        hasNextPage,
+        endCursor
+      }
+    }
+  }
+}

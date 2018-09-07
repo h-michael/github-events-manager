@@ -29,6 +29,7 @@ mod repository_query;
 mod resources;
 mod schema;
 mod test_query;
+mod watch_query;
 
 #[derive(StructOpt)]
 #[structopt(name = "ghe", about = "Github events manager")]
@@ -48,6 +49,8 @@ enum Command {
         repo_flag: bool,
         repo_name: String,
     },
+    #[structopt(name = "import")]
+    Import {},
     #[structopt(name = "list")]
     List {},
 }
@@ -62,5 +65,6 @@ main!(|args: Ghe| match &args.cmd {
         true => action::add_repository(repo_name),
         _ => panic!("set repository name"),
     },
+    Command::Import {} => action::import(),
     Command::List {} => action::show_repository_list(),
 });

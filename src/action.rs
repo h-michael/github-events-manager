@@ -9,6 +9,7 @@ use db_utils::*;
 use repository_query;
 use resources::*;
 use test_query;
+use watch_query;
 
 pub fn token_test() {
     let q = test_query::TestQuery::build_query(test_query::test_query::Variables {});
@@ -48,7 +49,10 @@ pub fn add_repository(repo_name: &String) {
             Ok(mut res) => {
                 let body: GraphQLResponse<
                     repository_query::repository_query::ResponseData,
-                > = res.json().unwrap();
+                > = match res.json() {
+                    Ok(body) => body,
+                    Err(e) => panic!("{}", e),
+                };
                 body.data.unwrap().repository.unwrap()
             }
             Err(e) => panic!("{:?}", e),
@@ -56,10 +60,10 @@ pub fn add_repository(repo_name: &String) {
 
         let connection = establish_connection();
         let new_repository = NewRepository {
-            owner,
-            name,
-            repository_id: &repository.id.as_str(),
-            url: &repository.url.as_str(),
+            owner: owner.to_string(),
+            name: name.to_string(),
+            repository_id: repository.id,
+            url: repository.url,
         };
 
         diesel::insert_into(repositories::table)
@@ -69,7 +73,72 @@ pub fn add_repository(repo_name: &String) {
     }
 }
 
-pub fn watch(repo_name: &String, issue_flag: &bool, pr_flag: &bool) {}
+pub fn import() {
+    use super::schema::repositories;
+    let repositories = request_watching_repositories(None, None);
+    let connection = establish_connection();
+
+    for repo in repositories.iter() {
+        diesel::insert_into(repositories::table)
+            .values(repo)
+            .execute(&connection)
+            .expect("Error saving new repository");
+    }
+}
+
+fn request_watching_repositories<'a>(
+    after: Option<String>,
+    repositories: Option<&'a mut std::vec::Vec<NewRepository>>,
+) -> std::vec::Vec<NewRepository> {
+    let q = watch_query::WatchQuery::build_query(watch_query::watch_query::Variables {
+        first: 100,
+        after: after,
+    });
+    let res = request(&q);
+    let watching = match res {
+        Ok(mut res) => {
+            let body: GraphQLResponse<watch_query::watch_query::ResponseData> = match res.json() {
+                Ok(body) => body,
+                Err(e) => panic!("{}", e),
+            };
+            body.data.unwrap().viewer.watching
+        }
+        Err(e) => panic!("{:?}", e),
+    };
+
+    let nodes = watching.nodes.unwrap();
+    let mut new_repositories = nodes
+        .iter()
+        .map(|node| match node {
+            Some(node) => {
+                let splitted: Vec<&str> = node.name_with_owner.split_terminator("/").collect();
+                let owner = splitted[0].to_string();
+                let name = splitted[1].to_string();
+
+                if !owner.is_empty() && !name.is_empty() {
+                    return NewRepository {
+                        owner,
+                        name,
+                        repository_id: node.id.clone(),
+                        url: node.url.clone(),
+                    };
+                }
+                panic!()
+            }
+            None => panic!(),
+        }).collect::<Vec<_>>();
+
+    if let Some(repositories) = repositories {
+        new_repositories.append(repositories);
+    }
+    if watching.page_info.has_next_page {
+        return request_watching_repositories(
+            watching.page_info.end_cursor,
+            Some(&mut new_repositories),
+        );
+    }
+    new_repositories
+}
 
 pub fn show_repository_list() {
     use super::diesel::prelude::*;
@@ -77,7 +146,6 @@ pub fn show_repository_list() {
     let connection = establish_connection();
 
     let results = repositories
-        .filter(owner.eq("h-michael"))
         .load::<Repository>(&connection)
         .expect("Error loading posts");
 
