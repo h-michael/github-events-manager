@@ -1,11 +1,4 @@
-type X509Certificate = String;
-type URI = String;
-type HTML = String;
-type GitTimestamp = String;
-type GitSSHRemote = String;
-type GitObjectID = String;
-type Date = String;
-type DateTime = String;
+use query::typedef::*;
 
 #[derive(GraphQLQuery)]
 #[graphql(

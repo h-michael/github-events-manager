@@ -25,11 +25,9 @@ extern crate dotenv;
 mod action;
 mod db_utils;
 mod init;
-mod repository_query;
-mod resources;
+mod model;
+mod query;
 mod schema;
-mod test_query;
-mod watch_query;
 
 #[derive(StructOpt)]
 #[structopt(name = "ghe", about = "Github events manager")]
@@ -56,15 +54,15 @@ enum Command {
 }
 
 main!(|args: Ghe| match &args.cmd {
-    Command::Test {} => action::token_test(),
+    Command::Test {} => action::test::token_test(),
     Command::Init {} => init::init(),
     Command::Add {
         repo_flag,
         repo_name,
     } => match repo_flag {
-        true => action::add_repository(repo_name),
+        true => action::add::add_repository(repo_name),
         _ => panic!("set repository name"),
     },
-    Command::Import {} => action::import(),
-    Command::List {} => action::show_repository_list(),
+    Command::Import {} => action::import::import(),
+    Command::List {} => action::list::show_repository_list(),
 });
