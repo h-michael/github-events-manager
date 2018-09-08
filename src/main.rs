@@ -22,7 +22,7 @@ extern crate serde_derive;
 
 extern crate dotenv;
 
-mod action;
+mod cmd;
 mod db_utils;
 mod init;
 mod model;
@@ -54,15 +54,15 @@ enum Command {
 }
 
 main!(|args: Ghe| match &args.cmd {
-    Command::Test {} => action::test::token_test(),
+    Command::Test {} => cmd::test::token_test(),
     Command::Init {} => init::init(),
     Command::Add {
         repo_flag,
         repo_name,
     } => match repo_flag {
-        true => action::add::add_repository(repo_name),
+        true => cmd::add::add_repository(repo_name),
         _ => panic!("set repository name"),
     },
-    Command::Import {} => action::import::import(),
-    Command::List {} => action::list::show_repository_list(),
+    Command::Import {} => cmd::import::import(),
+    Command::List {} => cmd::list::show_repository_list(),
 });
