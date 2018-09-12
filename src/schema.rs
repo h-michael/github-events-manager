@@ -2,8 +2,8 @@ table! {
     issue_event_conditions (id) {
         id -> Integer,
         repository_id -> Integer,
-        open -> Integer,
-        closed -> Integer,
+        start_condition -> Integer,
+        stop_condition -> Integer,
     }
 }
 
@@ -11,9 +11,8 @@ table! {
     pull_request_event_conditions (id) {
         id -> Integer,
         repository_id -> Integer,
-        open -> Integer,
-        closed -> Integer,
-        merged -> Integer,
+        start_condition -> Integer,
+        stop_condition -> Integer,
     }
 }
 
