@@ -1,0 +1,30 @@
+query GetPullRequestEvents($owner: String!, $name: String!, $last: Int = 100){
+  repository(owner: $owner, name: $name) {
+    id
+    url
+    pullRequests(last: $last) {
+      edges {
+        node {
+          id
+          number
+          state
+          title
+          bodyText
+          createdAt
+          updatedAt
+          lastEditedAt
+          closed
+          closedAt
+          merged
+          mergedAt
+        }
+      }
+      pageInfo {
+        startCursor
+        endCursor
+        hasNextPage
+        hasPreviousPage
+      }
+    }
+  }
+}
