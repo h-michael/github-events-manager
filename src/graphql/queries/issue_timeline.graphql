@@ -1,0 +1,139 @@
+query GetIssueTimeline($issue_node_id: String!, $first: Int = 100){
+  node(id: $issue_node_id) {
+    ... on Issue {
+      id
+      author {
+        ...custom_actor
+      }
+      editor {
+        ...custom_actor
+      }
+      title
+      body
+      bodyText
+      timeline(first: $first) {
+        edges {
+          node {
+            __typename
+            ... on Commit {
+              ...custom_commit
+            }
+            ... on IssueComment {
+              id
+            }
+            ... on CrossReferencedEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on ClosedEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on ReopenedEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on Subscribable {
+              id
+              viewerCanSubscribe
+              viewerSubscription
+            }
+            ... on UnsubscribedEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on ReferencedEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on AssignedEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on UnassignedEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on LabeledEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on UnlabeledEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on MilestonedEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on DemilestonedEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on RenamedTitleEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on LockedEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on UnlockedEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+          }
+        }
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+      }
+    }
+  }
+}
+
+fragment custom_actor on Actor {
+  ... on User {
+    id
+    name
+    login
+  }
+  ... on Organization {
+    id
+    name
+    login
+  }
+  ... on Bot {
+    id
+    login
+  }
+}

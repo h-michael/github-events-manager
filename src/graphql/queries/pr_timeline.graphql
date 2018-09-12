@@ -1,0 +1,254 @@
+query GetPullRequestTimeline($pr_node_id: String!, $first: Int = 100) {
+  node(id: $pr_node_id) {
+    ... on PullRequest {
+      id
+      author {
+        ...custom_actor
+      }
+      editor {
+        ...custom_actor
+      }
+      title
+      body
+      bodyText
+      timeline(first: $first) {
+        edges {
+          node {
+            __typename
+            ... on Commit {
+              ...custom_commit
+            }
+            ... on CommitCommentThread {
+              id
+              commit_of_comment: commit {
+                ...custom_commit
+              }
+            }
+            ... on PullRequestReview {
+              id
+              author {
+                ...custom_actor
+              }
+              commit_of_pr_review: commit {
+                ...custom_commit
+              }
+              state
+              createdAt
+              updatedAt
+              lastEditedAt
+            }
+            ... on PullRequestReviewThread {
+              id
+              comments(first: $first) {
+                edges {
+                  node {
+                    id
+                    bodyText
+                    createdAt
+                    updatedAt
+                    lastEditedAt
+                  }
+                }
+              }
+            }
+            ... on PullRequestReviewComment {
+              id
+              bodyText
+              createdAt
+              updatedAt
+              lastEditedAt
+            }
+            ... on IssueComment {
+              id
+              bodyText
+              createdAt
+              updatedAt
+              lastEditedAt
+            }
+            ... on ClosedEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on ReopenedEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on Subscribable {
+              id
+              viewerCanSubscribe
+              viewerSubscription
+            }
+            ... on UnsubscribedEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on MergedEvent {
+              id
+              createdAt
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on ReferencedEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on CrossReferencedEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on AssignedEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on UnassignedEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on LabeledEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on UnlabeledEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on MilestonedEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on DemilestonedEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on RenamedTitleEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on LockedEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on UnlockedEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on DeployedEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on DeploymentEnvironmentChangedEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on HeadRefDeletedEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on HeadRefRestoredEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on HeadRefForcePushedEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on BaseRefForcePushedEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on ReviewRequestedEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on ReviewRequestRemovedEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+            ... on ReviewDismissedEvent {
+              id
+              actor {
+                ...custom_actor
+              }
+            }
+          }
+        }
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+      }
+    }
+  }
+}
+
+fragment custom_commit on Commit {
+  id
+  oid
+  messageBody
+  messageHeadline
+  commitUrl
+  committedDate
+  pushedDate
+}
+
+fragment custom_actor on Actor {
+  ... on User {
+    id
+    name
+    login
+  }
+  ... on Organization {
+    id
+    name
+    login
+  }
+  ... on Bot {
+    id
+    login
+  }
+}
