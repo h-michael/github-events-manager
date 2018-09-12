@@ -1,4 +1,4 @@
-query GetIssueTimeline($issue_node_id: String!, $first: Int = 100){
+query GetIssueTimeline($issue_node_id: ID!, $first: Int = 100){
   node(id: $issue_node_id) {
     ... on Issue {
       id
