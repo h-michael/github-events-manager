@@ -10,12 +10,10 @@ pub fn import() {
     let repositories = request_watching_repositories(None, None);
     let connection = establish_connection();
 
-    for repo in repositories.iter() {
-        diesel::insert_into(repositories::table)
-            .values(repo)
-            .execute(&connection)
-            .expect("Error saving new repository");
-    }
+    diesel::insert_into(repositories::table)
+        .values(repositories)
+        .execute(&connection)
+        .expect("Error saving new repository");
 }
 
 fn request_watching_repositories<'a>(
