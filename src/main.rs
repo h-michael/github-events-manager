@@ -1,4 +1,4 @@
-#![feature(extern_prelude)]
+#![allow(proc_macro_derive_resolution_fallback)]
 #[macro_use]
 extern crate quicli;
 use quicli::prelude::*;

@@ -16,8 +16,8 @@ CREATE UNIQUE INDEX owner_and_name ON repositories(owner, name);
 CREATE TABLE pull_request_event_conditions (
   id              INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   repository_id   INTEGER NOT NULL UNIQUE,
-  start_condition INTEGER NOT NULL CHECK(start_condition > 0 AND start_condition < 32),
-  stop_condition  INTEGER NOT NULL CHECK(stop_condition > 0 AND stop_condition < 4)
+  start_condition INTEGER NOT NULL DEFAULT 1 CHECK(start_condition > 0 AND start_condition < 32),
+  stop_condition  INTEGER NOT NULL DEFAULT 1 CHECK(stop_condition > 0 AND stop_condition < 4)
 );
 
 /** 2bit flag **/
@@ -26,8 +26,8 @@ CREATE TABLE pull_request_event_conditions (
 CREATE TABLE issue_event_conditions (
   id              INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   repository_id   INTEGER NOT NULL UNIQUE,
-  start_condition INTEGER NOT NULL CHECK(start_condition > 0 AND start_condition < 8),
-  stop_condition  INTEGER NOT NULL CHECK(stop_condition > 0 AND stop_condition < 2)
+  start_condition INTEGER NOT NULL DEFAULT 1 CHECK(start_condition > 0 AND start_condition < 8),
+  stop_condition  INTEGER NOT NULL DEFAULT 1 CHECK(stop_condition > 0 AND stop_condition < 2)
 );
 
 /**CREATE TABLE IF NOT EXISTS pull_requests (

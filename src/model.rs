@@ -1,6 +1,6 @@
-use super::schema::issue_event_conditions;
-use super::schema::pull_request_event_conditions;
-use super::schema::repositories;
+use schema::issue_event_conditions;
+use schema::pull_request_event_conditions;
+use schema::repositories;
 
 #[derive(Debug, Queryable)]
 pub struct Repository {
@@ -20,7 +20,8 @@ pub struct NewRepository {
     pub url: String,
 }
 
-#[derive(Debug, Queryable)]
+#[derive(Debug, Identifiable, Queryable, Associations)]
+#[belongs_to(Repository)]
 pub struct PullRequestEventCondition {
     pub id: i32,
     pub repository_id: String,
@@ -36,7 +37,8 @@ pub struct NewPullRequestEventCondition {
     pub stop_condition: i32,
 }
 
-#[derive(Debug, Queryable)]
+#[derive(Debug, Identifiable, Queryable, Associations)]
+#[belongs_to(Repository)]
 pub struct IssueEventCondition {
     pub id: i32,
     pub repository_id: String,

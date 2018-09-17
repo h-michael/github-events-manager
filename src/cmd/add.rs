@@ -1,5 +1,6 @@
 use super::utils::*;
 use db_utils::*;
+use diesel;
 use diesel::RunQueryDsl;
 use graphql_client::*;
 use model::*;

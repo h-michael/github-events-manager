@@ -10,10 +10,8 @@ pub fn request<T: serde::Serialize>(
     let client = reqwest::Client::new();
     client
         .post("https://api.github.com/graphql")
-        .header(reqwest::header::Authorization(format!(
-            "bearer {}",
-            get_token()
-        ))).json(query)
+        .bearer_auth(get_token())
+        .json(query)
         .send()
 }
 

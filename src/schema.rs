@@ -1,3 +1,4 @@
+#![allow(proc_macro_derive_resolution_fallback)]
 table! {
     issue_event_conditions (id) {
         id -> Integer,

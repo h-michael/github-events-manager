@@ -1,19 +1,65 @@
 use super::utils::*;
 use db_utils::*;
+use diesel;
+use diesel::connection::Connection;
+use diesel::expression_methods::*;
+use diesel::query_dsl::QueryDsl;
+use diesel::result::Error;
 use diesel::RunQueryDsl;
 use graphql_client::*;
 use model::*;
 use query::watch;
+use schema::issue_event_conditions;
+use schema::pull_request_event_conditions;
 use schema::repositories;
 
 pub fn import() {
-    let repositories = request_watching_repositories(None, None);
+    let repository_results = request_watching_repositories(None, None);
     let connection = establish_connection();
 
-    diesel::insert_into(repositories::table)
-        .values(repositories)
-        .execute(&connection)
-        .expect("Error saving new repository");
+    connection
+        .transaction::<_, Error, _>(|| {
+            diesel::insert_into(repositories::table)
+                .values(repository_results.clone())
+                .execute(&connection)?;
+
+            let ids = repositories::table
+                .select(repositories::id)
+                .filter(
+                    repositories::repository_id.eq_any(
+                        repository_results
+                            .clone()
+                            .iter()
+                            .map(|repo| &repo.repository_id),
+                    ),
+                ).load::<i32>(&connection)?;
+
+            let mut new_issue_event_conditions = Vec::new();
+            let mut new_pull_request_event_conditions = Vec::new();
+
+            for id in ids.iter() {
+                new_issue_event_conditions.append(&mut vec![NewIssueEventCondition {
+                    repository_id: id.clone() as i32,
+                    start_condition: 7,
+                    stop_condition: 1,
+                }]);
+
+                new_pull_request_event_conditions.append(&mut vec![NewPullRequestEventCondition {
+                    repository_id: id.clone() as i32,
+                    start_condition: 31,
+                    stop_condition: 3,
+                }]);
+            }
+
+            diesel::insert_into(issue_event_conditions::table)
+                .values(new_issue_event_conditions)
+                .execute(&connection)?;
+
+            diesel::insert_into(pull_request_event_conditions::table)
+                .values(new_pull_request_event_conditions)
+                .execute(&connection)?;
+            Ok(())
+        }).expect("Import failed");
 }
 
 fn request_watching_repositories<'a>(
