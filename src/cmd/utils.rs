@@ -5,7 +5,7 @@ use serde;
 use std::env;
 
 pub fn request<T: serde::Serialize>(
-    query: &GraphQLQueryBody<T>,
+    query: &QueryBody<T>,
 ) -> Result<reqwest::Response, reqwest::Error> {
     let client = reqwest::Client::new();
     client

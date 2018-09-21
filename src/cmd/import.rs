@@ -66,14 +66,14 @@ fn request_watching_repositories<'a>(
     after: Option<String>,
     repositories: Option<&'a mut Vec<NewRepository>>,
 ) -> Vec<NewRepository> {
-    let q = watch::WatchQuery::build_query(watch::watch_query::Variables {
+    let q = watch::WatchQuery::build_query(watch::Variables {
         first: 100,
         after: after,
     });
     let res = request(&q);
     let watching = match res {
         Ok(mut res) => {
-            let body: GraphQLResponse<watch::watch_query::ResponseData> = match res.json() {
+            let body: Response<watch::ResponseData> = match res.json() {
                 Ok(body) => body,
                 Err(e) => panic!("{}", e),
             };

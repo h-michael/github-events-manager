@@ -12,6 +12,6 @@ graphql_client = { git = "https://github.com/tomhoule/graphql-client", branch = 
 serde = "1.0"
 serde_derive = "1.0"
 serde_json = "1.0"
-reqwest = { git = "https://github.com/seanmonstar/reqwest", branch = "master" }
+reqwest = "^0.9.0"
 
-dotenv = "0.13"
+dotenv = "^0.13.0"

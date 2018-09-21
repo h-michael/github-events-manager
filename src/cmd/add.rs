@@ -18,7 +18,7 @@ pub fn add_repository(repo_name: &String) {
     let name = splitted[1];
 
     if !owner.is_empty() && !name.is_empty() {
-        let q = repository::RepositoryQuery::build_query(repository::repository_query::Variables {
+        let q = repository::Repository::build_query(repository::Variables {
             owner: owner.to_string(),
             name: name.to_string(),
         });
@@ -26,9 +26,7 @@ pub fn add_repository(repo_name: &String) {
 
         let repository = match res {
             Ok(mut res) => {
-                let body: GraphQLResponse<
-                    repository::repository_query::ResponseData,
-                > = match res.json() {
+                let body: Response<repository::ResponseData> = match res.json() {
                     Ok(body) => body,
                     Err(e) => panic!("{}", e),
                 };
