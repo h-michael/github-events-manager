@@ -1,3 +1,5 @@
+#![cfg_attr(feature = "clippy", feature(plugin))]
+#![cfg_attr(feature = "clippy", plugin(clippy))]
 #![allow(proc_macro_derive_resolution_fallback)]
 #[macro_use]
 extern crate quicli;
