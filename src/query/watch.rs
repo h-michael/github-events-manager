@@ -1,7 +1,7 @@
 use query::typedef::*;
 
-pub const QUERY : & 'static str = "query WatchingRepositories($first: Int!, $after: String){\n  viewer {\n    watching(after: $after, first: $first) {\n      nodes {\n        id,\n        nameWithOwner,\n        url\n      }\n      pageInfo {\n        hasNextPage,\n        endCursor\n      }\n    }\n  }\n}\n" ;
-pub const OPERATION_NAME: &'static str = "WatchQuery";
+pub const QUERY : &str = "query WatchingRepositories($first: Int!, $after: String){\n  viewer {\n    watching(after: $after, first: $first) {\n      nodes {\n        id,\n        nameWithOwner,\n        url\n      }\n      pageInfo {\n        hasNextPage,\n        endCursor\n      }\n    }\n  }\n}\n" ;
+pub const OPERATION_NAME: &str = "WatchQuery";
 #[allow(dead_code)]
 type Boolean = bool;
 #[allow(dead_code)]

@@ -1,7 +1,7 @@
 use query::typedef::*;
 
-pub const QUERY : & 'static str = "query Repository($owner: String!, $name: String!) {\n  repository(owner: $owner, name: $name) {\n    id\n    url\n  }\n}\n" ;
-pub const OPERATION_NAME: &'static str = "Repository";
+pub const QUERY : &str = "query Repository($owner: String!, $name: String!) {\n  repository(owner: $owner, name: $name) {\n    id\n    url\n  }\n}\n" ;
+pub const OPERATION_NAME: &str = "Repository";
 #[allow(dead_code)]
 type Boolean = bool;
 #[allow(dead_code)]

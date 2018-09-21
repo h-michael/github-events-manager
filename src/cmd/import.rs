@@ -37,15 +37,15 @@ pub fn import() {
             let mut new_issue_event_conditions = Vec::new();
             let mut new_pull_request_event_conditions = Vec::new();
 
-            for id in ids.iter() {
+            for id in &ids {
                 new_issue_event_conditions.append(&mut vec![NewIssueEventCondition {
-                    repository_id: id.clone() as i32,
+                    repository_id: *id as i32,
                     start_condition: 7,
                     stop_condition: 1,
                 }]);
 
                 new_pull_request_event_conditions.append(&mut vec![NewPullRequestEventCondition {
-                    repository_id: id.clone() as i32,
+                    repository_id: *id as i32,
                     start_condition: 31,
                     stop_condition: 3,
                 }]);
@@ -66,10 +66,7 @@ fn request_watching_repositories<'a>(
     after: Option<String>,
     repositories: Option<&'a mut Vec<NewRepository>>,
 ) -> Vec<NewRepository> {
-    let q = watch::WatchQuery::build_query(watch::Variables {
-        first: 100,
-        after: after,
-    });
+    let q = watch::WatchQuery::build_query(watch::Variables { first: 100, after });
     let res = request(&q);
     let watching = match res {
         Ok(mut res) => {
@@ -87,7 +84,7 @@ fn request_watching_repositories<'a>(
         .iter()
         .map(|node| match node {
             Some(node) => {
-                let splitted: Vec<&str> = node.name_with_owner.split_terminator("/").collect();
+                let splitted: Vec<&str> = node.name_with_owner.split_terminator('/').collect();
                 let owner = splitted[0].to_string();
                 let name = splitted[1].to_string();
 

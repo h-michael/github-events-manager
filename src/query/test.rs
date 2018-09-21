@@ -1,5 +1,5 @@
-pub const QUERY: &'static str = "query GrtLoginUser {\n  viewer {\n    login\n  }\n}\n\n";
-pub const OPERATION_NAME: &'static str = "Test";
+pub const QUERY: &str = "query GrtLoginUser {\n  viewer {\n    login\n  }\n}\n\n";
+pub const OPERATION_NAME: &str = "Test";
 #[allow(dead_code)]
 type Boolean = bool;
 #[allow(dead_code)]

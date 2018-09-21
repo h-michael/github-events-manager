@@ -7,8 +7,8 @@ use model::*;
 use query::repository;
 use schema::repositories;
 
-pub fn add_repository(repo_name: &String) {
-    let splitted: Vec<&str> = repo_name.split_terminator("/").collect();
+pub fn add_repository(repo_name: &str) {
+    let splitted: Vec<&str> = repo_name.split_terminator('/').collect();
 
     if splitted.len() != 2 {
         panic!("Argument must be formated with \"owner/name\" ");
