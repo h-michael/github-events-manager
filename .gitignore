@@ -1,4 +1,6 @@
-/target
+target
 **/*.rs.bk
 .env
+.envrc
 sample.db
+graphql-schema
