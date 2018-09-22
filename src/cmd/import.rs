@@ -59,7 +59,7 @@ pub fn import() {
                 .values(new_pull_request_event_conditions)
                 .execute(&connection)?;
             Ok(())
-        }).expect("Import failed");
+        }).unwrap_or_else(|err| panic!("Import failed: {:?}", err));
 }
 
 fn request_watching_repositories<'a>(
