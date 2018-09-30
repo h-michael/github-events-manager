@@ -1,11 +1,14 @@
-query GetIssueTimeline($issue_node_id: ID!, $first: Int = 100){
+query IssueTimelineItems($issue_node_id: ID!, $first: Int = 100){
   node(id: $issue_node_id) {
+    __typename
     ... on Issue {
       id
       author {
+        __typename
         ...custom_actor
       }
       editor {
+        __typename
         ...custom_actor
       }
       title
@@ -24,89 +27,110 @@ query GetIssueTimeline($issue_node_id: ID!, $first: Int = 100){
             ... on CrossReferencedEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on ClosedEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on ReopenedEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on Subscribable {
               id
-              viewerCanSubscribe
-              viewerSubscription
+              __typename
+              viewerCanSubscribe {
+                __typename
+                ...custom_actor
+              }
+              viewerSubscription {
+                __typename
+                ...custom_actor
+              }
             }
             ... on UnsubscribedEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on ReferencedEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on AssignedEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on UnassignedEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on LabeledEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on UnlabeledEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on MilestonedEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on DemilestonedEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on RenamedTitleEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on LockedEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on UnlockedEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
@@ -121,7 +145,18 @@ query GetIssueTimeline($issue_node_id: ID!, $first: Int = 100){
   }
 }
 
+fragment custom_commit on Commit {
+  id
+  oid
+  messageBody
+  messageHeadline
+  commitUrl
+  committedDate
+  pushedDate
+}
+
 fragment custom_actor on Actor {
+  __typename
   ... on User {
     id
     name

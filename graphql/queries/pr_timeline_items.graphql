@@ -1,11 +1,14 @@
-query GetPullRequestTimeline($pr_node_id: ID!, $first: Int = 100) {
+query PullRequestTimelineItems($pr_node_id: ID!, $first: Int = 100) {
   node(id: $pr_node_id) {
+    __typename
     ... on PullRequest {
       id
       author {
+        __typename
         ...custom_actor
       }
       editor {
+        __typename
         ...custom_actor
       }
       title
@@ -27,6 +30,7 @@ query GetPullRequestTimeline($pr_node_id: ID!, $first: Int = 100) {
             ... on PullRequestReview {
               id
               author {
+                __typename
                 ...custom_actor
               }
               commit_of_pr_review: commit {
@@ -68,23 +72,33 @@ query GetPullRequestTimeline($pr_node_id: ID!, $first: Int = 100) {
             ... on ClosedEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on ReopenedEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on Subscribable {
               id
-              viewerCanSubscribe
-              viewerSubscription
+              __typename
+              viewerCanSubscribe {
+                __typename
+                custom_actor
+              }
+              viewerSubscription {
+                __typename
+                custom_actor
+              }
             }
             ... on UnsubscribedEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
@@ -92,126 +106,147 @@ query GetPullRequestTimeline($pr_node_id: ID!, $first: Int = 100) {
               id
               createdAt
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on ReferencedEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on CrossReferencedEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on AssignedEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on UnassignedEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on LabeledEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on UnlabeledEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on MilestonedEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on DemilestonedEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on RenamedTitleEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on LockedEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on UnlockedEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on DeployedEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on DeploymentEnvironmentChangedEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on HeadRefDeletedEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on HeadRefRestoredEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on HeadRefForcePushedEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on BaseRefForcePushedEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on ReviewRequestedEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on ReviewRequestRemovedEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
             ... on ReviewDismissedEvent {
               id
               actor {
+                __typename
                 ...custom_actor
               }
             }
@@ -237,6 +272,7 @@ fragment custom_commit on Commit {
 }
 
 fragment custom_actor on Actor {
+  __typename
   ... on User {
     id
     name
