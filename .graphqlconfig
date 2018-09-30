@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "github-events-manager": {
+      "schemaPath": "graphql/schema.graphql"
+    }
+  }
+}
