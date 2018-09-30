@@ -1,3 +1,107 @@
+fragment custom_commit on Commit {
+  id
+  oid
+  messageBody
+  messageHeadline
+  commitUrl
+  committedDate
+  pushedDate
+}
+
+fragment custom_actor on Actor {
+  __typename
+  ... on User {
+    id
+    name
+    login
+  }
+  ... on Organization {
+    id
+    name
+    login
+  }
+  ... on Bot {
+    id
+    login
+  }
+}
+
+fragment RateLimitInfo on Query {
+    rateLimit {
+        cost
+        limit
+        remaining
+        resetAt
+    }
+}
+
+query GrtLoginUser {
+  viewer {
+    login
+  }
+}
+
+query GetRateLimit {
+  viewer {
+    login
+  }
+  ...RateLimitInfo
+}
+
+query Repository($owner: String!, $name: String!) {
+  repository(owner: $owner, name: $name) {
+    id
+    url
+  }
+}
+
+query PullRequestEvents($owner: String!, $name: String!, $last: Int = 100){
+  repository(owner: $owner, name: $name) {
+    id
+    url
+    pullRequests(last: $last) {
+      edges {
+        node {
+          id
+          number
+          state
+          title
+          bodyText
+          createdAt
+          updatedAt
+          lastEditedAt
+          closed
+          closedAt
+          merged
+          mergedAt
+        }
+      }
+      pageInfo {
+        startCursor
+        endCursor
+        hasNextPage
+        hasPreviousPage
+      }
+    }
+  }
+}
+
+query WatchingRepositories($first: Int!, $after: String){
+  viewer {
+    watching(after: $after, first: $first) {
+      nodes {
+        id,
+        nameWithOwner,
+        url
+      }
+      pageInfo {
+        hasNextPage,
+        endCursor
+      }
+    }
+  }
+}
+
 query PullRequestTimelineItems($pr_node_id: ID!, $first: Int = 100) {
   node(id: $pr_node_id) {
     __typename
@@ -259,32 +363,153 @@ query PullRequestTimelineItems($pr_node_id: ID!, $first: Int = 100) {
       }
     }
   }
+  ...RateLimitInfo
 }
 
-fragment custom_commit on Commit {
-  id
-  oid
-  messageBody
-  messageHeadline
-  commitUrl
-  committedDate
-  pushedDate
-}
-
-fragment custom_actor on Actor {
-  __typename
-  ... on User {
-    id
-    name
-    login
+query IssueTimelineItems($issue_node_id: ID!, $first: Int = 100){
+  node(id: $issue_node_id) {
+    __typename
+    ... on Issue {
+      id
+      author {
+        __typename
+        ...custom_actor
+      }
+      editor {
+        __typename
+        ...custom_actor
+      }
+      title
+      body
+      bodyText
+      timeline(first: $first) {
+        edges {
+          node {
+            __typename
+            ... on Commit {
+              ...custom_commit
+            }
+            ... on IssueComment {
+              id
+            }
+            ... on CrossReferencedEvent {
+              id
+              actor {
+                __typename
+                ...custom_actor
+              }
+            }
+            ... on ClosedEvent {
+              id
+              actor {
+                __typename
+                ...custom_actor
+              }
+            }
+            ... on ReopenedEvent {
+              id
+              actor {
+                __typename
+                ...custom_actor
+              }
+            }
+            ... on Subscribable {
+              id
+              __typename
+              viewerCanSubscribe {
+                __typename
+                ...custom_actor
+              }
+              viewerSubscription {
+                __typename
+                ...custom_actor
+              }
+            }
+            ... on UnsubscribedEvent {
+              id
+              actor {
+                __typename
+                ...custom_actor
+              }
+            }
+            ... on ReferencedEvent {
+              id
+              actor {
+                __typename
+                ...custom_actor
+              }
+            }
+            ... on AssignedEvent {
+              id
+              actor {
+                __typename
+                ...custom_actor
+              }
+            }
+            ... on UnassignedEvent {
+              id
+              actor {
+                __typename
+                ...custom_actor
+              }
+            }
+            ... on LabeledEvent {
+              id
+              actor {
+                __typename
+                ...custom_actor
+              }
+            }
+            ... on UnlabeledEvent {
+              id
+              actor {
+                __typename
+                ...custom_actor
+              }
+            }
+            ... on MilestonedEvent {
+              id
+              actor {
+                __typename
+                ...custom_actor
+              }
+            }
+            ... on DemilestonedEvent {
+              id
+              actor {
+                __typename
+                ...custom_actor
+              }
+            }
+            ... on RenamedTitleEvent {
+              id
+              actor {
+                __typename
+                ...custom_actor
+              }
+            }
+            ... on LockedEvent {
+              id
+              actor {
+                __typename
+                ...custom_actor
+              }
+            }
+            ... on UnlockedEvent {
+              id
+              actor {
+                __typename
+                ...custom_actor
+              }
+            }
+          }
+        }
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+      }
+    }
   }
-  ... on Organization {
-    id
-    name
-    login
-  }
-  ... on Bot {
-    id
-    login
-  }
+  ...RateLimitInfo
 }

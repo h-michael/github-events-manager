@@ -1,9 +1,9 @@
-pub mod issue_timeline_item {
+pub mod issue_timeline_items {
     #![allow(non_camel_case_types)]
     #![allow(non_snake_case)]
     #![allow(dead_code)]
     use serde;
-    pub const QUERY : & 'static str = "query IssueTimelineItems($issue_node_id: ID!, $first: Int = 100){\n  node(id: $issue_node_id) {\n    __typename\n    ... on Issue {\n      id\n      author {\n        __typename\n        ...custom_actor\n      }\n      editor {\n        __typename\n        ...custom_actor\n      }\n      title\n      body\n      bodyText\n      timeline(first: $first) {\n        edges {\n          node {\n            __typename\n            ... on Commit {\n              ...custom_commit\n            }\n            ... on IssueComment {\n              id\n            }\n            ... on CrossReferencedEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n            }\n            ... on ClosedEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n            }\n            ... on ReopenedEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n            }\n            ... on Subscribable {\n              id\n              __typename\n              viewerCanSubscribe {\n                __typename\n                ...custom_actor\n              }\n              viewerSubscription {\n                __typename\n                ...custom_actor\n              }\n            }\n            ... on UnsubscribedEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n            }\n            ... on ReferencedEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n            }\n            ... on AssignedEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n            }\n            ... on UnassignedEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n            }\n            ... on LabeledEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n            }\n            ... on UnlabeledEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n            }\n            ... on MilestonedEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n            }\n            ... on DemilestonedEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n            }\n            ... on RenamedTitleEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n            }\n            ... on LockedEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n            }\n            ... on UnlockedEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n            }\n          }\n        }\n        pageInfo {\n          hasNextPage\n          endCursor\n        }\n      }\n    }\n  }\n}\n\nfragment custom_commit on Commit {\n  id\n  oid\n  messageBody\n  messageHeadline\n  commitUrl\n  committedDate\n  pushedDate\n}\n\nfragment custom_actor on Actor {\n  __typename\n  ... on User {\n    id\n    name\n    login\n  }\n  ... on Organization {\n    id\n    name\n    login\n  }\n  ... on Bot {\n    id\n    login\n  }\n}\n" ;
+    pub const QUERY : & 'static str = "query IssueTimelineItems($issue_node_id: ID!, $first: Int = 100){\n  node(id: $issue_node_id) {\n    __typename\n    ... on Issue {\n      id\n      author {\n        __typename\n        ...custom_actor\n      }\n      editor {\n        __typename\n        ...custom_actor\n      }\n      title\n      body\n      bodyText\n      timeline(first: $first) {\n        edges {\n          node {\n            __typename\n            ... on Commit {\n              ...custom_commit\n            }\n            ... on IssueComment {\n              id\n            }\n            ... on CrossReferencedEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n            }\n            ... on ClosedEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n            }\n            ... on ReopenedEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n            }\n            ... on Subscribable {\n              id\n              __typename\n              viewerCanSubscribe {\n                __typename\n                ...custom_actor\n              }\n              viewerSubscription {\n                __typename\n                ...custom_actor\n              }\n            }\n            ... on UnsubscribedEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n            }\n            ... on ReferencedEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n            }\n            ... on AssignedEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n            }\n            ... on UnassignedEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n            }\n            ... on LabeledEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n            }\n            ... on UnlabeledEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n            }\n            ... on MilestonedEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n            }\n            ... on DemilestonedEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n            }\n            ... on RenamedTitleEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n            }\n            ... on LockedEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n            }\n            ... on UnlockedEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n            }\n          }\n        }\n        pageInfo {\n          hasNextPage\n          endCursor\n        }\n      }\n    }\n  }\n  ...RateLimitInfo\n}\n\nfragment custom_commit on Commit {\n  id\n  oid\n  messageBody\n  messageHeadline\n  commitUrl\n  committedDate\n  pushedDate\n}\n\nfragment custom_actor on Actor {\n  __typename\n  ... on User {\n    id\n    name\n    login\n  }\n  ... on Organization {\n    id\n    name\n    login\n  }\n  ... on Bot {\n    id\n    login\n  }\n}\n\nfragment RateLimitInfo on Query {\n    rateLimit {\n        cost\n        limit\n        remaining\n        resetAt\n    }\n}\n" ;
     pub const OPERATION_NAME: &'static str = "IssueTimelineItems";
     #[allow(dead_code)]
     type Boolean = bool;
@@ -45,6 +45,19 @@ pub mod issue_timeline_item {
         }
     }
     #[derive(Deserialize, Degug)]
+    pub struct RateLimitInfo {
+        #[serde(rename = "rateLimit")]
+        pub rate_limit: Option<RateLimitInfoRateLimit>,
+    }
+    #[derive(Deserialize, Degug)]
+    pub struct RateLimitInfoRateLimit {
+        pub cost: Int,
+        pub limit: Int,
+        pub remaining: Int,
+        #[serde(rename = "resetAt")]
+        pub reset_at: DateTime,
+    }
+    #[derive(Deserialize, Degug)]
     pub struct custom_actor {}
     #[derive(Deserialize, Degug)]
     pub struct custom_commit {
@@ -64,9 +77,9 @@ pub mod issue_timeline_item {
     #[derive(Deserialize, Degug)]
     #[serde(tag = "__typename")]
     pub enum RustIssueTimelineItemsNodeOnIssueAuthorOn {
+        Organization,
         User,
         Bot,
-        Organization,
     }
     #[derive(Deserialize, Degug)]
     pub struct RustIssueTimelineItemsNodeOnIssueAuthor {
@@ -78,9 +91,9 @@ pub mod issue_timeline_item {
     #[derive(Deserialize, Degug)]
     #[serde(tag = "__typename")]
     pub enum RustIssueTimelineItemsNodeOnIssueEditorOn {
+        Organization,
         User,
         Bot,
-        Organization,
     }
     #[derive(Deserialize, Degug)]
     pub struct RustIssueTimelineItemsNodeOnIssueEditor {
@@ -101,9 +114,9 @@ pub mod issue_timeline_item {
     #[derive(Deserialize, Degug)]
     #[serde(tag = "__typename")]
     pub enum RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnCrossReferencedEventActorOn {
+        Organization,
         User,
         Bot,
-        Organization,
     }
     #[derive(Deserialize, Degug)]
     pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnCrossReferencedEventActor {
@@ -121,9 +134,9 @@ pub mod issue_timeline_item {
     #[derive(Deserialize, Degug)]
     #[serde(tag = "__typename")]
     pub enum RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnClosedEventActorOn {
+        Organization,
         User,
         Bot,
-        Organization,
     }
     #[derive(Deserialize, Degug)]
     pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnClosedEventActor {
@@ -140,9 +153,9 @@ pub mod issue_timeline_item {
     #[derive(Deserialize, Degug)]
     #[serde(tag = "__typename")]
     pub enum RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnReopenedEventActorOn {
+        Organization,
         User,
         Bot,
-        Organization,
     }
     #[derive(Deserialize, Degug)]
     pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnReopenedEventActor {
@@ -159,11 +172,11 @@ pub mod issue_timeline_item {
     #[derive(Deserialize, Degug)]
     #[serde(tag = "__typename")]
     pub enum RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnSubscribableOn {
+        Commit,
+        PullRequest,
         Issue,
         Team,
         Repository,
-        PullRequest,
-        Commit,
     }
     #[derive(Deserialize, Degug)]
     pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnSubscribable {
@@ -178,9 +191,9 @@ pub mod issue_timeline_item {
     #[derive(Deserialize, Degug)]
     #[serde(tag = "__typename")]
     pub enum RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnsubscribedEventActorOn {
+        Organization,
         User,
         Bot,
-        Organization,
     }
     #[derive(Deserialize, Degug)]
     pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnsubscribedEventActor {
@@ -198,9 +211,9 @@ pub mod issue_timeline_item {
     #[derive(Deserialize, Degug)]
     #[serde(tag = "__typename")]
     pub enum RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnReferencedEventActorOn {
+        Organization,
         User,
         Bot,
-        Organization,
     }
     #[derive(Deserialize, Degug)]
     pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnReferencedEventActor {
@@ -217,9 +230,9 @@ pub mod issue_timeline_item {
     #[derive(Deserialize, Degug)]
     #[serde(tag = "__typename")]
     pub enum RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnAssignedEventActorOn {
+        Organization,
         User,
         Bot,
-        Organization,
     }
     #[derive(Deserialize, Degug)]
     pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnAssignedEventActor {
@@ -236,9 +249,9 @@ pub mod issue_timeline_item {
     #[derive(Deserialize, Degug)]
     #[serde(tag = "__typename")]
     pub enum RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnassignedEventActorOn {
+        Organization,
         User,
         Bot,
-        Organization,
     }
     #[derive(Deserialize, Degug)]
     pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnassignedEventActor {
@@ -255,9 +268,9 @@ pub mod issue_timeline_item {
     #[derive(Deserialize, Degug)]
     #[serde(tag = "__typename")]
     pub enum RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnLabeledEventActorOn {
+        Organization,
         User,
         Bot,
-        Organization,
     }
     #[derive(Deserialize, Degug)]
     pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnLabeledEventActor {
@@ -274,9 +287,9 @@ pub mod issue_timeline_item {
     #[derive(Deserialize, Degug)]
     #[serde(tag = "__typename")]
     pub enum RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnlabeledEventActorOn {
+        Organization,
         User,
         Bot,
-        Organization,
     }
     #[derive(Deserialize, Degug)]
     pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnlabeledEventActor {
@@ -293,9 +306,9 @@ pub mod issue_timeline_item {
     #[derive(Deserialize, Degug)]
     #[serde(tag = "__typename")]
     pub enum RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnMilestonedEventActorOn {
+        Organization,
         User,
         Bot,
-        Organization,
     }
     #[derive(Deserialize, Degug)]
     pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnMilestonedEventActor {
@@ -312,9 +325,9 @@ pub mod issue_timeline_item {
     #[derive(Deserialize, Degug)]
     #[serde(tag = "__typename")]
     pub enum RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnDemilestonedEventActorOn {
+        Organization,
         User,
         Bot,
-        Organization,
     }
     #[derive(Deserialize, Degug)]
     pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnDemilestonedEventActor {
@@ -332,9 +345,9 @@ pub mod issue_timeline_item {
     #[derive(Deserialize, Degug)]
     #[serde(tag = "__typename")]
     pub enum RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnRenamedTitleEventActorOn {
+        Organization,
         User,
         Bot,
-        Organization,
     }
     #[derive(Deserialize, Degug)]
     pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnRenamedTitleEventActor {
@@ -352,9 +365,9 @@ pub mod issue_timeline_item {
     #[derive(Deserialize, Degug)]
     #[serde(tag = "__typename")]
     pub enum RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnLockedEventActorOn {
+        Organization,
         User,
         Bot,
-        Organization,
     }
     #[derive(Deserialize, Degug)]
     pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnLockedEventActor {
@@ -371,9 +384,9 @@ pub mod issue_timeline_item {
     #[derive(Deserialize, Degug)]
     #[serde(tag = "__typename")]
     pub enum RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnlockedEventActorOn {
+        Organization,
         User,
         Bot,
-        Organization,
     }
     #[derive(Deserialize, Degug)]
     pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnlockedEventActor {
@@ -443,92 +456,92 @@ pub mod issue_timeline_item {
     #[serde(tag = "__typename")]
     pub enum RustIssueTimelineItemsNodeOn {
         Issue(RustIssueTimelineItemsNodeOnIssue),
-        Language,
+        RepositoryTopic,
+        MovedColumnsInProjectEvent,
+        Tree,
+        Gist,
+        Commit,
+        RepositoryInvitation,
+        PublicKey,
+        PullRequest,
+        ConvertedNoteToIssueEvent,
+        UserContentEdit,
+        Bot,
+        BaseRefForcePushedEvent,
+        Blob,
+        ExternalIdentity,
+        DemilestonedEvent,
+        Milestone,
         UnassignedEvent,
-        CheckRun,
+        ProjectColumn,
+        OrganizationInvitation,
+        Ref,
+        PushAllowance,
+        CrossReferencedEvent,
+        ReviewRequestRemovedEvent,
+        Tag,
+        ReviewDismissedEvent,
+        HeadRefDeletedEvent,
+        ReleaseAsset,
+        Team,
         UnsubscribedEvent,
         UnlockedEvent,
-        DeployedEvent,
-        MilestonedEvent,
-        CheckSuite,
-        ReleaseAsset,
-        License,
-        PullRequestCommit,
-        Organization,
-        Commit,
-        ReviewRequest,
-        Tree,
-        Push,
-        PullRequestCommitCommentThread,
-        HeadRefDeletedEvent,
-        RemovedFromProjectEvent,
-        SubscribedEvent,
-        HeadRefForcePushedEvent,
-        ProtectedBranch,
-        MentionedEvent,
-        Milestone,
-        LockedEvent,
-        ReopenedEvent,
-        BaseRefForcePushedEvent,
-        DeployKey,
-        ReferencedEvent,
-        GistComment,
-        LabeledEvent,
-        Reaction,
-        ConvertedNoteToIssueEvent,
-        Bot,
-        CommitComment,
-        CommitCommentThread,
-        AddedToProjectEvent,
-        IssueComment,
-        PublicKey,
-        UserContentEdit,
-        RepositoryInvitation,
-        Status,
-        Deployment,
-        Team,
-        Tag,
-        Release,
-        ReviewDismissedEvent,
-        StatusContext,
-        MovedColumnsInProjectEvent,
-        Label,
-        ReviewDismissalAllowance,
-        MarketplaceListing,
-        PullRequestReviewComment,
-        ReviewRequestRemovedEvent,
-        Topic,
-        CrossReferencedEvent,
-        PullRequest,
-        DeploymentStatus,
-        Gist,
-        PushAllowance,
-        MarketplaceCategory,
-        UnlabeledEvent,
-        Ref,
-        HeadRefRestoredEvent,
-        Blob,
-        ProjectColumn,
-        MergedEvent,
-        DemilestonedEvent,
-        BaseRefChangedEvent,
-        OrganizationIdentityProvider,
         AssignedEvent,
+        PullRequestCommitCommentThread,
+        MergedEvent,
+        License,
         Repository,
-        CommentDeletedEvent,
-        ReviewRequestedEvent,
-        OrganizationInvitation,
-        Project,
-        RepositoryTopic,
-        App,
-        PullRequestReviewThread,
-        ClosedEvent,
-        User,
-        PullRequestReview,
-        RenamedTitleEvent,
-        ExternalIdentity,
+        ReopenedEvent,
         ProjectCard,
+        Label,
+        Push,
+        CommentDeletedEvent,
+        PullRequestCommit,
+        Language,
+        MentionedEvent,
+        DeploymentStatus,
+        App,
+        HeadRefRestoredEvent,
+        PullRequestReviewThread,
+        Reaction,
+        CommitCommentThread,
+        ReviewRequestedEvent,
+        LockedEvent,
+        ReviewDismissalAllowance,
+        Status,
+        SubscribedEvent,
+        BaseRefChangedEvent,
+        PullRequestReview,
+        ClosedEvent,
+        Topic,
+        OrganizationIdentityProvider,
+        Deployment,
+        StatusContext,
+        GistComment,
+        CheckRun,
+        Organization,
+        CheckSuite,
+        ReferencedEvent,
+        MarketplaceListing,
         DeploymentEnvironmentChangedEvent,
+        ProtectedBranch,
+        CommitComment,
+        RenamedTitleEvent,
+        Project,
+        DeployKey,
+        IssueComment,
+        RemovedFromProjectEvent,
+        Release,
+        DeployedEvent,
+        MarketplaceCategory,
+        HeadRefForcePushedEvent,
+        UnlabeledEvent,
+        AddedToProjectEvent,
+        LabeledEvent,
+        ReviewRequest,
+        MilestonedEvent,
+        User,
+        PullRequestReviewComment,
     }
     #[derive(Deserialize, Degug)]
     pub struct RustIssueTimelineItemsNode {
@@ -548,16 +561,18 @@ pub mod issue_timeline_item {
     #[derive(Deserialize, Degug)]
     pub struct ResponseData {
         pub node: Option<RustIssueTimelineItemsNode>,
+        #[serde(flatten)]
+        pub rate_limit_info: RateLimitInfo,
     }
 }
-impl<'de> ::graphql_client::GraphQLQuery<'de> for IssueTimelineItem {
-    type Variables = issue_timeline_item::Variables;
-    type ResponseData = issue_timeline_item::ResponseData;
+impl<'de> ::graphql_client::GraphQLQuery<'de> for IssueTimelineItems {
+    type Variables = issue_timeline_items::Variables;
+    type ResponseData = issue_timeline_items::ResponseData;
     fn build_query(variables: Self::Variables) -> ::graphql_client::QueryBody<Self::Variables> {
         ::graphql_client::QueryBody {
             variables,
-            query: issue_timeline_item::QUERY,
-            operation_name: issue_timeline_item::OPERATION_NAME,
+            query: issue_timeline_items::QUERY,
+            operation_name: issue_timeline_items::OPERATION_NAME,
         }
     }
 }
