@@ -2,5 +2,5 @@ target
 **/*.rs.bk
 .env
 .envrc
+.gh-token
 sample.db
-graphql-schema
