@@ -8,7 +8,7 @@ use diesel::result::Error;
 use diesel::RunQueryDsl;
 use graphql_client::*;
 use model::*;
-use query::watch;
+use query::watching_repositories;
 use schema::issue_event_conditions;
 use schema::pull_request_event_conditions;
 use schema::repositories;
@@ -66,11 +66,11 @@ fn request_watching_repositories<'a>(
     after: Option<String>,
     repositories: Option<&'a mut Vec<NewRepository>>,
 ) -> Vec<NewRepository> {
-    let q = watch::WatchQuery::build_query(watch::Variables { first: 100, after });
+    let q = watching_repositories::WatchingRepositories::build_query(watching_repositories::Variables { first: 100, after });
     let res = request(&q);
     let watching = match res {
         Ok(mut res) => {
-            let body: Response<watch::ResponseData> = match res.json() {
+            let body: Response<watching_repositories::ResponseData> = match res.json() {
                 Ok(body) => body,
                 Err(e) => panic!("{}", e),
             };

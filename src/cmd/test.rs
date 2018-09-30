@@ -1,14 +1,14 @@
 use super::utils::*;
 use graphql_client::*;
-use query::test;
+use query::login_user;
 
 pub fn token_test() {
-    let q = test::Test::build_query(test::Variables {});
+    let q = login_user::LoginUser::build_query(login_user::Variables {});
     let res = request(&q);
 
     match res {
         Ok(mut res) => {
-            let body: Response<test::ResponseData> = res.json().expect("");
+            let body: Response<login_user::ResponseData> = res.json().expect("");
             println!("{:?}", body);
         }
         Err(e) => println!("{:?}", e),

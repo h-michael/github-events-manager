@@ -35,16 +35,14 @@ fragment RateLimitInfo on Query {
     }
 }
 
-query GrtLoginUser {
+query LoginUser {
   viewer {
     login
   }
+  ...RateLimitInfo
 }
 
-query GetRateLimit {
-  viewer {
-    login
-  }
+query RateLimit {
   ...RateLimitInfo
 }
 
@@ -53,13 +51,14 @@ query Repository($owner: String!, $name: String!) {
     id
     url
   }
+  ...RateLimitInfo
 }
 
-query PullRequestEvents($owner: String!, $name: String!, $last: Int = 100){
+query PullRequests($owner: String!, $name: String!, $first: Int = 100, $states: [PullRequestState!]) {
   repository(owner: $owner, name: $name) {
     id
     url
-    pullRequests(last: $last) {
+    pullRequests(first: $first, states: $states) {
       edges {
         node {
           id
@@ -84,6 +83,37 @@ query PullRequestEvents($owner: String!, $name: String!, $last: Int = 100){
       }
     }
   }
+  ...RateLimitInfo
+}
+
+query Issues($owner: String!, $name: String!, $first: Int = 100, $states: [IssueState!]){
+  repository(owner: $owner, name: $name) {
+    id
+    url
+    issues(first: $first, states: $states) {
+      edges {
+        node {
+          id
+          number
+          state
+          title
+          bodyText
+          createdAt
+          updatedAt
+          lastEditedAt
+          closed
+          closedAt
+        }
+      }
+      pageInfo {
+        startCursor
+        endCursor
+        hasNextPage
+        hasPreviousPage
+      }
+    }
+  }
+  ...RateLimitInfo
 }
 
 query WatchingRepositories($first: Int!, $after: String){
@@ -100,10 +130,11 @@ query WatchingRepositories($first: Int!, $after: String){
       }
     }
   }
+  ...RateLimitInfo
 }
 
-query PullRequestTimelineItems($pr_node_id: ID!, $first: Int = 100) {
-  node(id: $pr_node_id) {
+query PullRequestTimelineItems($id: ID!, $first: Int = 100) {
+  node(id: $id) {
     __typename
     ... on PullRequest {
       id
@@ -179,6 +210,7 @@ query PullRequestTimelineItems($pr_node_id: ID!, $first: Int = 100) {
                 __typename
                 ...custom_actor
               }
+              createdAt
             }
             ... on ReopenedEvent {
               id
@@ -186,18 +218,13 @@ query PullRequestTimelineItems($pr_node_id: ID!, $first: Int = 100) {
                 __typename
                 ...custom_actor
               }
+              createdAt
             }
             ... on Subscribable {
               id
               __typename
-              viewerCanSubscribe {
-                __typename
-                custom_actor
-              }
-              viewerSubscription {
-                __typename
-                custom_actor
-              }
+              viewerCanSubscribe
+              viewerSubscription
             }
             ... on UnsubscribedEvent {
               id
@@ -205,14 +232,17 @@ query PullRequestTimelineItems($pr_node_id: ID!, $first: Int = 100) {
                 __typename
                 ...custom_actor
               }
+              createdAt
             }
             ... on MergedEvent {
               id
-              createdAt
               actor {
                 __typename
                 ...custom_actor
               }
+              url
+              resourcePath
+              createdAt
             }
             ... on ReferencedEvent {
               id
@@ -220,6 +250,13 @@ query PullRequestTimelineItems($pr_node_id: ID!, $first: Int = 100) {
                 __typename
                 ...custom_actor
               }
+              commit {
+                url
+                commitUrl
+              }
+              isCrossRepository
+              isDirectReference
+              createdAt
             }
             ... on CrossReferencedEvent {
               id
@@ -227,6 +264,12 @@ query PullRequestTimelineItems($pr_node_id: ID!, $first: Int = 100) {
                 __typename
                 ...custom_actor
               }
+              isCrossRepository
+              url
+              resourcePath
+              willCloseTarget
+              referencedAt
+              createdAt
             }
             ... on AssignedEvent {
               id
@@ -234,6 +277,11 @@ query PullRequestTimelineItems($pr_node_id: ID!, $first: Int = 100) {
                 __typename
                 ...custom_actor
               }
+              user {
+                name
+                login
+              }
+              createdAt
             }
             ... on UnassignedEvent {
               id
@@ -241,6 +289,11 @@ query PullRequestTimelineItems($pr_node_id: ID!, $first: Int = 100) {
                 __typename
                 ...custom_actor
               }
+              user {
+                name
+                login
+              }
+              createdAt
             }
             ... on LabeledEvent {
               id
@@ -248,6 +301,12 @@ query PullRequestTimelineItems($pr_node_id: ID!, $first: Int = 100) {
                 __typename
                 ...custom_actor
               }
+              label {
+                name
+                description
+                color
+              }
+              createdAt
             }
             ... on UnlabeledEvent {
               id
@@ -255,6 +314,12 @@ query PullRequestTimelineItems($pr_node_id: ID!, $first: Int = 100) {
                 __typename
                 ...custom_actor
               }
+              label {
+                name
+                description
+                color
+              }
+              createdAt
             }
             ... on MilestonedEvent {
               id
@@ -262,6 +327,8 @@ query PullRequestTimelineItems($pr_node_id: ID!, $first: Int = 100) {
                 __typename
                 ...custom_actor
               }
+              milestoneTitle
+              createdAt
             }
             ... on DemilestonedEvent {
               id
@@ -269,6 +336,8 @@ query PullRequestTimelineItems($pr_node_id: ID!, $first: Int = 100) {
                 __typename
                 ...custom_actor
               }
+              milestoneTitle
+              createdAt
             }
             ... on RenamedTitleEvent {
               id
@@ -276,6 +345,9 @@ query PullRequestTimelineItems($pr_node_id: ID!, $first: Int = 100) {
                 __typename
                 ...custom_actor
               }
+              currentTitle
+              previousTitle
+              createdAt
             }
             ... on LockedEvent {
               id
@@ -283,6 +355,8 @@ query PullRequestTimelineItems($pr_node_id: ID!, $first: Int = 100) {
                 __typename
                 ...custom_actor
               }
+              lockReason
+              createdAt
             }
             ... on UnlockedEvent {
               id
@@ -290,6 +364,7 @@ query PullRequestTimelineItems($pr_node_id: ID!, $first: Int = 100) {
                 __typename
                 ...custom_actor
               }
+              createdAt
             }
             ... on DeployedEvent {
               id
@@ -304,6 +379,7 @@ query PullRequestTimelineItems($pr_node_id: ID!, $first: Int = 100) {
                 __typename
                 ...custom_actor
               }
+              createdAt
             }
             ... on HeadRefDeletedEvent {
               id
@@ -311,6 +387,13 @@ query PullRequestTimelineItems($pr_node_id: ID!, $first: Int = 100) {
                 __typename
                 ...custom_actor
               }
+              headRef {
+                id
+                name
+                prefix
+              }
+              headRefName
+              createdAt
             }
             ... on HeadRefRestoredEvent {
               id
@@ -318,6 +401,7 @@ query PullRequestTimelineItems($pr_node_id: ID!, $first: Int = 100) {
                 __typename
                 ...custom_actor
               }
+              createdAt
             }
             ... on HeadRefForcePushedEvent {
               id
@@ -325,6 +409,20 @@ query PullRequestTimelineItems($pr_node_id: ID!, $first: Int = 100) {
                 __typename
                 ...custom_actor
               }
+              afterCommit {
+                id
+                oid
+              }
+              beforeCommit {
+                id
+                oid
+              }
+              ref {
+                id
+                name
+                prefix
+              }
+              createdAt
             }
             ... on BaseRefForcePushedEvent {
               id
@@ -332,27 +430,70 @@ query PullRequestTimelineItems($pr_node_id: ID!, $first: Int = 100) {
                 __typename
                 ...custom_actor
               }
-            }
-            ... on ReviewRequestedEvent {
-              id
-              actor {
-                __typename
-                ...custom_actor
+              afterCommit {
+                id
+                oid
               }
-            }
-            ... on ReviewRequestRemovedEvent {
-              id
-              actor {
-                __typename
-                ...custom_actor
+              beforeCommit {
+                id
+                oid
               }
+              ref {
+                id
+                name
+                prefix
+              }
+              createdAt
             }
+            # ... on ReviewRequestedEvent {
+            #   id
+            #   actor {
+            #     __typename
+            #     ...custom_actor
+            #   }
+            #   requestedReviewer {
+            #     ...on User {
+            #       id
+            #       userName: name
+            #       userLogin: login
+            #     }
+            #     ...on Team {
+            #       id
+            #       teamName: name
+            #     }
+            #   }
+            #   createdAt
+            # }
+            # ... on ReviewRequestRemovedEvent {
+            #   id
+            #   actor {
+            #     __typename
+            #     ...custom_actor
+            #   }
+            #   requestedReviewer {
+            #     ...on User {
+            #       id
+            #       userName: name
+            #       userLogin: login
+            #     }
+            #     ...on Team {
+            #       id
+            #       teamName: name
+            #     }
+            #   }
+            #   createdAt
+            # }
             ... on ReviewDismissedEvent {
               id
               actor {
                 __typename
                 ...custom_actor
               }
+              message
+              resourcePath
+              url
+              previousReviewState
+              createdAt
             }
           }
         }
@@ -366,8 +507,24 @@ query PullRequestTimelineItems($pr_node_id: ID!, $first: Int = 100) {
   ...RateLimitInfo
 }
 
-query IssueTimelineItems($issue_node_id: ID!, $first: Int = 100){
-  node(id: $issue_node_id) {
+query PullRequestReview($id: ID!, $first: Int = 100) {
+  node(id: $id) {
+    __typename
+    ... on PullRequestReview {
+      comments(first: $first) {
+        nodes {
+          id
+          bodyText
+          viewerDidAuthor
+        }
+      }
+    }
+  }
+  ...RateLimitInfo
+}
+
+query IssueTimelineItems($id: ID!, $first: Int = 100) {
+  node(id: $id) {
     __typename
     ... on Issue {
       id
@@ -391,13 +548,14 @@ query IssueTimelineItems($issue_node_id: ID!, $first: Int = 100){
             }
             ... on IssueComment {
               id
-            }
-            ... on CrossReferencedEvent {
-              id
-              actor {
+              author {
                 __typename
                 ...custom_actor
               }
+              bodyText
+              createdAt
+              lastEditedAt
+              publishedAt
             }
             ... on ClosedEvent {
               id
@@ -405,6 +563,9 @@ query IssueTimelineItems($issue_node_id: ID!, $first: Int = 100){
                 __typename
                 ...custom_actor
               }
+              url
+              resourcePath
+              createdAt
             }
             ... on ReopenedEvent {
               id
@@ -412,18 +573,13 @@ query IssueTimelineItems($issue_node_id: ID!, $first: Int = 100){
                 __typename
                 ...custom_actor
               }
+              createdAt
             }
             ... on Subscribable {
               id
               __typename
-              viewerCanSubscribe {
-                __typename
-                ...custom_actor
-              }
-              viewerSubscription {
-                __typename
-                ...custom_actor
-              }
+              viewerCanSubscribe
+              viewerSubscription
             }
             ... on UnsubscribedEvent {
               id
@@ -431,6 +587,7 @@ query IssueTimelineItems($issue_node_id: ID!, $first: Int = 100){
                 __typename
                 ...custom_actor
               }
+              createdAt
             }
             ... on ReferencedEvent {
               id
@@ -438,6 +595,26 @@ query IssueTimelineItems($issue_node_id: ID!, $first: Int = 100){
                 __typename
                 ...custom_actor
               }
+              commit {
+                url
+                commitUrl
+              }
+              isCrossRepository
+              isDirectReference
+              createdAt
+            }
+            ... on CrossReferencedEvent {
+              id
+              actor {
+                __typename
+                ...custom_actor
+              }
+              isCrossRepository
+              url
+              resourcePath
+              willCloseTarget
+              referencedAt
+              createdAt
             }
             ... on AssignedEvent {
               id
@@ -445,6 +622,11 @@ query IssueTimelineItems($issue_node_id: ID!, $first: Int = 100){
                 __typename
                 ...custom_actor
               }
+              user {
+                name
+                login
+              }
+              createdAt
             }
             ... on UnassignedEvent {
               id
@@ -452,6 +634,11 @@ query IssueTimelineItems($issue_node_id: ID!, $first: Int = 100){
                 __typename
                 ...custom_actor
               }
+              user {
+                name
+                login
+              }
+              createdAt
             }
             ... on LabeledEvent {
               id
@@ -459,6 +646,12 @@ query IssueTimelineItems($issue_node_id: ID!, $first: Int = 100){
                 __typename
                 ...custom_actor
               }
+              label {
+                name
+                description
+                color
+              }
+              createdAt
             }
             ... on UnlabeledEvent {
               id
@@ -466,6 +659,12 @@ query IssueTimelineItems($issue_node_id: ID!, $first: Int = 100){
                 __typename
                 ...custom_actor
               }
+              label {
+                name
+                description
+                color
+              }
+              createdAt
             }
             ... on MilestonedEvent {
               id
@@ -473,6 +672,8 @@ query IssueTimelineItems($issue_node_id: ID!, $first: Int = 100){
                 __typename
                 ...custom_actor
               }
+              milestoneTitle
+              createdAt
             }
             ... on DemilestonedEvent {
               id
@@ -480,6 +681,8 @@ query IssueTimelineItems($issue_node_id: ID!, $first: Int = 100){
                 __typename
                 ...custom_actor
               }
+              milestoneTitle
+              createdAt
             }
             ... on RenamedTitleEvent {
               id
@@ -487,6 +690,9 @@ query IssueTimelineItems($issue_node_id: ID!, $first: Int = 100){
                 __typename
                 ...custom_actor
               }
+              currentTitle
+              previousTitle
+              createdAt
             }
             ... on LockedEvent {
               id
@@ -494,6 +700,8 @@ query IssueTimelineItems($issue_node_id: ID!, $first: Int = 100){
                 __typename
                 ...custom_actor
               }
+              lockReason
+              createdAt
             }
             ... on UnlockedEvent {
               id
@@ -501,6 +709,7 @@ query IssueTimelineItems($issue_node_id: ID!, $first: Int = 100){
                 __typename
                 ...custom_actor
               }
+              createdAt
             }
           }
         }

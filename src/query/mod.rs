@@ -1,4 +1,10 @@
+pub mod issue_timeline_items;
+pub mod issues;
+pub mod login_user;
+pub mod pull_request_review;
+pub mod pull_request_timeline_items;
+pub mod pull_requests;
+pub mod rate_limit;
 pub mod repository;
-pub mod test;
 pub mod typedef;
-pub mod watch;
+pub mod watching_repositories;
