@@ -26,11 +26,11 @@ pub fn import() {
             let ids = repositories::table
                 .select(repositories::id)
                 .filter(
-                    repositories::repository_id.eq_any(
+                    repositories::node_id.eq_any(
                         repository_results
                             .clone()
                             .iter()
-                            .map(|repo| &repo.repository_id),
+                            .map(|repo| &repo.node_id),
                     ),
                 ).load::<i32>(&connection)?;
 
@@ -42,12 +42,14 @@ pub fn import() {
                     repository_id: *id as i32,
                     start_condition: 7,
                     stop_condition: 1,
+                    listen_status: 1,
                 }]);
 
                 new_pull_request_event_conditions.append(&mut vec![NewPullRequestEventCondition {
                     repository_id: *id as i32,
                     start_condition: 31,
                     stop_condition: 3,
+                    listen_status: 1,
                 }]);
             }
 
@@ -92,7 +94,7 @@ fn request_watching_repositories<'a>(
                     return NewRepository {
                         owner,
                         name,
-                        repository_id: node.id.clone(),
+                        node_id: node.id.clone(),
                         url: node.url.clone(),
                     };
                 }

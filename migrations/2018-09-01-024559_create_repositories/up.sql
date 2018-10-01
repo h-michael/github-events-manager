@@ -1,13 +1,15 @@
 -- Your SQL goes here
 CREATE TABLE repositories (
-  id            INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  repository_id TEXT    NOT NULL UNIQUE,
-  owner         TEXT    NOT NULL,
-  name          TEXT    NOT NULL,
-  url           TEXT    NOT NULL UNIQUE
+  id                INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  node_id           TEXT    NOT NULL UNIQUE,
+  owner             TEXT    NOT NULL,
+  name              TEXT    NOT NULL,
+  url               TEXT    NOT NULL UNIQUE,
+  last_pr_cursor    TEXT             UNIQUE,
+  last_issue_cursor TEXT             UNIQUE
 );
 
-CREATE INDEX repository_id ON repositories(repository_id);
+CREATE UNIQUE INDEX node_id ON repositories(node_id);
 CREATE UNIQUE INDEX owner_and_name ON repositories(owner, name);
 
 /** 2bit flag **/
@@ -20,6 +22,7 @@ CREATE TABLE pull_request_event_conditions (
   stop_condition  INTEGER NOT NULL DEFAULT 1 CHECK(stop_condition > 0 AND stop_condition < 4 AND stop_condition != start_condition),
   listen_status   INTEGER NOT NULL DEFAULT 1 CHECK(listen_status IN (0, 1))
 );
+CREATE UNIQUE INDEX pr_req_event_cond_repository_id ON pull_request_event_conditions(repository_id);
 
 /** 2bit flag **/
 /** 1 => open, 2 => assign, 4 => closed **/
@@ -31,30 +34,41 @@ CREATE TABLE issue_event_conditions (
   stop_condition  INTEGER NOT NULL DEFAULT 1 CHECK(stop_condition > 0 AND stop_condition < 2 AND stop_condition != start_condition),
   listen_status   INTEGER NOT NULL DEFAULT 1 CHECK(listen_status IN (0, 1))
 );
+CREATE UNIQUE INDEX issue_event_cond_repository_id ON issue_event_conditions(repository_id);
 
-/**CREATE TABLE IF NOT EXISTS pull_requests (
-/**  id              INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-/**  created_at      TEXT    NOT NULL,
-/**  updated_at      TEXT    NOT NULL,
-/**  edited_at       TEXT    NOT NULL,
-/**  pull_request_id TEXT    NOT NULL UNIQUE,
-/**  repository_id   INTEGER NOT NULL,
-/**  state           TEXT    NOT NULL CHECK(state IN ("OPEN", "CLOSED", "MERGED")),
-/**  title           TEXT,
-/**  body            TEXT,
-/**)
-/**
-/**CREATE TABLE IF NOT EXISTS issues (
-/**  id              INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-/**  created_at      TEXT    NOT NULL,
-/**  updated_at      TEXT    NOT NULL,
-/**  issue_id        TEXT    NOT NULL UNIQUE,
-/**  repository_id   INTEGER NOT NULL,
-/**  state           TEXT    NOT NULL CHECK(state IN ("OPEN", "CLOSED")),
-/**  title           TEXT,
-/**  body            TEXT,
-/**)
-/**
+CREATE TABLE IF NOT EXISTS pull_requests (
+  id              INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  created_at      TEXT    NOT NULL,
+  updated_at      TEXT    NOT NULL,
+  edited_at       TEXT,
+  closed_at       TEXT,
+  merged_at       TEXT,
+  github_id       TEXT    NOT NULL UNIQUE,
+  number          INTEGER NOT NULL,
+  repository_id   INTEGER NOT NULL,
+  state           TEXT    NOT NULL CHECK(state IN ("OPEN", "CLOSED", "MERGED")),
+  title           TEXT,
+  body            TEXT,
+  last_pr_cursor  TEXT             UNIQUE
+);
+CREATE INDEX pr_req_repository_id ON pull_requests(repository_id);
+
+CREATE TABLE IF NOT EXISTS issues (
+  id                INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  created_at        TEXT    NOT NULL,
+  updated_at        TEXT    NOT NULL,
+  edited_at         TEXT,
+  closed_at         TEXT,
+  github_id         TEXT    NOT NULL UNIQUE,
+  number            INTEGER NOT NULL,
+  repository_id     INTEGER NOT NULL,
+  state             TEXT    NOT NULL CHECK(state IN ("OPEN", "CLOSED")),
+  title             TEXT,
+  body              TEXT,
+  last_issue_cursor TEXT             UNIQUE
+);
+CREATE INDEX issues_repository_id ON issues(repository_id);
+
 /**CREATE TABLE IF NOT EXISTS comments (
 /**  id              INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 /**  created_at      TEXT    NOT NULL,

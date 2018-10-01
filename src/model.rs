@@ -9,13 +9,15 @@ pub struct Repository {
     pub owner: String,
     pub name: String,
     pub url: String,
+    pub last_pr_cursor: Option<String>,
+    pub last_issue_cursor: Option<String>,
 }
 
 #[derive(Debug, Clone, Insertable)]
 #[table_name = "repositories"]
 pub struct NewRepository {
     pub owner: String,
-    pub repository_id: String,
+    pub node_id: String,
     pub name: String,
     pub url: String,
 }
@@ -27,6 +29,7 @@ pub struct PullRequestEventCondition {
     pub repository_id: String,
     pub start_condition: i32,
     pub stop_condition: i32,
+    pub listen_status: i32,
 }
 
 #[derive(Debug, Insertable)]
@@ -35,6 +38,7 @@ pub struct NewPullRequestEventCondition {
     pub repository_id: i32,
     pub start_condition: i32,
     pub stop_condition: i32,
+    pub listen_status: i32,
 }
 
 #[derive(Debug, Identifiable, Queryable, Associations)]
@@ -44,6 +48,7 @@ pub struct IssueEventCondition {
     pub repository_id: String,
     pub start_condition: i32,
     pub stop_condition: i32,
+    pub listen_status: i32,
 }
 
 #[derive(Debug, Insertable)]
@@ -52,4 +57,5 @@ pub struct NewIssueEventCondition {
     pub repository_id: i32,
     pub start_condition: i32,
     pub stop_condition: i32,
+    pub listen_status: i32,
 }

@@ -39,7 +39,7 @@ pub fn add_repository(repo_name: &str) {
         let new_repository = NewRepository {
             owner: owner.to_string(),
             name: name.to_string(),
-            repository_id: repository.id,
+            node_id: repository.id,
             url: repository.url,
         };
 
