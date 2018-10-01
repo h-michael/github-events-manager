@@ -220,57 +220,6 @@ query PullRequestTimelineItems($id: ID!, $first: Int = 100) {
               }
               createdAt
             }
-            ... on Subscribable {
-              id
-              __typename
-              viewerCanSubscribe
-              viewerSubscription
-            }
-            ... on UnsubscribedEvent {
-              id
-              actor {
-                __typename
-                ...custom_actor
-              }
-              createdAt
-            }
-            ... on MergedEvent {
-              id
-              actor {
-                __typename
-                ...custom_actor
-              }
-              url
-              resourcePath
-              createdAt
-            }
-            ... on ReferencedEvent {
-              id
-              actor {
-                __typename
-                ...custom_actor
-              }
-              commit {
-                url
-                commitUrl
-              }
-              isCrossRepository
-              isDirectReference
-              createdAt
-            }
-            ... on CrossReferencedEvent {
-              id
-              actor {
-                __typename
-                ...custom_actor
-              }
-              isCrossRepository
-              url
-              resourcePath
-              willCloseTarget
-              referencedAt
-              createdAt
-            }
             ... on AssignedEvent {
               id
               actor {
@@ -308,191 +257,44 @@ query PullRequestTimelineItems($id: ID!, $first: Int = 100) {
               }
               createdAt
             }
-            ... on UnlabeledEvent {
+            ... on ReviewRequestedEvent {
               id
               actor {
                 __typename
                 ...custom_actor
               }
-              label {
-                name
-                description
-                color
+              requestedReviewer {
+                __typename
+                ...on User {
+                  id
+                  userName: name
+                  userLogin: login
+                }
+                ...on Team {
+                  id
+                  teamName: name
+                }
               }
               createdAt
             }
-            ... on MilestonedEvent {
+            ... on ReviewRequestRemovedEvent {
               id
               actor {
                 __typename
                 ...custom_actor
               }
-              milestoneTitle
-              createdAt
-            }
-            ... on DemilestonedEvent {
-              id
-              actor {
+              requestedReviewer {
                 __typename
-                ...custom_actor
+                ...on User {
+                  id
+                  userName: name
+                  userLogin: login
+                }
+                ...on Team {
+                  id
+                  teamName: name
+                }
               }
-              milestoneTitle
-              createdAt
-            }
-            ... on RenamedTitleEvent {
-              id
-              actor {
-                __typename
-                ...custom_actor
-              }
-              currentTitle
-              previousTitle
-              createdAt
-            }
-            ... on LockedEvent {
-              id
-              actor {
-                __typename
-                ...custom_actor
-              }
-              lockReason
-              createdAt
-            }
-            ... on UnlockedEvent {
-              id
-              actor {
-                __typename
-                ...custom_actor
-              }
-              createdAt
-            }
-            ... on DeployedEvent {
-              id
-              actor {
-                __typename
-                ...custom_actor
-              }
-            }
-            ... on DeploymentEnvironmentChangedEvent {
-              id
-              actor {
-                __typename
-                ...custom_actor
-              }
-              createdAt
-            }
-            ... on HeadRefDeletedEvent {
-              id
-              actor {
-                __typename
-                ...custom_actor
-              }
-              headRef {
-                id
-                name
-                prefix
-              }
-              headRefName
-              createdAt
-            }
-            ... on HeadRefRestoredEvent {
-              id
-              actor {
-                __typename
-                ...custom_actor
-              }
-              createdAt
-            }
-            ... on HeadRefForcePushedEvent {
-              id
-              actor {
-                __typename
-                ...custom_actor
-              }
-              afterCommit {
-                id
-                oid
-              }
-              beforeCommit {
-                id
-                oid
-              }
-              ref {
-                id
-                name
-                prefix
-              }
-              createdAt
-            }
-            ... on BaseRefForcePushedEvent {
-              id
-              actor {
-                __typename
-                ...custom_actor
-              }
-              afterCommit {
-                id
-                oid
-              }
-              beforeCommit {
-                id
-                oid
-              }
-              ref {
-                id
-                name
-                prefix
-              }
-              createdAt
-            }
-            # ... on ReviewRequestedEvent {
-            #   id
-            #   actor {
-            #     __typename
-            #     ...custom_actor
-            #   }
-            #   requestedReviewer {
-            #     ...on User {
-            #       id
-            #       userName: name
-            #       userLogin: login
-            #     }
-            #     ...on Team {
-            #       id
-            #       teamName: name
-            #     }
-            #   }
-            #   createdAt
-            # }
-            # ... on ReviewRequestRemovedEvent {
-            #   id
-            #   actor {
-            #     __typename
-            #     ...custom_actor
-            #   }
-            #   requestedReviewer {
-            #     ...on User {
-            #       id
-            #       userName: name
-            #       userLogin: login
-            #     }
-            #     ...on Team {
-            #       id
-            #       teamName: name
-            #     }
-            #   }
-            #   createdAt
-            # }
-            ... on ReviewDismissedEvent {
-              id
-              actor {
-                __typename
-                ...custom_actor
-              }
-              message
-              resourcePath
-              url
-              previousReviewState
               createdAt
             }
           }
@@ -575,47 +377,6 @@ query IssueTimelineItems($id: ID!, $first: Int = 100) {
               }
               createdAt
             }
-            ... on Subscribable {
-              id
-              __typename
-              viewerCanSubscribe
-              viewerSubscription
-            }
-            ... on UnsubscribedEvent {
-              id
-              actor {
-                __typename
-                ...custom_actor
-              }
-              createdAt
-            }
-            ... on ReferencedEvent {
-              id
-              actor {
-                __typename
-                ...custom_actor
-              }
-              commit {
-                url
-                commitUrl
-              }
-              isCrossRepository
-              isDirectReference
-              createdAt
-            }
-            ... on CrossReferencedEvent {
-              id
-              actor {
-                __typename
-                ...custom_actor
-              }
-              isCrossRepository
-              url
-              resourcePath
-              willCloseTarget
-              referencedAt
-              createdAt
-            }
             ... on AssignedEvent {
               id
               actor {
@@ -666,51 +427,6 @@ query IssueTimelineItems($id: ID!, $first: Int = 100) {
               }
               createdAt
             }
-            ... on MilestonedEvent {
-              id
-              actor {
-                __typename
-                ...custom_actor
-              }
-              milestoneTitle
-              createdAt
-            }
-            ... on DemilestonedEvent {
-              id
-              actor {
-                __typename
-                ...custom_actor
-              }
-              milestoneTitle
-              createdAt
-            }
-            ... on RenamedTitleEvent {
-              id
-              actor {
-                __typename
-                ...custom_actor
-              }
-              currentTitle
-              previousTitle
-              createdAt
-            }
-            ... on LockedEvent {
-              id
-              actor {
-                __typename
-                ...custom_actor
-              }
-              lockReason
-              createdAt
-            }
-            ... on UnlockedEvent {
-              id
-              actor {
-                __typename
-                ...custom_actor
-              }
-              createdAt
-            }
           }
         }
         pageInfo {
@@ -722,3 +438,579 @@ query IssueTimelineItems($id: ID!, $first: Int = 100) {
   }
   ...RateLimitInfo
 }
+
+# # FullAttributes
+# query PullRequestTimelineItems($id: ID!, $first: Int = 100) {
+#   node(id: $id) {
+#     __typename
+#     ... on PullRequest {
+#       id
+#       author {
+#         __typename
+#         ...custom_actor
+#       }
+#       editor {
+#         __typename
+#         ...custom_actor
+#       }
+#       title
+#       body
+#       bodyText
+#       timeline(first: $first) {
+#         edges {
+#           node {
+#             __typename
+#             ... on Commit {
+#               ...custom_commit
+#             }
+#             ... on CommitCommentThread {
+#               id
+#               commit_of_comment: commit {
+#                 ...custom_commit
+#               }
+#             }
+#             ... on PullRequestReview {
+#               id
+#               author {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               commit_of_pr_review: commit {
+#                 ...custom_commit
+#               }
+#               state
+#               createdAt
+#               updatedAt
+#               lastEditedAt
+#             }
+#             ... on PullRequestReviewThread {
+#               id
+#               comments(first: $first) {
+#                 edges {
+#                   node {
+#                     id
+#                     bodyText
+#                     createdAt
+#                     updatedAt
+#                     lastEditedAt
+#                   }
+#                 }
+#               }
+#             }
+#             ... on PullRequestReviewComment {
+#               id
+#               bodyText
+#               createdAt
+#               updatedAt
+#               lastEditedAt
+#             }
+#             ... on IssueComment {
+#               id
+#               bodyText
+#               createdAt
+#               updatedAt
+#               lastEditedAt
+#             }
+#             ... on ClosedEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               createdAt
+#             }
+#             ... on ReopenedEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               createdAt
+#             }
+#             ... on Subscribable {
+#               id
+#               __typename
+#               viewerCanSubscribe
+#               viewerSubscription
+#             }
+#             ... on UnsubscribedEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               createdAt
+#             }
+#             ... on MergedEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               url
+#               resourcePath
+#               createdAt
+#             }
+#             ... on ReferencedEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               commit {
+#                 url
+#                 commitUrl
+#               }
+#               isCrossRepository
+#               isDirectReference
+#               createdAt
+#             }
+#             ... on CrossReferencedEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               isCrossRepository
+#               url
+#               resourcePath
+#               willCloseTarget
+#               referencedAt
+#               createdAt
+#             }
+#             ... on AssignedEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               user {
+#                 name
+#                 login
+#               }
+#               createdAt
+#             }
+#             ... on UnassignedEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               user {
+#                 name
+#                 login
+#               }
+#               createdAt
+#             }
+#             ... on LabeledEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               label {
+#                 name
+#                 description
+#                 color
+#               }
+#               createdAt
+#             }
+#             ... on UnlabeledEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               label {
+#                 name
+#                 description
+#                 color
+#               }
+#               createdAt
+#             }
+#             ... on MilestonedEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               milestoneTitle
+#               createdAt
+#             }
+#             ... on DemilestonedEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               milestoneTitle
+#               createdAt
+#             }
+#             ... on RenamedTitleEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               currentTitle
+#               previousTitle
+#               createdAt
+#             }
+#             ... on LockedEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               lockReason
+#               createdAt
+#             }
+#             ... on UnlockedEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               createdAt
+#             }
+#             ... on DeployedEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#             }
+#             ... on DeploymentEnvironmentChangedEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               createdAt
+#             }
+#             ... on HeadRefDeletedEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               headRef {
+#                 id
+#                 name
+#                 prefix
+#               }
+#               headRefName
+#               createdAt
+#             }
+#             ... on HeadRefRestoredEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               createdAt
+#             }
+#             ... on HeadRefForcePushedEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               afterCommit {
+#                 id
+#                 oid
+#               }
+#               beforeCommit {
+#                 id
+#                 oid
+#               }
+#               ref {
+#                 id
+#                 name
+#                 prefix
+#               }
+#               createdAt
+#             }
+#             ... on BaseRefForcePushedEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               afterCommit {
+#                 id
+#                 oid
+#               }
+#               beforeCommit {
+#                 id
+#                 oid
+#               }
+#               ref {
+#                 id
+#                 name
+#                 prefix
+#               }
+#               createdAt
+#             }
+#             ... on ReviewRequestedEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               requestedReviewer {
+#                 ...on User {
+#                   id
+#                   userName: name
+#                   userLogin: login
+#                 }
+#                 ...on Team {
+#                   id
+#                   teamName: name
+#                 }
+#               }
+#               createdAt
+#             }
+#             ... on ReviewRequestRemovedEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               requestedReviewer {
+#                 ...on User {
+#                   id
+#                   userName: name
+#                   userLogin: login
+#                 }
+#                 ...on Team {
+#                   id
+#                   teamName: name
+#                 }
+#               }
+#               createdAt
+#             }
+#             ... on ReviewDismissedEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               message
+#               resourcePath
+#               url
+#               previousReviewState
+#               createdAt
+#             }
+#           }
+#         }
+#         pageInfo {
+#           hasNextPage
+#           endCursor
+#         }
+#       }
+#     }
+#   }
+#   ...RateLimitInfo
+# }
+
+# # FullAttributes
+# query IssueTimelineItems($id: ID!, $first: Int = 100) {
+#   node(id: $id) {
+#     __typename
+#     ... on Issue {
+#       id
+#       author {
+#         __typename
+#         ...custom_actor
+#       }
+#       editor {
+#         __typename
+#         ...custom_actor
+#       }
+#       title
+#       body
+#       bodyText
+#       timeline(first: $first) {
+#         edges {
+#           node {
+#             __typename
+#             ... on Commit {
+#               ...custom_commit
+#             }
+#             ... on IssueComment {
+#               id
+#               author {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               bodyText
+#               createdAt
+#               lastEditedAt
+#               publishedAt
+#             }
+#             ... on ClosedEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               url
+#               resourcePath
+#               createdAt
+#             }
+#             ... on ReopenedEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               createdAt
+#             }
+#             ... on Subscribable {
+#               id
+#               __typename
+#               viewerCanSubscribe
+#               viewerSubscription
+#             }
+#             ... on UnsubscribedEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               createdAt
+#             }
+#             ... on ReferencedEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               commit {
+#                 url
+#                 commitUrl
+#               }
+#               isCrossRepository
+#               isDirectReference
+#               createdAt
+#             }
+#             ... on CrossReferencedEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               isCrossRepository
+#               url
+#               resourcePath
+#               willCloseTarget
+#               referencedAt
+#               createdAt
+#             }
+#             ... on AssignedEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               user {
+#                 name
+#                 login
+#               }
+#               createdAt
+#             }
+#             ... on UnassignedEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               user {
+#                 name
+#                 login
+#               }
+#               createdAt
+#             }
+#             ... on LabeledEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               label {
+#                 name
+#                 description
+#                 color
+#               }
+#               createdAt
+#             }
+#             ... on UnlabeledEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               label {
+#                 name
+#                 description
+#                 color
+#               }
+#               createdAt
+#             }
+#             ... on MilestonedEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               milestoneTitle
+#               createdAt
+#             }
+#             ... on DemilestonedEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               milestoneTitle
+#               createdAt
+#             }
+#             ... on RenamedTitleEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               currentTitle
+#               previousTitle
+#               createdAt
+#             }
+#             ... on LockedEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               lockReason
+#               createdAt
+#             }
+#             ... on UnlockedEvent {
+#               id
+#               actor {
+#                 __typename
+#                 ...custom_actor
+#               }
+#               createdAt
+#             }
+#           }
+#         }
+#         pageInfo {
+#           hasNextPage
+#           endCursor
+#         }
+#       }
+#     }
+#   }
+#   ...RateLimitInfo
+# }
