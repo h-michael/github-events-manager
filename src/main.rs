@@ -52,6 +52,8 @@ enum Command {
     Import {},
     #[structopt(name = "list")]
     List {},
+    #[structopt(name = "fetch")]
+    Fetch {},
 }
 
 main!(|args: Ghe| match &args.cmd {
@@ -66,4 +68,5 @@ main!(|args: Ghe| match &args.cmd {
     },
     Command::Import {} => cmd::import::import(),
     Command::List {} => cmd::list::show_repository_list(),
+    Command::Fetch {} => cmd::fetch::fetch_all(),
 });

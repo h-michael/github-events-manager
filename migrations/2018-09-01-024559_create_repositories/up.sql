@@ -37,19 +37,21 @@ CREATE TABLE issue_event_conditions (
 CREATE UNIQUE INDEX issue_event_cond_repository_id ON issue_event_conditions(repository_id);
 
 CREATE TABLE IF NOT EXISTS pull_requests (
-  id              INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  created_at      TEXT    NOT NULL,
-  updated_at      TEXT    NOT NULL,
-  edited_at       TEXT,
-  closed_at       TEXT,
-  merged_at       TEXT,
-  github_id       TEXT    NOT NULL UNIQUE,
-  number          INTEGER NOT NULL,
-  repository_id   INTEGER NOT NULL,
-  state           TEXT    NOT NULL CHECK(state IN ("OPEN", "CLOSED", "MERGED")),
-  title           TEXT,
-  body            TEXT,
-  last_pr_cursor  TEXT             UNIQUE
+  id                        INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  created_at                TEXT    NOT NULL,
+  updated_at                TEXT    NOT NULL,
+  edited_at                 TEXT,
+  closed_at                 TEXT,
+  merged_at                 TEXT,
+  node_id                   TEXT    NOT NULL UNIQUE,
+  number                    INTEGER NOT NULL,
+  repository_id             INTEGER NOT NULL,
+  state                     TEXT    NOT NULL CHECK(state IN ("OPEN", "CLOSED", "MERGED")),
+  title                     TEXT    NOT NULL,
+  body_text                 TEXT    NOT NULL,
+  closed                    INTEGER NOT NULL CHECK(closed IN (0, 1)),
+  merged                    INTEGER NOT NULL CHECK(merged IN (0, 1)),
+  last_pull_request_cursor  TEXT
 );
 CREATE INDEX pr_req_repository_id ON pull_requests(repository_id);
 
@@ -59,13 +61,14 @@ CREATE TABLE IF NOT EXISTS issues (
   updated_at        TEXT    NOT NULL,
   edited_at         TEXT,
   closed_at         TEXT,
-  github_id         TEXT    NOT NULL UNIQUE,
+  node_id           TEXT    NOT NULL UNIQUE,
   number            INTEGER NOT NULL,
   repository_id     INTEGER NOT NULL,
   state             TEXT    NOT NULL CHECK(state IN ("OPEN", "CLOSED")),
   title             TEXT,
-  body              TEXT,
-  last_issue_cursor TEXT             UNIQUE
+  body_text         TEXT    NOT NULL,
+  closed            INTEGER NOT NULL CHECK(closed IN (0, 1)),
+  last_issue_cursor TEXT
 );
 CREATE INDEX issues_repository_id ON issues(repository_id);
 

@@ -73,6 +73,9 @@ query PullRequests($owner: String!, $name: String!, $first: Int = 100, $states: 
           closedAt
           merged
           mergedAt
+          repository {
+            id
+          }
         }
       }
       pageInfo {
@@ -103,6 +106,9 @@ query Issues($owner: String!, $name: String!, $first: Int = 100, $states: [Issue
           lastEditedAt
           closed
           closedAt
+          repository {
+            id
+          }
         }
       }
       pageInfo {

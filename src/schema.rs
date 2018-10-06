@@ -15,12 +15,13 @@ table! {
         updated_at -> Text,
         edited_at -> Nullable<Text>,
         closed_at -> Nullable<Text>,
-        github_id -> Text,
+        node_id -> Text,
         number -> Integer,
         repository_id -> Integer,
         state -> Text,
         title -> Nullable<Text>,
-        body -> Nullable<Text>,
+        body_text -> Text,
+        closed -> Integer,
         last_issue_cursor -> Nullable<Text>,
     }
 }
@@ -43,13 +44,15 @@ table! {
         edited_at -> Nullable<Text>,
         closed_at -> Nullable<Text>,
         merged_at -> Nullable<Text>,
-        github_id -> Text,
+        node_id -> Text,
         number -> Integer,
         repository_id -> Integer,
         state -> Text,
-        title -> Nullable<Text>,
-        body -> Nullable<Text>,
-        last_pr_cursor -> Nullable<Text>,
+        title -> Text,
+        body_text -> Text,
+        closed -> Integer,
+        merged -> Integer,
+        last_pull_request_cursor -> Nullable<Text>,
     }
 }
 

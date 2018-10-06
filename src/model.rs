@@ -1,6 +1,8 @@
 use schema::issue_event_conditions;
 use schema::pull_request_event_conditions;
 use schema::repositories;
+use schema::issues;
+use schema::pull_requests;
 
 #[derive(Debug, Queryable)]
 pub struct Repository {
@@ -58,4 +60,78 @@ pub struct NewIssueEventCondition {
     pub start_condition: i32,
     pub stop_condition: i32,
     pub listen_status: i32,
+}
+
+#[derive(Debug, Queryable, Associations)]
+#[belongs_to(Repository)]
+pub struct Issue {
+    pub id: i32,
+    pub created_at: String,
+    pub updated_at: String,
+    pub edited_at: Option<String>,
+    pub closed_at: Option<String>,
+    pub node_id: String,
+    pub number: i32,
+    pub repository_id: i32,
+    pub state: String,
+    pub title: Option<String>,
+    pub body: Option<String>,
+    pub closed: i32,
+    pub last_issue_cursol: Option<String>,
+}
+
+#[derive(Debug, Clone, Insertable)]
+#[table_name = "issues"]
+pub struct NewIssue {
+    pub created_at: String,
+    pub updated_at: String,
+    pub edited_at: Option<String>,
+    pub closed_at: Option<String>,
+    pub node_id: String,
+    pub number: i32,
+    pub repository_id: i32,
+    pub state: String,
+    pub title: Option<String>,
+    pub body_text: Option<String>,
+    pub closed: i32,
+    pub last_issue_cursor: Option<String>,
+}
+
+#[derive(Debug, Queryable, Associations)]
+#[belongs_to(Repository)]
+pub struct PullRequest {
+    pub id: i32,
+    pub created_at: String,
+    pub updated_at: String,
+    pub edited_at: Option<String>,
+    pub closed_at: Option<String>,
+    pub merged_at: Option<String>,
+    pub node_id: String,
+    pub number: i32,
+    pub repository_id: i32,
+    pub state: String,
+    pub title: Option<String>,
+    pub body: Option<String>,
+    pub closed: i32,
+    pub merged: i32,
+    pub last_pull_request_cursol: Option<String>,
+}
+
+#[derive(Debug, Clone, Insertable)]
+#[table_name = "pull_requests"]
+pub struct NewPullRequest {
+    pub created_at: String,
+    pub updated_at: String,
+    pub edited_at: Option<String>,
+    pub closed_at: Option<String>,
+    pub merged_at: Option<String>,
+    pub node_id: String,
+    pub number: i32,
+    pub repository_id: i32,
+    pub state: String,
+    pub title: Option<String>,
+    pub body_text: Option<String>,
+    pub closed: i32,
+    pub merged: i32,
+    pub last_pull_request_cursor: Option<String>,
 }
