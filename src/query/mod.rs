@@ -8,3 +8,28 @@ pub mod rate_limit;
 pub mod repository;
 pub mod typedef;
 pub mod watching_repositories;
+
+impl pull_requests::RustPullRequestsRepositoryPullRequestsEdgesNode {
+    pub fn closed(&self) -> i32 {
+        match self.closed {
+            true => 1,
+            false => 0,
+        }
+    }
+
+    pub fn merged(&self) -> i32 {
+        match self.merged {
+            true => 1,
+            false => 0,
+        }
+    }
+}
+
+impl issues::RustIssuesRepositoryIssuesEdgesNode {
+    pub fn closed(&self) -> i32 {
+        match self.closed {
+            true => 1,
+            false => 0,
+        }
+    }
+}

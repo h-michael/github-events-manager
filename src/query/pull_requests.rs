@@ -75,28 +75,12 @@ pub struct RustPullRequestsRepositoryPullRequestsEdgesNode {
     pub updated_at: DateTime,
     #[serde(rename = "lastEditedAt")]
     pub last_edited_at: Option<DateTime>,
-    closed: Boolean,
+    pub closed: Boolean,
     #[serde(rename = "closedAt")]
     pub closed_at: Option<DateTime>,
-    merged: Boolean,
+    pub merged: Boolean,
     #[serde(rename = "mergedAt")]
     pub merged_at: Option<DateTime>,
-}
-
-impl RustPullRequestsRepositoryPullRequestsEdgesNode {
-    pub fn closed(&self) -> i32 {
-        match self.closed {
-            true => 1,
-            false => 0,
-        }
-    }
-
-    pub fn merged(&self) -> i32 {
-        match self.merged {
-            true => 1,
-            false => 0,
-        }
-    }
 }
 
 #[derive(Deserialize, Debug)]

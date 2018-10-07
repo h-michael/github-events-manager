@@ -72,19 +72,10 @@ pub struct RustIssuesRepositoryIssuesEdgesNode {
     pub updated_at: DateTime,
     #[serde(rename = "lastEditedAt")]
     pub last_edited_at: Option<DateTime>,
-    closed: Boolean,
+    pub closed: Boolean,
     #[serde(rename = "closedAt")]
     pub closed_at: Option<DateTime>,
     pub repository: RustIssuesRepositoryIssuesEdgesNodeRepository,
-}
-
-impl RustIssuesRepositoryIssuesEdgesNode {
-    pub fn closed(&self) -> i32 {
-        match self.closed {
-            true => 1,
-            false => 0,
-        }
-    }
 }
 
 #[derive(Deserialize, Debug)]
