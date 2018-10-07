@@ -5,7 +5,7 @@ authors = ["Hirokazu Hata <h.hata.ai.t@gmail.com>"]
 
 [dependencies]
 clippy = { version = "*", optional = true }
-quicli = { git = "https://github.com/killercup/quicli", branch = "master" }
+quicli = "0.3.1"
 diesel = { version = "1.3.2", features = ["sqlite"] }
 diesel_migrations = "1.3.0"
 # graphql_client = { git = "https://github.com/tomhoule/graphql-client", branch = "master" }
