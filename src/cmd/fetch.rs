@@ -59,7 +59,7 @@ fn fetch_issues(repository_id: i32, owner: String, name: String) -> Vec<NewIssue
     issue_edges.into_iter().map(|issue| match issue {
         Some(issue) => {
             let issue = issue.node.unwrap();
-            return NewIssue {
+            NewIssue {
                 closed: issue.closed(),
                 created_at: issue.created_at,
                 updated_at: issue.updated_at,
