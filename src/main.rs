@@ -1,5 +1,3 @@
-#![cfg_attr(feature = "clippy", feature(plugin))]
-#![cfg_attr(feature = "clippy", plugin(clippy))]
 #![allow(proc_macro_derive_resolution_fallback)]
 #[macro_use]
 extern crate quicli;
@@ -48,25 +46,36 @@ enum Command {
         repo_flag: bool,
         repo_name: String,
     },
-    #[structopt(name = "import")]
-    Import {},
+    #[structopt(name = "sync")]
+    Sync {
+        #[structopt(short = "w", long = "watching")]
+        watching: bool,
+        #[structopt(short = "s", long = "stars")]
+        stars: bool,
+    },
     #[structopt(name = "list")]
     List {},
     #[structopt(name = "fetch")]
     Fetch {},
 }
 
-main!(|args: Ghe| match &args.cmd {
-    Command::Test {} => cmd::test::token_test(),
-    Command::Init {} => init::init(),
-    Command::Add {
-        repo_flag,
-        repo_name,
-    } => match repo_flag {
-        true => cmd::add::add_repository(repo_name),
-        _ => panic!("set repository name"),
-    },
-    Command::Import {} => cmd::import::import(),
-    Command::List {} => cmd::list::show_repository_list(),
-    Command::Fetch {} => cmd::fetch::fetch_all(),
-});
+main!(|args: Ghe|
+    #[allow(unused_variables)]
+    match &args.cmd {
+        Command::Test {} => cmd::test::token_test(),
+        Command::Init {} => init::init(),
+        Command::Add {
+            repo_flag,
+            repo_name,
+        } => match repo_flag {
+            true => cmd::add::add_repository(repo_name),
+            _ => panic!("set repository name"),
+        },
+        Command::Sync {
+            watching,
+            stars,
+        } => cmd::sync::sync(),
+        Command::List {} => cmd::list::show_repository_list(),
+        Command::Fetch {} => cmd::fetch::fetch_all(),
+    }
+);

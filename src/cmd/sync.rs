@@ -13,7 +13,7 @@ use schema::issue_event_conditions;
 use schema::pull_request_event_conditions;
 use schema::repositories;
 
-pub fn import() {
+pub fn sync() {
     let repository_results = request_watching_repositories(None, None);
     let connection = establish_connection();
 
