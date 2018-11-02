@@ -18,27 +18,49 @@ pub fn fetch_all() {
     let connection = establish_connection();
     let results = repositories.load::<Repository>(&connection).unwrap();
     for repository in results {
-        let issues = fetch_issues(repository.id, repository.owner.clone(), repository.name.clone());
-        let prs = fetch_prs(repository.id, repository.owner.clone(), repository.name.clone());
+        let issues = fetch_issues(
+            repository.id,
+            repository.owner.clone(),
+            repository.name.clone(),
+            None,
+            vec![],
+        );
+        println!("{:?}: issues {:?}", repository.name, issues.len());
+        let prs = fetch_prs(
+            repository.id,
+            repository.owner.clone(),
+            repository.name.clone(),
+            None,
+            vec![],
+        );
 
+        println!("{:?}: pull requests {:?}", repository.name, prs.len());
         connection
             .transaction::<_, Error, _>(|| {
-                diesel::insert_into(issue_model::table).values(issues.clone())
+                diesel::insert_into(issue_model::table)
+                    .values(issues.clone())
                     .execute(&connection)?;
-                diesel::insert_into(pr_model::table).values(prs.clone())
+                diesel::insert_into(pr_model::table)
+                    .values(prs.clone())
                     .execute(&connection)?;
                 Ok(())
-            }).unwrap_or_else(|err| panic!("fetch failed: {:?}", err));
-
+            })
+            .unwrap_or_else(|err| panic!("fetch failed: {:?}", err));
     }
-
 }
 
-fn fetch_issues(repository_id: i32, owner: String, name: String) -> Vec<NewIssue> {
+fn fetch_issues(
+    repository_id: i32,
+    owner: String,
+    name: String,
+    after: Option<String>,
+    mut issues: Vec<NewIssue>,
+) -> Vec<NewIssue> {
     let query = issues::Issues::build_query(issues::Variables {
-        owner,
-        name,
+        owner: owner.clone(),
+        name: name.clone(),
         first: Some(100),
+        after,
         states: Some(vec![issues::IssueState::OPEN]),
     });
     let res = request(&query);
@@ -56,37 +78,55 @@ fn fetch_issues(repository_id: i32, owner: String, name: String) -> Vec<NewIssue
     let info = &repository.issues.page_info;
     let issue_edges = repository.issues.edges.unwrap();
 
-    issue_edges.into_iter().map(|issue| match issue {
-        Some(issue) => {
-            let issue = issue.node.unwrap();
-            NewIssue {
-                closed: issue.closed(),
-                created_at: issue.created_at,
-                updated_at: issue.updated_at,
-                edited_at: issue.last_edited_at,
-                closed_at: issue.closed_at,
-                node_id: issue.id,
-                number: issue.number as i32,
-                repository_id,
-                state: match issue.state {
-                    issues::IssueState::CLOSED => "CLOSED".to_string(),
-                    issues::IssueState::OPEN => "OPEN".to_string(),
-                    issues::IssueState::Other(state) => state,
-                },
-                title: Some(issue.title),
-                body_text: Some(issue.body_text),
-                last_issue_cursor: info.end_cursor.to_owned(),
-            }
-        },
-        None => panic!(),
-    }).collect::<Vec<_>>()
+    issues.extend(
+        issue_edges
+            .into_iter()
+            .map(|issue| match issue {
+                Some(issue) => {
+                    let issue = issue.node.unwrap();
+                    NewIssue {
+                        closed: issue.closed(),
+                        created_at: issue.created_at,
+                        updated_at: issue.updated_at,
+                        edited_at: issue.last_edited_at,
+                        closed_at: issue.closed_at,
+                        node_id: issue.id,
+                        number: issue.number as i32,
+                        repository_id,
+                        state: match issue.state {
+                            issues::IssueState::CLOSED => "CLOSED".to_string(),
+                            issues::IssueState::OPEN => "OPEN".to_string(),
+                            issues::IssueState::Other(state) => state,
+                        },
+                        title: Some(issue.title),
+                        body_text: Some(issue.body_text),
+                        last_issue_cursor: info.end_cursor.to_owned(),
+                    }
+                }
+                None => panic!(),
+            })
+            .collect::<Vec<_>>(),
+    );
+    match info.end_cursor {
+        Some(ref end_cursor) => {
+            fetch_issues(repository_id, owner, name, Some(end_cursor.clone()), issues)
+        }
+        None => issues,
+    }
 }
 
-fn fetch_prs(repository_id: i32, owner: String, name: String) -> Vec<NewPullRequest>{
+fn fetch_prs(
+    repository_id: i32,
+    owner: String,
+    name: String,
+    after: Option<String>,
+    mut pull_requests: Vec<NewPullRequest>,
+) -> Vec<NewPullRequest> {
     let query = pull_requests::PullRequests::build_query(pull_requests::Variables {
-        owner,
-        name,
+        owner: owner.clone(),
+        name: name.clone(),
         first: Some(100),
+        after,
         states: Some(vec![pull_requests::PullRequestState::OPEN]),
     });
     let res = request(&query);
@@ -105,31 +145,42 @@ fn fetch_prs(repository_id: i32, owner: String, name: String) -> Vec<NewPullRequ
     let info = &repository.pull_requests.page_info;
     let pull_request_edges = repository.pull_requests.edges.unwrap();
 
-    pull_request_edges.into_iter().map(|pull_request| match pull_request {
-        Some(pull_request) => {
-            let pull_request = pull_request.node.unwrap();
-            NewPullRequest {
-                closed: pull_request.closed(),
-                merged: pull_request.merged(),
-                created_at: pull_request.created_at,
-                updated_at: pull_request.updated_at,
-                edited_at: pull_request.last_edited_at,
-                closed_at: pull_request.closed_at,
-                merged_at: pull_request.merged_at,
-                node_id: pull_request.id,
-                number: pull_request.number as i32,
-                repository_id,
-                state: match pull_request.state {
-                    pull_requests::PullRequestState::MERGED => "MERGED".to_string(),
-                    pull_requests::PullRequestState::CLOSED => "CLOSED".to_string(),
-                    pull_requests::PullRequestState::OPEN => "OPEN".to_string(),
-                    pull_requests::PullRequestState::Other(state) => state,
-                },
-                title: Some(pull_request.title),
-                body_text: Some(pull_request.body_text),
-                last_pull_request_cursor: info.end_cursor.to_owned(),
-            }
-        },
-        None => panic!(),
-    }).collect::<Vec<_>>()
+    pull_requests.extend(
+        pull_request_edges
+            .into_iter()
+            .map(|pull_request| match pull_request {
+                Some(pull_request) => {
+                    let pull_request = pull_request.node.unwrap();
+                    NewPullRequest {
+                        closed: pull_request.closed(),
+                        merged: pull_request.merged(),
+                        created_at: pull_request.created_at,
+                        updated_at: pull_request.updated_at,
+                        edited_at: pull_request.last_edited_at,
+                        closed_at: pull_request.closed_at,
+                        merged_at: pull_request.merged_at,
+                        node_id: pull_request.id,
+                        number: pull_request.number as i32,
+                        repository_id,
+                        state: match pull_request.state {
+                            pull_requests::PullRequestState::MERGED => "MERGED".to_string(),
+                            pull_requests::PullRequestState::CLOSED => "CLOSED".to_string(),
+                            pull_requests::PullRequestState::OPEN => "OPEN".to_string(),
+                            pull_requests::PullRequestState::Other(state) => state,
+                        },
+                        title: Some(pull_request.title),
+                        body_text: Some(pull_request.body_text),
+                        last_pull_request_cursor: info.end_cursor.to_owned(),
+                    }
+                }
+                None => panic!(),
+            })
+            .collect::<Vec<_>>()
+    );
+    match info.end_cursor {
+        Some(ref end_cursor) => {
+            fetch_prs(repository_id, owner, name, Some(end_cursor.clone()), pull_requests)
+        }
+        None => pull_requests,
+    }
 }

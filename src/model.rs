@@ -1,8 +1,8 @@
 use schema::issue_event_conditions;
-use schema::pull_request_event_conditions;
-use schema::repositories;
 use schema::issues;
+use schema::pull_request_event_conditions;
 use schema::pull_requests;
+use schema::repositories;
 
 #[derive(Debug, Queryable)]
 pub struct Repository {

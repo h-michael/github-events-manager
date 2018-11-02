@@ -54,11 +54,11 @@ query Repository($owner: String!, $name: String!) {
   ...RateLimitInfo
 }
 
-query PullRequests($owner: String!, $name: String!, $first: Int = 100, $states: [PullRequestState!]) {
+query PullRequests($owner: String!, $name: String!, $first: Int = 100, $states: [PullRequestState!], $after: String) {
   repository(owner: $owner, name: $name) {
     id
     url
-    pullRequests(first: $first, states: $states) {
+    pullRequests(first: $first, states: $states, after: $after) {
       edges {
         node {
           id
@@ -89,11 +89,11 @@ query PullRequests($owner: String!, $name: String!, $first: Int = 100, $states: 
   ...RateLimitInfo
 }
 
-query Issues($owner: String!, $name: String!, $first: Int = 100, $states: [IssueState!]){
+query Issues($owner: String!, $name: String!, $first: Int = 100, $states: [IssueState!], $after: String){
   repository(owner: $owner, name: $name) {
     id
     url
-    issues(first: $first, states: $states) {
+    issues(first: $first, states: $states, after: $after) {
       edges {
         node {
           id
