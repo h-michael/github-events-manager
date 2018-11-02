@@ -2,6 +2,7 @@ use super::utils::*;
 use db_utils::*;
 use diesel;
 use diesel::connection::Connection;
+use diesel::query_dsl::*;
 use diesel::result::Error;
 use diesel::RunQueryDsl;
 use graphql_client::*;
@@ -10,38 +11,44 @@ use query::issues;
 use query::pull_requests;
 use schema::issues as issue_model;
 use schema::pull_requests as pr_model;
-use schema::repositories::dsl::repositories;
-// use schema::issue_event_conditions;
-// use schema::pull_request_event_conditions;
+use schema::repositories::dsl::*;
 
 pub fn fetch_all() {
+    use diesel::ExpressionMethods;
+
     let connection = establish_connection();
     let results = repositories.load::<Repository>(&connection).unwrap();
     for repository in results {
-        let issues = fetch_issues(
+        let (issues, issue_end_cursor) = fetch_issues(
             repository.id,
             repository.owner.clone(),
             repository.name.clone(),
-            None,
+            repository.last_issue_cursor.clone(),
             vec![],
         );
         println!("{:?}: issues {:?}", repository.name, issues.len());
-        let prs = fetch_prs(
+        let (prs, pr_end_cursor) = fetch_prs(
             repository.id,
             repository.owner.clone(),
             repository.name.clone(),
-            None,
+            repository.last_pr_cursor.clone(),
             vec![],
         );
 
         println!("{:?}: pull requests {:?}", repository.name, prs.len());
         connection
             .transaction::<_, Error, _>(|| {
+                diesel::update(repositories.filter(id.eq(repository.id)))
+                    .set((
+                        last_issue_cursor.eq(issue_end_cursor),
+                        last_pr_cursor.eq(pr_end_cursor),
+                    ))
+                    .execute(&connection)?;
                 diesel::insert_into(issue_model::table)
-                    .values(issues.clone())
+                    .values(issues)
                     .execute(&connection)?;
                 diesel::insert_into(pr_model::table)
-                    .values(prs.clone())
+                    .values(prs)
                     .execute(&connection)?;
                 Ok(())
             })
@@ -51,14 +58,14 @@ pub fn fetch_all() {
 
 fn fetch_issues(
     repository_id: i32,
-    owner: String,
-    name: String,
+    owner_value: String,
+    name_value: String,
     after: Option<String>,
     mut issues: Vec<NewIssue>,
-) -> Vec<NewIssue> {
+) -> (Vec<NewIssue>, Option<String>) {
     let query = issues::Issues::build_query(issues::Variables {
-        owner: owner.clone(),
-        name: name.clone(),
+        owner: owner_value.clone(),
+        name: name_value.clone(),
         first: Some(100),
         after,
         states: Some(vec![issues::IssueState::OPEN]),
@@ -107,24 +114,33 @@ fn fetch_issues(
             })
             .collect::<Vec<_>>(),
     );
-    match info.end_cursor {
-        Some(ref end_cursor) => {
-            fetch_issues(repository_id, owner, name, Some(end_cursor.clone()), issues)
+
+    if info.has_next_page {
+        match info.end_cursor {
+            Some(ref end_cursor) => fetch_issues(
+                repository_id,
+                owner_value,
+                name_value,
+                Some(end_cursor.clone()),
+                issues,
+            ),
+            None => (issues, None),
         }
-        None => issues,
+    } else {
+        (issues, info.end_cursor.clone())
     }
 }
 
 fn fetch_prs(
     repository_id: i32,
-    owner: String,
-    name: String,
+    owner_value: String,
+    name_value: String,
     after: Option<String>,
     mut pull_requests: Vec<NewPullRequest>,
-) -> Vec<NewPullRequest> {
+) -> (Vec<NewPullRequest>, Option<String>) {
     let query = pull_requests::PullRequests::build_query(pull_requests::Variables {
-        owner: owner.clone(),
-        name: name.clone(),
+        owner: owner_value.clone(),
+        name: name_value.clone(),
         first: Some(100),
         after,
         states: Some(vec![pull_requests::PullRequestState::OPEN]),
@@ -175,12 +191,21 @@ fn fetch_prs(
                 }
                 None => panic!(),
             })
-            .collect::<Vec<_>>()
+            .collect::<Vec<_>>(),
     );
-    match info.end_cursor {
-        Some(ref end_cursor) => {
-            fetch_prs(repository_id, owner, name, Some(end_cursor.clone()), pull_requests)
+
+    if info.has_next_page {
+        match info.end_cursor {
+            Some(ref end_cursor) => fetch_prs(
+                repository_id,
+                owner_value,
+                name_value,
+                Some(end_cursor.clone()),
+                pull_requests,
+            ),
+            None => (pull_requests, None),
         }
-        None => pull_requests,
+    } else {
+        (pull_requests, info.end_cursor.clone())
     }
 }

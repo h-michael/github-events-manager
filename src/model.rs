@@ -4,10 +4,10 @@ use schema::pull_request_event_conditions;
 use schema::pull_requests;
 use schema::repositories;
 
-#[derive(Debug, Queryable)]
+#[derive(Debug, Queryable, PartialEq)]
 pub struct Repository {
     pub id: i32,
-    pub repository_id: String,
+    pub node_id: String,
     pub owner: String,
     pub name: String,
     pub url: String,
@@ -18,10 +18,12 @@ pub struct Repository {
 #[derive(Debug, Clone, Insertable)]
 #[table_name = "repositories"]
 pub struct NewRepository {
-    pub owner: String,
     pub node_id: String,
+    pub owner: String,
     pub name: String,
     pub url: String,
+    pub last_pr_cursor: Option<String>,
+    pub last_issue_cursor: Option<String>,
 }
 
 #[derive(Debug, Identifiable, Queryable, Associations)]

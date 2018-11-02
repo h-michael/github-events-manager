@@ -96,6 +96,8 @@ fn request_watching_repositories<'a>(
                         name,
                         node_id: node.id.clone(),
                         url: node.url.clone(),
+                        last_pr_cursor: None,
+                        last_issue_cursor: None,
                     };
                 }
                 panic!()

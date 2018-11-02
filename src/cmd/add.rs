@@ -41,6 +41,8 @@ pub fn add_repository(repo_name: &str) {
             name: name.to_string(),
             node_id: repository.id,
             url: repository.url,
+            last_issue_cursor: None,
+            last_pr_cursor: None,
         };
 
         diesel::insert_into(repositories::table)
