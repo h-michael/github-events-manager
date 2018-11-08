@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS pull_requests (
   body_text                 TEXT    NOT NULL,
   closed                    INTEGER NOT NULL CHECK(closed IN (0, 1)),
   merged                    INTEGER NOT NULL CHECK(merged IN (0, 1)),
-  last_pull_request_cursor  TEXT
+  last_event_cursor         TEXT
 );
 CREATE INDEX pr_req_repository_id ON pull_requests(repository_id);
 
@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS issues (
   title             TEXT,
   body_text         TEXT    NOT NULL,
   closed            INTEGER NOT NULL CHECK(closed IN (0, 1)),
-  last_issue_cursor TEXT
+  last_event_cursor TEXT
 );
 CREATE INDEX issues_repository_id ON issues(repository_id);
 

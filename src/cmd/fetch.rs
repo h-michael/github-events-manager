@@ -107,7 +107,7 @@ fn fetch_issues(
                         },
                         title: Some(issue.title),
                         body_text: Some(issue.body_text),
-                        last_issue_cursor: info.end_cursor.to_owned(),
+                        last_event_cursor: None,
                     }
                 }
                 None => panic!(),
@@ -186,7 +186,7 @@ fn fetch_prs(
                         },
                         title: Some(pull_request.title),
                         body_text: Some(pull_request.body_text),
-                        last_pull_request_cursor: info.end_cursor.to_owned(),
+                        last_event_cursor: None,
                     }
                 }
                 None => panic!(),

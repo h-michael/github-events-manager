@@ -79,7 +79,7 @@ pub struct Issue {
     pub title: Option<String>,
     pub body: Option<String>,
     pub closed: i32,
-    pub last_issue_cursol: Option<String>,
+    pub last_event_cursor: Option<String>,
 }
 
 #[derive(Debug, Clone, Insertable)]
@@ -96,7 +96,7 @@ pub struct NewIssue {
     pub title: Option<String>,
     pub body_text: Option<String>,
     pub closed: i32,
-    pub last_issue_cursor: Option<String>,
+    pub last_event_cursor: Option<String>,
 }
 
 #[derive(Debug, Queryable, Associations)]
@@ -116,7 +116,7 @@ pub struct PullRequest {
     pub body: Option<String>,
     pub closed: i32,
     pub merged: i32,
-    pub last_pull_request_cursol: Option<String>,
+    pub last_event_cursor: Option<String>,
 }
 
 #[derive(Debug, Clone, Insertable)]
@@ -135,5 +135,5 @@ pub struct NewPullRequest {
     pub body_text: Option<String>,
     pub closed: i32,
     pub merged: i32,
-    pub last_pull_request_cursor: Option<String>,
+    pub last_event_cursor: Option<String>,
 }

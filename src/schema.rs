@@ -22,7 +22,7 @@ table! {
         title -> Nullable<Text>,
         body_text -> Text,
         closed -> Integer,
-        last_issue_cursor -> Nullable<Text>,
+        last_event_cursor -> Nullable<Text>,
     }
 }
 
@@ -52,7 +52,7 @@ table! {
         body_text -> Text,
         closed -> Integer,
         merged -> Integer,
-        last_pull_request_cursor -> Nullable<Text>,
+        last_event_cursor -> Nullable<Text>,
     }
 }
 
