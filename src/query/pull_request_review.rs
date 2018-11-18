@@ -29,7 +29,7 @@ pub struct RateLimitInfoRateLimit {
     pub reset_at: DateTime,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestReviewNodeOnPullRequestReviewCommentsNodes {
+pub struct PullRequestReviewNodeOnPullRequestReviewCommentsNodes {
     pub id: ID,
     #[serde(rename = "bodyText")]
     pub body_text: String,
@@ -37,17 +37,17 @@ pub struct RustPullRequestReviewNodeOnPullRequestReviewCommentsNodes {
     pub viewer_did_author: Boolean,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestReviewNodeOnPullRequestReviewComments {
-    pub nodes: Option<Vec<Option<RustPullRequestReviewNodeOnPullRequestReviewCommentsNodes>>>,
+pub struct PullRequestReviewNodeOnPullRequestReviewComments {
+    pub nodes: Option<Vec<Option<PullRequestReviewNodeOnPullRequestReviewCommentsNodes>>>,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestReviewNodeOnPullRequestReview {
-    pub comments: RustPullRequestReviewNodeOnPullRequestReviewComments,
+pub struct PullRequestReviewNodeOnPullRequestReview {
+    pub comments: PullRequestReviewNodeOnPullRequestReviewComments,
 }
 #[derive(Deserialize, Debug)]
 #[serde(tag = "__typename")]
-pub enum RustPullRequestReviewNodeOn {
-    PullRequestReview(RustPullRequestReviewNodeOnPullRequestReview),
+pub enum PullRequestReviewNodeOn {
+    PullRequestReview(PullRequestReviewNodeOnPullRequestReview),
     UnlockedEvent,
     User,
     CommitCommentThread,
@@ -136,9 +136,9 @@ pub enum RustPullRequestReviewNodeOn {
     MentionedEvent,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestReviewNode {
+pub struct PullRequestReviewNode {
     #[serde(flatten)]
-    pub on: RustPullRequestReviewNodeOn,
+    pub on: PullRequestReviewNodeOn,
 }
 #[derive(Serialize, Debug)]
 pub struct Variables {
@@ -152,7 +152,7 @@ impl Variables {
 }
 #[derive(Deserialize, Debug)]
 pub struct ResponseData {
-    pub node: Option<RustPullRequestReviewNode>,
+    pub node: Option<PullRequestReviewNode>,
     #[serde(flatten)]
     pub rate_limit_info: RateLimitInfo,
 }

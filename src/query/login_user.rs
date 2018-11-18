@@ -29,14 +29,14 @@ pub struct RateLimitInfoRateLimit {
     pub reset_at: DateTime,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustLoginUserViewer {
+pub struct LoginUserViewer {
     pub login: String,
 }
 #[derive(Serialize, Debug)]
 pub struct Variables;
 #[derive(Deserialize, Debug)]
 pub struct ResponseData {
-    pub viewer: RustLoginUserViewer,
+    pub viewer: LoginUserViewer,
     #[serde(flatten)]
     pub rate_limit_info: RateLimitInfo,
 }

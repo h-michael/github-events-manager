@@ -47,55 +47,55 @@ pub struct custom_commit {
 }
 #[derive(Deserialize, Debug)]
 #[serde(tag = "__typename")]
-pub enum RustIssueTimelineItemsNodeOnIssueAuthorOn {
+pub enum IssueTimelineItemsNodeOnIssueAuthorOn {
     Bot,
     Organization,
     User,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustIssueTimelineItemsNodeOnIssueAuthor {
+pub struct IssueTimelineItemsNodeOnIssueAuthor {
     #[serde(flatten)]
     pub custom_actor: custom_actor,
     #[serde(flatten)]
-    pub on: RustIssueTimelineItemsNodeOnIssueAuthorOn,
+    pub on: IssueTimelineItemsNodeOnIssueAuthorOn,
 }
 #[derive(Deserialize, Debug)]
 #[serde(tag = "__typename")]
-pub enum RustIssueTimelineItemsNodeOnIssueEditorOn {
+pub enum IssueTimelineItemsNodeOnIssueEditorOn {
     Bot,
     Organization,
     User,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustIssueTimelineItemsNodeOnIssueEditor {
+pub struct IssueTimelineItemsNodeOnIssueEditor {
     #[serde(flatten)]
     pub custom_actor: custom_actor,
     #[serde(flatten)]
-    pub on: RustIssueTimelineItemsNodeOnIssueEditorOn,
+    pub on: IssueTimelineItemsNodeOnIssueEditorOn,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnCommit {
+pub struct IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnCommit {
     #[serde(flatten)]
     pub custom_commit: custom_commit,
 }
 #[derive(Deserialize, Debug)]
 #[serde(tag = "__typename")]
-pub enum RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnIssueCommentAuthorOn {
+pub enum IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnIssueCommentAuthorOn {
     Bot,
     Organization,
     User,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnIssueCommentAuthor {
+pub struct IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnIssueCommentAuthor {
     #[serde(flatten)]
     pub custom_actor: custom_actor,
     #[serde(flatten)]
-    pub on: RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnIssueCommentAuthorOn,
+    pub on: IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnIssueCommentAuthorOn,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnIssueComment {
+pub struct IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnIssueComment {
     pub id: ID,
-    pub author: Option<RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnIssueCommentAuthor>,
+    pub author: Option<IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnIssueCommentAuthor>,
     #[serde(rename = "bodyText")]
     pub body_text: String,
     #[serde(rename = "createdAt")]
@@ -107,22 +107,22 @@ pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnIssueComment {
 }
 #[derive(Deserialize, Debug)]
 #[serde(tag = "__typename")]
-pub enum RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnClosedEventActorOn {
+pub enum IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnClosedEventActorOn {
     Bot,
     Organization,
     User,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnClosedEventActor {
+pub struct IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnClosedEventActor {
     #[serde(flatten)]
     pub custom_actor: custom_actor,
     #[serde(flatten)]
-    pub on: RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnClosedEventActorOn,
+    pub on: IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnClosedEventActorOn,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnClosedEvent {
+pub struct IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnClosedEvent {
     pub id: ID,
-    pub actor: Option<RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnClosedEventActor>,
+    pub actor: Option<IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnClosedEventActor>,
     pub url: URI,
     #[serde(rename = "resourcePath")]
     pub resource_path: URI,
@@ -131,146 +131,146 @@ pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnClosedEvent {
 }
 #[derive(Deserialize, Debug)]
 #[serde(tag = "__typename")]
-pub enum RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnReopenedEventActorOn {
+pub enum IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnReopenedEventActorOn {
     Bot,
     Organization,
     User,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnReopenedEventActor {
+pub struct IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnReopenedEventActor {
     #[serde(flatten)]
     pub custom_actor: custom_actor,
     #[serde(flatten)]
-    pub on: RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnReopenedEventActorOn,
+    pub on: IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnReopenedEventActorOn,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnReopenedEvent {
+pub struct IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnReopenedEvent {
     pub id: ID,
-    pub actor: Option<RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnReopenedEventActor>,
+    pub actor: Option<IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnReopenedEventActor>,
     #[serde(rename = "createdAt")]
     pub created_at: DateTime,
 }
 #[derive(Deserialize, Debug)]
 #[serde(tag = "__typename")]
-pub enum RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnAssignedEventActorOn {
+pub enum IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnAssignedEventActorOn {
     Bot,
     Organization,
     User,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnAssignedEventActor {
+pub struct IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnAssignedEventActor {
     #[serde(flatten)]
     pub custom_actor: custom_actor,
     #[serde(flatten)]
-    pub on: RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnAssignedEventActorOn,
+    pub on: IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnAssignedEventActorOn,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnAssignedEventUser {
+pub struct IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnAssignedEventUser {
     pub name: Option<String>,
     pub login: String,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnAssignedEvent {
+pub struct IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnAssignedEvent {
     pub id: ID,
-    pub actor: Option<RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnAssignedEventActor>,
-    pub user: Option<RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnAssignedEventUser>,
+    pub actor: Option<IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnAssignedEventActor>,
+    pub user: Option<IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnAssignedEventUser>,
     #[serde(rename = "createdAt")]
     pub created_at: DateTime,
 }
 #[derive(Deserialize, Debug)]
 #[serde(tag = "__typename")]
-pub enum RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnassignedEventActorOn {
+pub enum IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnassignedEventActorOn {
     Bot,
     Organization,
     User,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnassignedEventActor {
+pub struct IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnassignedEventActor {
     #[serde(flatten)]
     pub custom_actor: custom_actor,
     #[serde(flatten)]
-    pub on: RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnassignedEventActorOn,
+    pub on: IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnassignedEventActorOn,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnassignedEventUser {
+pub struct IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnassignedEventUser {
     pub name: Option<String>,
     pub login: String,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnassignedEvent {
+pub struct IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnassignedEvent {
     pub id: ID,
-    pub actor: Option<RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnassignedEventActor>,
-    pub user: Option<RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnassignedEventUser>,
+    pub actor: Option<IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnassignedEventActor>,
+    pub user: Option<IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnassignedEventUser>,
     #[serde(rename = "createdAt")]
     pub created_at: DateTime,
 }
 #[derive(Deserialize, Debug)]
 #[serde(tag = "__typename")]
-pub enum RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnLabeledEventActorOn {
+pub enum IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnLabeledEventActorOn {
     Bot,
     Organization,
     User,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnLabeledEventActor {
+pub struct IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnLabeledEventActor {
     #[serde(flatten)]
     pub custom_actor: custom_actor,
     #[serde(flatten)]
-    pub on: RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnLabeledEventActorOn,
+    pub on: IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnLabeledEventActorOn,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnLabeledEventLabel {
+pub struct IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnLabeledEventLabel {
     pub name: String,
     pub description: Option<String>,
     pub color: String,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnLabeledEvent {
+pub struct IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnLabeledEvent {
     pub id: ID,
-    pub actor: Option<RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnLabeledEventActor>,
-    pub label: RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnLabeledEventLabel,
+    pub actor: Option<IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnLabeledEventActor>,
+    pub label: IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnLabeledEventLabel,
     #[serde(rename = "createdAt")]
     pub created_at: DateTime,
 }
 #[derive(Deserialize, Debug)]
 #[serde(tag = "__typename")]
-pub enum RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnlabeledEventActorOn {
+pub enum IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnlabeledEventActorOn {
     Bot,
     Organization,
     User,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnlabeledEventActor {
+pub struct IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnlabeledEventActor {
     #[serde(flatten)]
     pub custom_actor: custom_actor,
     #[serde(flatten)]
-    pub on: RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnlabeledEventActorOn,
+    pub on: IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnlabeledEventActorOn,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnlabeledEventLabel {
+pub struct IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnlabeledEventLabel {
     pub name: String,
     pub description: Option<String>,
     pub color: String,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnlabeledEvent {
+pub struct IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnlabeledEvent {
     pub id: ID,
-    pub actor: Option<RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnlabeledEventActor>,
-    pub label: RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnlabeledEventLabel,
+    pub actor: Option<IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnlabeledEventActor>,
+    pub label: IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnlabeledEventLabel,
     #[serde(rename = "createdAt")]
     pub created_at: DateTime,
 }
 #[derive(Deserialize, Debug)]
 #[serde(tag = "__typename")]
-pub enum RustIssueTimelineItemsNodeOnIssueTimelineEdgesNode {
-    Commit(RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnCommit),
-    IssueComment(RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnIssueComment),
-    ClosedEvent(RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnClosedEvent),
-    ReopenedEvent(RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnReopenedEvent),
-    AssignedEvent(RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnAssignedEvent),
-    UnassignedEvent(RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnassignedEvent),
-    LabeledEvent(RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnLabeledEvent),
-    UnlabeledEvent(RustIssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnlabeledEvent),
+pub enum IssueTimelineItemsNodeOnIssueTimelineEdgesNode {
+    Commit(IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnCommit),
+    IssueComment(IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnIssueComment),
+    ClosedEvent(IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnClosedEvent),
+    ReopenedEvent(IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnReopenedEvent),
+    AssignedEvent(IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnAssignedEvent),
+    UnassignedEvent(IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnassignedEvent),
+    LabeledEvent(IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnLabeledEvent),
+    UnlabeledEvent(IssueTimelineItemsNodeOnIssueTimelineEdgesNodeOnUnlabeledEvent),
     CrossReferencedEvent,
     DemilestonedEvent,
     LockedEvent,
@@ -282,37 +282,37 @@ pub enum RustIssueTimelineItemsNodeOnIssueTimelineEdgesNode {
     UnsubscribedEvent,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustIssueTimelineItemsNodeOnIssueTimelineEdges {
-    pub node: Option<RustIssueTimelineItemsNodeOnIssueTimelineEdgesNode>,
+pub struct IssueTimelineItemsNodeOnIssueTimelineEdges {
+    pub node: Option<IssueTimelineItemsNodeOnIssueTimelineEdgesNode>,
 }
-#[derive(Deserialize, Debug)]
-pub struct RustIssueTimelineItemsNodeOnIssueTimelinePageInfo {
+#[derive(Deserialize, Debug, Clone)]
+pub struct IssueTimelineItemsNodeOnIssueTimelinePageInfo {
     #[serde(rename = "hasNextPage")]
     pub has_next_page: Boolean,
     #[serde(rename = "endCursor")]
     pub end_cursor: Option<String>,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustIssueTimelineItemsNodeOnIssueTimeline {
-    pub edges: Option<Vec<Option<RustIssueTimelineItemsNodeOnIssueTimelineEdges>>>,
+pub struct IssueTimelineItemsNodeOnIssueTimeline {
+    pub edges: Option<Vec<Option<IssueTimelineItemsNodeOnIssueTimelineEdges>>>,
     #[serde(rename = "pageInfo")]
-    pub page_info: RustIssueTimelineItemsNodeOnIssueTimelinePageInfo,
+    pub page_info: IssueTimelineItemsNodeOnIssueTimelinePageInfo,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustIssueTimelineItemsNodeOnIssue {
+pub struct IssueTimelineItemsNodeOnIssue {
     pub id: ID,
-    pub author: Option<RustIssueTimelineItemsNodeOnIssueAuthor>,
-    pub editor: Option<RustIssueTimelineItemsNodeOnIssueEditor>,
+    pub author: Option<IssueTimelineItemsNodeOnIssueAuthor>,
+    pub editor: Option<IssueTimelineItemsNodeOnIssueEditor>,
     pub title: String,
     pub body: String,
     #[serde(rename = "bodyText")]
     pub body_text: String,
-    pub timeline: RustIssueTimelineItemsNodeOnIssueTimeline,
+    pub timeline: IssueTimelineItemsNodeOnIssueTimeline,
 }
 #[derive(Deserialize, Debug)]
 #[serde(tag = "__typename")]
-pub enum RustIssueTimelineItemsNodeOn {
-    Issue(RustIssueTimelineItemsNodeOnIssue),
+pub enum IssueTimelineItemsNodeOn {
+    Issue(IssueTimelineItemsNodeOnIssue),
     Tag,
     Blob,
     ClosedEvent,
@@ -401,9 +401,9 @@ pub enum RustIssueTimelineItemsNodeOn {
     License,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustIssueTimelineItemsNode {
+pub struct IssueTimelineItemsNode {
     #[serde(flatten)]
-    pub on: RustIssueTimelineItemsNodeOn,
+    pub on: IssueTimelineItemsNodeOn,
 }
 #[derive(Serialize, Debug)]
 pub struct Variables {
@@ -417,7 +417,7 @@ impl Variables {
 }
 #[derive(Deserialize, Debug)]
 pub struct ResponseData {
-    pub node: Option<RustIssueTimelineItemsNode>,
+    pub node: Option<IssueTimelineItemsNode>,
     #[serde(flatten)]
     pub rate_limit_info: RateLimitInfo,
 }

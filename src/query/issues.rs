@@ -56,11 +56,11 @@ pub struct RateLimitInfoRateLimit {
     pub reset_at: DateTime,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustIssuesRepositoryIssuesEdgesNodeRepository {
+pub struct IssuesRepositoryIssuesEdgesNodeRepository {
     pub id: ID,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustIssuesRepositoryIssuesEdgesNode {
+pub struct IssuesRepositoryIssuesEdgesNode {
     pub id: ID,
     pub number: Int,
     pub state: IssueState,
@@ -76,14 +76,14 @@ pub struct RustIssuesRepositoryIssuesEdgesNode {
     pub closed: Boolean,
     #[serde(rename = "closedAt")]
     pub closed_at: Option<DateTime>,
-    pub repository: RustIssuesRepositoryIssuesEdgesNodeRepository,
+    pub repository: IssuesRepositoryIssuesEdgesNodeRepository,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustIssuesRepositoryIssuesEdges {
-    pub node: Option<RustIssuesRepositoryIssuesEdgesNode>,
+pub struct IssuesRepositoryIssuesEdges {
+    pub node: Option<IssuesRepositoryIssuesEdgesNode>,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustIssuesRepositoryIssuesPageInfo {
+pub struct IssuesRepositoryIssuesPageInfo {
     #[serde(rename = "startCursor")]
     pub start_cursor: Option<String>,
     #[serde(rename = "endCursor")]
@@ -94,16 +94,16 @@ pub struct RustIssuesRepositoryIssuesPageInfo {
     pub has_previous_page: Boolean,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustIssuesRepositoryIssues {
-    pub edges: Option<Vec<Option<RustIssuesRepositoryIssuesEdges>>>,
+pub struct IssuesRepositoryIssues {
+    pub edges: Option<Vec<Option<IssuesRepositoryIssuesEdges>>>,
     #[serde(rename = "pageInfo")]
-    pub page_info: RustIssuesRepositoryIssuesPageInfo,
+    pub page_info: IssuesRepositoryIssuesPageInfo,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustIssuesRepository {
+pub struct IssuesRepository {
     pub id: ID,
     pub url: URI,
-    pub issues: RustIssuesRepositoryIssues,
+    pub issues: IssuesRepositoryIssues,
 }
 #[derive(Serialize, Debug)]
 pub struct Variables {
@@ -120,7 +120,7 @@ impl Variables {
 }
 #[derive(Deserialize, Debug)]
 pub struct ResponseData {
-    pub repository: Option<RustIssuesRepository>,
+    pub repository: Option<IssuesRepository>,
     #[serde(flatten)]
     pub rate_limit_info: RateLimitInfo,
 }

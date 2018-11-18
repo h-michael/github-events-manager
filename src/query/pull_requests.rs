@@ -59,11 +59,11 @@ pub struct RateLimitInfoRateLimit {
     pub reset_at: DateTime,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestsRepositoryPullRequestsEdgesNodeRepository {
+pub struct PullRequestsRepositoryPullRequestsEdgesNodeRepository {
     pub id: ID,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestsRepositoryPullRequestsEdgesNode {
+pub struct PullRequestsRepositoryPullRequestsEdgesNode {
     pub id: ID,
     pub number: Int,
     pub state: PullRequestState,
@@ -82,14 +82,14 @@ pub struct RustPullRequestsRepositoryPullRequestsEdgesNode {
     pub merged: Boolean,
     #[serde(rename = "mergedAt")]
     pub merged_at: Option<DateTime>,
-    pub repository: RustPullRequestsRepositoryPullRequestsEdgesNodeRepository,
+    pub repository: PullRequestsRepositoryPullRequestsEdgesNodeRepository,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestsRepositoryPullRequestsEdges {
-    pub node: Option<RustPullRequestsRepositoryPullRequestsEdgesNode>,
+pub struct PullRequestsRepositoryPullRequestsEdges {
+    pub node: Option<PullRequestsRepositoryPullRequestsEdgesNode>,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestsRepositoryPullRequestsPageInfo {
+pub struct PullRequestsRepositoryPullRequestsPageInfo {
     #[serde(rename = "startCursor")]
     pub start_cursor: Option<String>,
     #[serde(rename = "endCursor")]
@@ -100,17 +100,17 @@ pub struct RustPullRequestsRepositoryPullRequestsPageInfo {
     pub has_previous_page: Boolean,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestsRepositoryPullRequests {
-    pub edges: Option<Vec<Option<RustPullRequestsRepositoryPullRequestsEdges>>>,
+pub struct PullRequestsRepositoryPullRequests {
+    pub edges: Option<Vec<Option<PullRequestsRepositoryPullRequestsEdges>>>,
     #[serde(rename = "pageInfo")]
-    pub page_info: RustPullRequestsRepositoryPullRequestsPageInfo,
+    pub page_info: PullRequestsRepositoryPullRequestsPageInfo,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestsRepository {
+pub struct PullRequestsRepository {
     pub id: ID,
     pub url: URI,
     #[serde(rename = "pullRequests")]
-    pub pull_requests: RustPullRequestsRepositoryPullRequests,
+    pub pull_requests: PullRequestsRepositoryPullRequests,
 }
 #[derive(Serialize, Debug)]
 pub struct Variables {
@@ -127,7 +127,7 @@ impl Variables {
 }
 #[derive(Deserialize, Debug)]
 pub struct ResponseData {
-    pub repository: Option<RustPullRequestsRepository>,
+    pub repository: Option<PullRequestsRepository>,
     #[serde(flatten)]
     pub rate_limit_info: RateLimitInfo,
 }

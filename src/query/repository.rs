@@ -29,7 +29,7 @@ pub struct RateLimitInfoRateLimit {
     pub reset_at: DateTime,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustRepositoryRepository {
+pub struct RepositoryRepository {
     pub id: ID,
     pub url: URI,
 }
@@ -41,7 +41,7 @@ pub struct Variables {
 impl Variables {}
 #[derive(Deserialize, Debug)]
 pub struct ResponseData {
-    pub repository: Option<RustRepositoryRepository>,
+    pub repository: Option<RepositoryRepository>,
     #[serde(flatten)]
     pub rate_limit_info: RateLimitInfo,
 }

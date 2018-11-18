@@ -82,64 +82,64 @@ pub struct custom_commit {
 }
 #[derive(Deserialize, Debug)]
 #[serde(tag = "__typename")]
-pub enum RustPullRequestTimelineItemsNodeOnPullRequestAuthorOn {
+pub enum PullRequestTimelineItemsNodeOnPullRequestAuthorOn {
     User,
     Bot,
     Organization,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestAuthor {
+pub struct PullRequestTimelineItemsNodeOnPullRequestAuthor {
     #[serde(flatten)]
     pub custom_actor: custom_actor,
     #[serde(flatten)]
-    pub on: RustPullRequestTimelineItemsNodeOnPullRequestAuthorOn,
+    pub on: PullRequestTimelineItemsNodeOnPullRequestAuthorOn,
 }
 #[derive(Deserialize, Debug)]
 #[serde(tag = "__typename")]
-pub enum RustPullRequestTimelineItemsNodeOnPullRequestEditorOn {
+pub enum PullRequestTimelineItemsNodeOnPullRequestEditorOn {
     User,
     Bot,
     Organization,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestEditor {
+pub struct PullRequestTimelineItemsNodeOnPullRequestEditor {
     #[serde(flatten)]
     pub custom_actor: custom_actor,
     #[serde(flatten)]
-    pub on: RustPullRequestTimelineItemsNodeOnPullRequestEditorOn,
+    pub on: PullRequestTimelineItemsNodeOnPullRequestEditorOn,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnCommit {
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnCommit {
     #[serde(flatten)]
     pub custom_commit: custom_commit,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnCommitCommentThreadCommitOfComment
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnCommitCommentThreadCommitOfComment
 {
     #[serde(flatten)]
     pub custom_commit: custom_commit,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnCommitCommentThread { pub id : ID , pub commit_of_comment : RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnCommitCommentThreadCommitOfComment , }
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnCommitCommentThread { pub id : ID , pub commit_of_comment : PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnCommitCommentThreadCommitOfComment , }
 #[derive(Deserialize, Debug)]
 #[serde(tag = "__typename")]
-pub enum RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewAuthorOn {
+pub enum PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewAuthorOn {
     User,
     Bot,
     Organization,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewAuthor { # [ serde ( flatten ) ] pub custom_actor : custom_actor , # [ serde ( flatten ) ] pub on : RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewAuthorOn , }
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewAuthor { # [ serde ( flatten ) ] pub custom_actor : custom_actor , # [ serde ( flatten ) ] pub on : PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewAuthorOn , }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewCommitOfPrReview
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewCommitOfPrReview
 {
     #[serde(flatten)]
     pub custom_commit: custom_commit,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReview { pub id : ID , pub author : Option < RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewAuthor > , pub commit_of_pr_review : Option < RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewCommitOfPrReview > , pub state : PullRequestReviewState , # [ serde ( rename = "createdAt" ) ] pub created_at : DateTime , # [ serde ( rename = "updatedAt" ) ] pub updated_at : DateTime , # [ serde ( rename = "lastEditedAt" ) ] pub last_edited_at : Option < DateTime > , }
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReview { pub id : ID , pub author : Option < PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewAuthor > , pub commit_of_pr_review : Option < PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewCommitOfPrReview > , pub state : PullRequestReviewState , # [ serde ( rename = "createdAt" ) ] pub created_at : DateTime , # [ serde ( rename = "updatedAt" ) ] pub updated_at : DateTime , # [ serde ( rename = "lastEditedAt" ) ] pub last_edited_at : Option < DateTime > , }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewThreadCommentsEdgesNode
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewThreadCommentsEdgesNode
 {
     pub id: ID,
     #[serde(rename = "bodyText")]
@@ -152,13 +152,13 @@ pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullR
     pub last_edited_at: Option<DateTime>,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewThreadCommentsEdges { pub node : Option < RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewThreadCommentsEdgesNode > , }
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewThreadCommentsEdges { pub node : Option < PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewThreadCommentsEdgesNode > , }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewThreadComments { pub edges : Option < Vec < Option < RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewThreadCommentsEdges > > > , }
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewThreadComments { pub edges : Option < Vec < Option < PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewThreadCommentsEdges > > > , }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewThread { pub id : ID , pub comments : RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewThreadComments , }
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewThread { pub id : ID , pub comments : PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewThreadComments , }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewComment
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewComment
 {
     pub id: ID,
     #[serde(rename = "bodyText")]
@@ -171,7 +171,7 @@ pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullR
     pub last_edited_at: Option<DateTime>,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnIssueComment {
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnIssueComment {
     pub id: ID,
     #[serde(rename = "bodyText")]
     pub body_text: String,
@@ -184,158 +184,158 @@ pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnIssue
 }
 #[derive(Deserialize, Debug)]
 #[serde(tag = "__typename")]
-pub enum RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnClosedEventActorOn {
+pub enum PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnClosedEventActorOn {
     User,
     Bot,
     Organization,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnClosedEventActor {
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnClosedEventActor {
     #[serde(flatten)]
     pub custom_actor: custom_actor,
     #[serde(flatten)]
-    pub on: RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnClosedEventActorOn,
+    pub on: PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnClosedEventActorOn,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnClosedEvent {
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnClosedEvent {
     pub id: ID,
     pub actor: Option<
-        RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnClosedEventActor,
+        PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnClosedEventActor,
     >,
     #[serde(rename = "createdAt")]
     pub created_at: DateTime,
 }
 #[derive(Deserialize, Debug)]
 #[serde(tag = "__typename")]
-pub enum RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReopenedEventActorOn {
+pub enum PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReopenedEventActorOn {
     User,
     Bot,
     Organization,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReopenedEventActor {
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReopenedEventActor {
     #[serde(flatten)]
     pub custom_actor: custom_actor,
     #[serde(flatten)]
     pub on:
-        RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReopenedEventActorOn,
+        PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReopenedEventActorOn,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReopenedEvent {
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReopenedEvent {
     pub id: ID,
     pub actor: Option<
-        RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReopenedEventActor,
+        PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReopenedEventActor,
     >,
     #[serde(rename = "createdAt")]
     pub created_at: DateTime,
 }
 #[derive(Deserialize, Debug)]
 #[serde(tag = "__typename")]
-pub enum RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnAssignedEventActorOn {
+pub enum PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnAssignedEventActorOn {
     User,
     Bot,
     Organization,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnAssignedEventActor {
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnAssignedEventActor {
     #[serde(flatten)]
     pub custom_actor: custom_actor,
     #[serde(flatten)]
     pub on:
-        RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnAssignedEventActorOn,
+        PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnAssignedEventActorOn,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnAssignedEventUser {
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnAssignedEventUser {
     pub name: Option<String>,
     pub login: String,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnAssignedEvent {
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnAssignedEvent {
     pub id: ID,
     pub actor: Option<
-        RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnAssignedEventActor,
+        PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnAssignedEventActor,
     >,
     pub user: Option<
-        RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnAssignedEventUser,
+        PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnAssignedEventUser,
     >,
     #[serde(rename = "createdAt")]
     pub created_at: DateTime,
 }
 #[derive(Deserialize, Debug)]
 #[serde(tag = "__typename")]
-pub enum RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnUnassignedEventActorOn {
+pub enum PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnUnassignedEventActorOn {
     User,
     Bot,
     Organization,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnUnassignedEventActor {
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnUnassignedEventActor {
     #[serde(flatten)]
     pub custom_actor: custom_actor,
     #[serde(flatten)]
     pub on:
-        RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnUnassignedEventActorOn,
+        PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnUnassignedEventActorOn,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnUnassignedEventUser {
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnUnassignedEventUser {
     pub name: Option<String>,
     pub login: String,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnUnassignedEvent {
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnUnassignedEvent {
     pub id: ID,
     pub actor: Option<
-        RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnUnassignedEventActor,
+        PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnUnassignedEventActor,
     >,
     pub user: Option<
-        RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnUnassignedEventUser,
+        PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnUnassignedEventUser,
     >,
     #[serde(rename = "createdAt")]
     pub created_at: DateTime,
 }
 #[derive(Deserialize, Debug)]
 #[serde(tag = "__typename")]
-pub enum RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnLabeledEventActorOn {
+pub enum PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnLabeledEventActorOn {
     User,
     Bot,
     Organization,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnLabeledEventActor {
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnLabeledEventActor {
     #[serde(flatten)]
     pub custom_actor: custom_actor,
     #[serde(flatten)]
-    pub on: RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnLabeledEventActorOn,
+    pub on: PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnLabeledEventActorOn,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnLabeledEventLabel {
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnLabeledEventLabel {
     pub name: String,
     pub description: Option<String>,
     pub color: String,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnLabeledEvent {
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnLabeledEvent {
     pub id: ID,
     pub actor: Option<
-        RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnLabeledEventActor,
+        PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnLabeledEventActor,
     >,
     pub label:
-        RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnLabeledEventLabel,
+        PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnLabeledEventLabel,
     #[serde(rename = "createdAt")]
     pub created_at: DateTime,
 }
 #[derive(Deserialize, Debug)]
 #[serde(tag = "__typename")]
-pub enum RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEventActorOn
+pub enum PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEventActorOn
 {
     User,
     Bot,
     Organization,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEventActor { # [ serde ( flatten ) ] pub custom_actor : custom_actor , # [ serde ( flatten ) ] pub on : RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEventActorOn , }
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEventActor { # [ serde ( flatten ) ] pub custom_actor : custom_actor , # [ serde ( flatten ) ] pub on : PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEventActorOn , }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEventRequestedReviewerOnUser
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEventRequestedReviewerOnUser
 {
     pub id: ID,
     #[serde(rename = "userName")]
@@ -344,7 +344,7 @@ pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnRevie
     pub user_login: String,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEventRequestedReviewerOnTeam
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEventRequestedReviewerOnTeam
 {
     pub id: ID,
     #[serde(rename = "teamName")]
@@ -352,23 +352,23 @@ pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnRevie
 }
 #[derive(Deserialize, Debug)]
 #[serde(tag = "__typename")]
-pub enum RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEventRequestedReviewer
+pub enum PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEventRequestedReviewer
 {
-     User ( RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEventRequestedReviewerOnUser ) , Team ( RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEventRequestedReviewerOnTeam ) }
+     User ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEventRequestedReviewerOnUser ) , Team ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEventRequestedReviewerOnTeam ) }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEvent { pub id : ID , pub actor : Option < RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEventActor > , # [ serde ( rename = "requestedReviewer" ) ] pub requested_reviewer : Option < RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEventRequestedReviewer > , # [ serde ( rename = "createdAt" ) ] pub created_at : DateTime , }
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEvent { pub id : ID , pub actor : Option < PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEventActor > , # [ serde ( rename = "requestedReviewer" ) ] pub requested_reviewer : Option < PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEventRequestedReviewer > , # [ serde ( rename = "createdAt" ) ] pub created_at : DateTime , }
 #[derive(Deserialize, Debug)]
 #[serde(tag = "__typename")]
-pub enum RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestRemovedEventActorOn
+pub enum PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestRemovedEventActorOn
 {
     User,
     Bot,
     Organization,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestRemovedEventActor { # [ serde ( flatten ) ] pub custom_actor : custom_actor , # [ serde ( flatten ) ] pub on : RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestRemovedEventActorOn , }
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestRemovedEventActor { # [ serde ( flatten ) ] pub custom_actor : custom_actor , # [ serde ( flatten ) ] pub on : PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestRemovedEventActorOn , }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestRemovedEventRequestedReviewerOnUser
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestRemovedEventRequestedReviewerOnUser
 {
     pub id: ID,
     #[serde(rename = "userName")]
@@ -377,7 +377,7 @@ pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnRevie
     pub user_login: String,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestRemovedEventRequestedReviewerOnTeam
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestRemovedEventRequestedReviewerOnTeam
 {
     pub id: ID,
     #[serde(rename = "teamName")]
@@ -385,47 +385,47 @@ pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnRevie
 }
 #[derive(Deserialize, Debug)]
 #[serde(tag = "__typename")]
-pub enum RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestRemovedEventRequestedReviewer
+pub enum PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestRemovedEventRequestedReviewer
 {
-     User ( RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestRemovedEventRequestedReviewerOnUser ) , Team ( RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestRemovedEventRequestedReviewerOnTeam ) }
+     User ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestRemovedEventRequestedReviewerOnUser ) , Team ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestRemovedEventRequestedReviewerOnTeam ) }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestRemovedEvent { pub id : ID , pub actor : Option < RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestRemovedEventActor > , # [ serde ( rename = "requestedReviewer" ) ] pub requested_reviewer : Option < RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestRemovedEventRequestedReviewer > , # [ serde ( rename = "createdAt" ) ] pub created_at : DateTime , }
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestRemovedEvent { pub id : ID , pub actor : Option < PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestRemovedEventActor > , # [ serde ( rename = "requestedReviewer" ) ] pub requested_reviewer : Option < PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestRemovedEventRequestedReviewer > , # [ serde ( rename = "createdAt" ) ] pub created_at : DateTime , }
 #[derive(Deserialize, Debug)]
 #[serde(tag = "__typename")]
-pub enum RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNode {
-     Commit ( RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnCommit ) , CommitCommentThread ( RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnCommitCommentThread ) , PullRequestReview ( RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReview ) , PullRequestReviewThread ( RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewThread ) , PullRequestReviewComment ( RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewComment ) , IssueComment ( RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnIssueComment ) , ClosedEvent ( RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnClosedEvent ) , ReopenedEvent ( RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReopenedEvent ) , AssignedEvent ( RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnAssignedEvent ) , UnassignedEvent ( RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnUnassignedEvent ) , LabeledEvent ( RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnLabeledEvent ) , ReviewRequestedEvent ( RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEvent ) , ReviewRequestRemovedEvent ( RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestRemovedEvent ) , BaseRefForcePushedEvent , CrossReferencedEvent , DemilestonedEvent , DeployedEvent , DeploymentEnvironmentChangedEvent , HeadRefDeletedEvent , HeadRefForcePushedEvent , HeadRefRestoredEvent , LockedEvent , MergedEvent , MilestonedEvent , ReferencedEvent , RenamedTitleEvent , ReviewDismissedEvent , SubscribedEvent , UnlabeledEvent , UnlockedEvent , UnsubscribedEvent }
+pub enum PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNode {
+     Commit ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnCommit ) , CommitCommentThread ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnCommitCommentThread ) , PullRequestReview ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReview ) , PullRequestReviewThread ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewThread ) , PullRequestReviewComment ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewComment ) , IssueComment ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnIssueComment ) , ClosedEvent ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnClosedEvent ) , ReopenedEvent ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReopenedEvent ) , AssignedEvent ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnAssignedEvent ) , UnassignedEvent ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnUnassignedEvent ) , LabeledEvent ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnLabeledEvent ) , ReviewRequestedEvent ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEvent ) , ReviewRequestRemovedEvent ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestRemovedEvent ) , BaseRefForcePushedEvent , CrossReferencedEvent , DemilestonedEvent , DeployedEvent , DeploymentEnvironmentChangedEvent , HeadRefDeletedEvent , HeadRefForcePushedEvent , HeadRefRestoredEvent , LockedEvent , MergedEvent , MilestonedEvent , ReferencedEvent , RenamedTitleEvent , ReviewDismissedEvent , SubscribedEvent , UnlabeledEvent , UnlockedEvent , UnsubscribedEvent }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdges {
-    pub node: Option<RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNode>,
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdges {
+    pub node: Option<PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNode>,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimelinePageInfo {
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelinePageInfo {
     #[serde(rename = "hasNextPage")]
     pub has_next_page: Boolean,
     #[serde(rename = "endCursor")]
     pub end_cursor: Option<String>,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequestTimeline {
-    pub edges: Option<Vec<Option<RustPullRequestTimelineItemsNodeOnPullRequestTimelineEdges>>>,
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimeline {
+    pub edges: Option<Vec<Option<PullRequestTimelineItemsNodeOnPullRequestTimelineEdges>>>,
     #[serde(rename = "pageInfo")]
-    pub page_info: RustPullRequestTimelineItemsNodeOnPullRequestTimelinePageInfo,
+    pub page_info: PullRequestTimelineItemsNodeOnPullRequestTimelinePageInfo,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNodeOnPullRequest {
+pub struct PullRequestTimelineItemsNodeOnPullRequest {
     pub id: ID,
-    pub author: Option<RustPullRequestTimelineItemsNodeOnPullRequestAuthor>,
-    pub editor: Option<RustPullRequestTimelineItemsNodeOnPullRequestEditor>,
+    pub author: Option<PullRequestTimelineItemsNodeOnPullRequestAuthor>,
+    pub editor: Option<PullRequestTimelineItemsNodeOnPullRequestEditor>,
     pub title: String,
     pub body: String,
     #[serde(rename = "bodyText")]
     pub body_text: String,
-    pub timeline: RustPullRequestTimelineItemsNodeOnPullRequestTimeline,
+    pub timeline: PullRequestTimelineItemsNodeOnPullRequestTimeline,
 }
 #[derive(Deserialize, Debug)]
 #[serde(tag = "__typename")]
-pub enum RustPullRequestTimelineItemsNodeOn {
-    PullRequest(RustPullRequestTimelineItemsNodeOnPullRequest),
+pub enum PullRequestTimelineItemsNodeOn {
+    PullRequest(PullRequestTimelineItemsNodeOnPullRequest),
     ReleaseAsset,
     Tag,
     User,
@@ -514,9 +514,9 @@ pub enum RustPullRequestTimelineItemsNodeOn {
     DeploymentEnvironmentChangedEvent,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustPullRequestTimelineItemsNode {
+pub struct PullRequestTimelineItemsNode {
     #[serde(flatten)]
-    pub on: RustPullRequestTimelineItemsNodeOn,
+    pub on: PullRequestTimelineItemsNodeOn,
 }
 #[derive(Serialize, Debug)]
 pub struct Variables {
@@ -530,7 +530,7 @@ impl Variables {
 }
 #[derive(Deserialize, Debug)]
 pub struct ResponseData {
-    pub node: Option<RustPullRequestTimelineItemsNode>,
+    pub node: Option<PullRequestTimelineItemsNode>,
     #[serde(flatten)]
     pub rate_limit_info: RateLimitInfo,
 }

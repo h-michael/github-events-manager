@@ -29,28 +29,28 @@ pub struct RateLimitInfoRateLimit {
     pub reset_at: DateTime,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustWatchingRepositoriesViewerWatchingNodes {
+pub struct WatchingRepositoriesViewerWatchingNodes {
     pub id: ID,
     #[serde(rename = "nameWithOwner")]
     pub name_with_owner: String,
     pub url: URI,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustWatchingRepositoriesViewerWatchingPageInfo {
+pub struct WatchingRepositoriesViewerWatchingPageInfo {
     #[serde(rename = "hasNextPage")]
     pub has_next_page: Boolean,
     #[serde(rename = "endCursor")]
     pub end_cursor: Option<String>,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustWatchingRepositoriesViewerWatching {
-    pub nodes: Option<Vec<Option<RustWatchingRepositoriesViewerWatchingNodes>>>,
+pub struct WatchingRepositoriesViewerWatching {
+    pub nodes: Option<Vec<Option<WatchingRepositoriesViewerWatchingNodes>>>,
     #[serde(rename = "pageInfo")]
-    pub page_info: RustWatchingRepositoriesViewerWatchingPageInfo,
+    pub page_info: WatchingRepositoriesViewerWatchingPageInfo,
 }
 #[derive(Deserialize, Debug)]
-pub struct RustWatchingRepositoriesViewer {
-    pub watching: RustWatchingRepositoriesViewerWatching,
+pub struct WatchingRepositoriesViewer {
+    pub watching: WatchingRepositoriesViewerWatching,
 }
 #[derive(Serialize, Debug)]
 pub struct Variables {
@@ -60,7 +60,7 @@ pub struct Variables {
 impl Variables {}
 #[derive(Deserialize, Debug)]
 pub struct ResponseData {
-    pub viewer: RustWatchingRepositoriesViewer,
+    pub viewer: WatchingRepositoriesViewer,
     #[serde(flatten)]
     pub rate_limit_info: RateLimitInfo,
 }

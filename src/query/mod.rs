@@ -9,7 +9,7 @@ pub mod repository;
 pub mod typedef;
 pub mod watching_repositories;
 
-impl pull_requests::RustPullRequestsRepositoryPullRequestsEdgesNode {
+impl pull_requests::PullRequestsRepositoryPullRequestsEdgesNode {
     pub fn closed(&self) -> i32 {
         if self.closed { 1 } else { 0 }
     }
@@ -19,7 +19,7 @@ impl pull_requests::RustPullRequestsRepositoryPullRequestsEdgesNode {
     }
 }
 
-impl issues::RustIssuesRepositoryIssuesEdgesNode {
+impl issues::IssuesRepositoryIssuesEdgesNode {
     pub fn closed(&self) -> i32 {
         if self.closed { 1 } else { 0 }
     }
