@@ -1,7 +1,6 @@
 #![allow(proc_macro_derive_resolution_fallback)]
-#[macro_use]
-extern crate quicli;
 use quicli::prelude::*;
+use structopt::StructOpt;
 
 #[macro_use]
 extern crate diesel;
@@ -56,18 +55,21 @@ enum Command {
     Fetch {},
 }
 
-main!(|args: Ghe| #[allow(unused_variables)]
-match &args.cmd {
-    Command::Test {} => cmd::test::token_test(),
-    Command::Init {} => init::init(),
-    Command::Add {
-        repo_flag,
-        repo_name,
-    } => match repo_flag {
-        true => cmd::add::add_repository(repo_name),
-        _ => panic!("set repository name"),
-    },
-    Command::Sync { watching, stars } => cmd::sync::sync(),
-    Command::List {} => cmd::list::show_repository_list(),
-    Command::Fetch {} => cmd::fetch::fetch_all(),
-});
+fn main() -> CliResult {
+    let args = Ghe::from_args();
+    match &args.cmd {
+        Command::Test {} => cmd::test::token_test(),
+        Command::Init {} => init::init(),
+        Command::Add {
+            repo_flag,
+            repo_name,
+        } => match repo_flag {
+            true => cmd::add::add_repository(repo_name),
+            _ => panic!("set repository name"),
+        },
+        Command::Sync { watching, stars } => cmd::sync::sync(),
+        Command::List {} => cmd::list::show_repository_list(),
+        Command::Fetch {} => cmd::fetch::fetch_all(),
+    }
+    Ok(())
+}
