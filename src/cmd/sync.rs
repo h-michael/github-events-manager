@@ -1,5 +1,5 @@
 use super::utils::*;
-use db_utils::*;
+use crate::db_utils::*;
 use diesel;
 use diesel::connection::Connection;
 use diesel::expression_methods::*;
@@ -7,11 +7,11 @@ use diesel::query_dsl::QueryDsl;
 use diesel::result::Error;
 use diesel::RunQueryDsl;
 use graphql_client::*;
-use model::*;
-use query::watching_repositories;
-use schema::issue_event_conditions;
-use schema::pull_request_event_conditions;
-use schema::repositories;
+use crate::model::*;
+use crate::query::watching_repositories;
+use crate::schema::issue_event_conditions;
+use crate::schema::pull_request_event_conditions;
+use crate::schema::repositories;
 
 pub fn sync() {
     let repository_results = request_watching_repositories(None, None);

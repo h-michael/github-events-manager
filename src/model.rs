@@ -1,8 +1,8 @@
-use schema::issue_event_conditions;
-use schema::issues;
-use schema::pull_request_event_conditions;
-use schema::pull_requests;
-use schema::repositories;
+use crate::schema::issue_event_conditions;
+use crate::schema::issues;
+use crate::schema::pull_request_event_conditions;
+use crate::schema::pull_requests;
+use crate::schema::repositories;
 
 #[derive(Debug, Queryable, PartialEq)]
 pub struct Repository {
