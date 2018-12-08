@@ -1,7 +1,7 @@
 use crate::db_utils::establish_connection;
-use diesel::prelude::*;
 use crate::model::Repository;
 use crate::schema::repositories::dsl::repositories;
+use diesel::prelude::*;
 
 pub fn show_repository_list() {
     let connection = establish_connection();

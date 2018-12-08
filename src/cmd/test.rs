@@ -1,6 +1,6 @@
 use super::utils::*;
-use graphql_client::*;
 use crate::query::login_user;
+use graphql_client::*;
 
 pub fn token_test() {
     let q = login_user::LoginUser::build_query(login_user::Variables {});

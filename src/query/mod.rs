@@ -11,16 +11,28 @@ pub mod watching_repositories;
 
 impl pull_requests::PullRequestsRepositoryPullRequestsEdgesNode {
     pub fn closed(&self) -> i32 {
-        if self.closed { 1 } else { 0 }
+        if self.closed {
+            1
+        } else {
+            0
+        }
     }
 
     pub fn merged(&self) -> i32 {
-        if self.merged { 1 } else { 0 }
+        if self.merged {
+            1
+        } else {
+            0
+        }
     }
 }
 
 impl issues::IssuesRepositoryIssuesEdgesNode {
     pub fn closed(&self) -> i32 {
-        if self.closed { 1 } else { 0 }
+        if self.closed {
+            1
+        } else {
+            0
+        }
     }
 }

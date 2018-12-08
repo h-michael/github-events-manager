@@ -1,11 +1,11 @@
 use super::utils::*;
 use crate::db_utils::*;
-use diesel;
-use diesel::RunQueryDsl;
-use graphql_client::*;
 use crate::model::*;
 use crate::query::repository;
 use crate::schema::repositories;
+use diesel;
+use diesel::RunQueryDsl;
+use graphql_client::*;
 
 pub fn add_repository(repo_name: &str) {
     let splitted: Vec<&str> = repo_name.split_terminator('/').collect();
