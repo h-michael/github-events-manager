@@ -9,17 +9,17 @@ extern crate diesel;
 #[macro_use]
 extern crate diesel_migrations;
 
-extern crate graphql_client;
+use graphql_client;
 
-extern crate reqwest;
+use reqwest;
 
-extern crate serde;
-extern crate serde_json;
+use serde;
+
 
 #[macro_use]
 extern crate serde_derive;
 
-extern crate dotenv;
+
 
 mod cmd;
 mod db_utils;
