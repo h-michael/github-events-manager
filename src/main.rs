@@ -9,17 +9,14 @@ extern crate diesel;
 #[macro_use]
 extern crate diesel_migrations;
 
-extern crate graphql_client;
+use graphql_client;
 
-extern crate reqwest;
+use reqwest;
 
-extern crate serde;
-extern crate serde_json;
+use serde;
 
 #[macro_use]
 extern crate serde_derive;
-
-extern crate dotenv;
 
 mod cmd;
 mod db_utils;
@@ -59,23 +56,18 @@ enum Command {
     Fetch {},
 }
 
-main!(|args: Ghe|
-    #[allow(unused_variables)]
-    match &args.cmd {
-        Command::Test {} => cmd::test::token_test(),
-        Command::Init {} => init::init(),
-        Command::Add {
-            repo_flag,
-            repo_name,
-        } => match repo_flag {
-            true => cmd::add::add_repository(repo_name),
-            _ => panic!("set repository name"),
-        },
-        Command::Sync {
-            watching,
-            stars,
-        } => cmd::sync::sync(),
-        Command::List {} => cmd::list::show_repository_list(),
-        Command::Fetch {} => cmd::fetch::fetch_all(),
-    }
-);
+main!(|args: Ghe| #[allow(unused_variables)]
+match &args.cmd {
+    Command::Test {} => cmd::test::token_test(),
+    Command::Init {} => init::init(),
+    Command::Add {
+        repo_flag,
+        repo_name,
+    } => match repo_flag {
+        true => cmd::add::add_repository(repo_name),
+        _ => panic!("set repository name"),
+    },
+    Command::Sync { watching, stars } => cmd::sync::sync(),
+    Command::List {} => cmd::list::show_repository_list(),
+    Command::Fetch {} => cmd::fetch::fetch_all(),
+});

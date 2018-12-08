@@ -1,17 +1,17 @@
 use super::utils::*;
-use db_utils::*;
+use crate::db_utils::*;
+use crate::model::*;
+use crate::query::issues;
+use crate::query::pull_requests;
+use crate::schema::issues as issue_model;
+use crate::schema::pull_requests as pr_model;
+use crate::schema::repositories::dsl::*;
 use diesel;
 use diesel::connection::Connection;
 use diesel::query_dsl::*;
 use diesel::result::Error;
 use diesel::RunQueryDsl;
 use graphql_client::*;
-use model::*;
-use query::issues;
-use query::pull_requests;
-use schema::issues as issue_model;
-use schema::pull_requests as pr_model;
-use schema::repositories::dsl::*;
 
 pub fn fetch_all() {
     use diesel::ExpressionMethods;

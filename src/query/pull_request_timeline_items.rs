@@ -2,8 +2,8 @@
 #![allow(non_snake_case)]
 #![allow(dead_code)]
 
+use crate::query::typedef::*;
 use graphql_client;
-use query::typedef::*;
 use serde;
 
 pub const QUERY : & 'static str = "fragment custom_commit on Commit {\n  id\n  oid\n  messageBody\n  messageHeadline\n  commitUrl\n  committedDate\n  pushedDate\n}\n\nfragment custom_actor on Actor {\n  __typename\n  ... on User {\n    id\n    name\n    login\n  }\n  ... on Organization {\n    id\n    name\n    login\n  }\n  ... on Bot {\n    id\n    login\n  }\n}\n\nfragment RateLimitInfo on Query {\n    rateLimit {\n        cost\n        limit\n        remaining\n        resetAt\n    }\n}\n\nquery LoginUser {\n  viewer {\n    login\n  }\n  ...RateLimitInfo\n}\n\nquery RateLimit {\n  ...RateLimitInfo\n}\n\nquery Repository($owner: String!, $name: String!) {\n  repository(owner: $owner, name: $name) {\n    id\n    url\n  }\n  ...RateLimitInfo\n}\n\nquery PullRequests($owner: String!, $name: String!, $first: Int = 100, $states: [PullRequestState!]) {\n  repository(owner: $owner, name: $name) {\n    id\n    url\n    pullRequests(first: $first, states: $states) {\n      edges {\n        node {\n          id\n          number\n          state\n          title\n          bodyText\n          createdAt\n          updatedAt\n          lastEditedAt\n          closed\n          closedAt\n          merged\n          mergedAt\n        }\n      }\n      pageInfo {\n        startCursor\n        endCursor\n        hasNextPage\n        hasPreviousPage\n      }\n    }\n  }\n  ...RateLimitInfo\n}\n\nquery Issues($owner: String!, $name: String!, $first: Int = 100, $states: [IssueState!]){\n  repository(owner: $owner, name: $name) {\n    id\n    url\n    issues(first: $first, states: $states) {\n      edges {\n        node {\n          id\n          number\n          state\n          title\n          bodyText\n          createdAt\n          updatedAt\n          lastEditedAt\n          closed\n          closedAt\n        }\n      }\n      pageInfo {\n        startCursor\n        endCursor\n        hasNextPage\n        hasPreviousPage\n      }\n    }\n  }\n  ...RateLimitInfo\n}\n\nquery WatchingRepositories($first: Int!, $after: String){\n  viewer {\n    watching(after: $after, first: $first) {\n      nodes {\n        id,\n        nameWithOwner,\n        url\n      }\n      pageInfo {\n        hasNextPage,\n        endCursor\n      }\n    }\n  }\n  ...RateLimitInfo\n}\n\nquery PullRequestTimelineItems($id: ID!, $first: Int = 100) {\n  node(id: $id) {\n    __typename\n    ... on PullRequest {\n      id\n      author {\n        __typename\n        ...custom_actor\n      }\n      editor {\n        __typename\n        ...custom_actor\n      }\n      title\n      body\n      bodyText\n      timeline(first: $first) {\n        edges {\n          node {\n            __typename\n            ... on Commit {\n              ...custom_commit\n            }\n            ... on CommitCommentThread {\n              id\n              commit_of_comment: commit {\n                ...custom_commit\n              }\n            }\n            ... on PullRequestReview {\n              id\n              author {\n                __typename\n                ...custom_actor\n              }\n              commit_of_pr_review: commit {\n                ...custom_commit\n              }\n              state\n              createdAt\n              updatedAt\n              lastEditedAt\n            }\n            ... on PullRequestReviewThread {\n              id\n              comments(first: $first) {\n                edges {\n                  node {\n                    id\n                    bodyText\n                    createdAt\n                    updatedAt\n                    lastEditedAt\n                  }\n                }\n              }\n            }\n            ... on PullRequestReviewComment {\n              id\n              bodyText\n              createdAt\n              updatedAt\n              lastEditedAt\n            }\n            ... on IssueComment {\n              id\n              bodyText\n              createdAt\n              updatedAt\n              lastEditedAt\n            }\n            ... on ClosedEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n              createdAt\n            }\n            ... on ReopenedEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n              createdAt\n            }\n            ... on AssignedEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n              user {\n                name\n                login\n              }\n              createdAt\n            }\n            ... on UnassignedEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n              user {\n                name\n                login\n              }\n              createdAt\n            }\n            ... on LabeledEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n              label {\n                name\n                description\n                color\n              }\n              createdAt\n            }\n            ... on ReviewRequestedEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n              requestedReviewer {\n                __typename\n                ...on User {\n                  id\n                  userName: name\n                  userLogin: login\n                }\n                ...on Team {\n                  id\n                  teamName: name\n                }\n              }\n              createdAt\n            }\n            ... on ReviewRequestRemovedEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n              requestedReviewer {\n                __typename\n                ...on User {\n                  id\n                  userName: name\n                  userLogin: login\n                }\n                ...on Team {\n                  id\n                  teamName: name\n                }\n              }\n              createdAt\n            }\n          }\n        }\n        pageInfo {\n          hasNextPage\n          endCursor\n        }\n      }\n    }\n  }\n  ...RateLimitInfo\n}\n\nquery PullRequestReview($id: ID!, $first: Int = 100) {\n  node(id: $id) {\n    __typename\n    ... on PullRequestReview {\n      comments(first: $first) {\n        nodes {\n          id\n          bodyText\n          viewerDidAuthor\n        }\n      }\n    }\n  }\n  ...RateLimitInfo\n}\n\nquery IssueTimelineItems($id: ID!, $first: Int = 100) {\n  node(id: $id) {\n    __typename\n    ... on Issue {\n      id\n      author {\n        __typename\n        ...custom_actor\n      }\n      editor {\n        __typename\n        ...custom_actor\n      }\n      title\n      body\n      bodyText\n      timeline(first: $first) {\n        edges {\n          node {\n            __typename\n            ... on Commit {\n              ...custom_commit\n            }\n            ... on IssueComment {\n              id\n              author {\n                __typename\n                ...custom_actor\n              }\n              bodyText\n              createdAt\n              lastEditedAt\n              publishedAt\n            }\n            ... on ClosedEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n              url\n              resourcePath\n              createdAt\n            }\n            ... on ReopenedEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n              createdAt\n            }\n            ... on AssignedEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n              user {\n                name\n                login\n              }\n              createdAt\n            }\n            ... on UnassignedEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n              user {\n                name\n                login\n              }\n              createdAt\n            }\n            ... on LabeledEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n              label {\n                name\n                description\n                color\n              }\n              createdAt\n            }\n            ... on UnlabeledEvent {\n              id\n              actor {\n                __typename\n                ...custom_actor\n              }\n              label {\n                name\n                description\n                color\n              }\n              createdAt\n            }\n          }\n        }\n        pageInfo {\n          hasNextPage\n          endCursor\n        }\n      }\n    }\n  }\n  ...RateLimitInfo\n}\n\n# # FullAttributes\n# query PullRequestTimelineItems($id: ID!, $first: Int = 100) {\n#   node(id: $id) {\n#     __typename\n#     ... on PullRequest {\n#       id\n#       author {\n#         __typename\n#         ...custom_actor\n#       }\n#       editor {\n#         __typename\n#         ...custom_actor\n#       }\n#       title\n#       body\n#       bodyText\n#       timeline(first: $first) {\n#         edges {\n#           node {\n#             __typename\n#             ... on Commit {\n#               ...custom_commit\n#             }\n#             ... on CommitCommentThread {\n#               id\n#               commit_of_comment: commit {\n#                 ...custom_commit\n#               }\n#             }\n#             ... on PullRequestReview {\n#               id\n#               author {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               commit_of_pr_review: commit {\n#                 ...custom_commit\n#               }\n#               state\n#               createdAt\n#               updatedAt\n#               lastEditedAt\n#             }\n#             ... on PullRequestReviewThread {\n#               id\n#               comments(first: $first) {\n#                 edges {\n#                   node {\n#                     id\n#                     bodyText\n#                     createdAt\n#                     updatedAt\n#                     lastEditedAt\n#                   }\n#                 }\n#               }\n#             }\n#             ... on PullRequestReviewComment {\n#               id\n#               bodyText\n#               createdAt\n#               updatedAt\n#               lastEditedAt\n#             }\n#             ... on IssueComment {\n#               id\n#               bodyText\n#               createdAt\n#               updatedAt\n#               lastEditedAt\n#             }\n#             ... on ClosedEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               createdAt\n#             }\n#             ... on ReopenedEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               createdAt\n#             }\n#             ... on Subscribable {\n#               id\n#               __typename\n#               viewerCanSubscribe\n#               viewerSubscription\n#             }\n#             ... on UnsubscribedEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               createdAt\n#             }\n#             ... on MergedEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               url\n#               resourcePath\n#               createdAt\n#             }\n#             ... on ReferencedEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               commit {\n#                 url\n#                 commitUrl\n#               }\n#               isCrossRepository\n#               isDirectReference\n#               createdAt\n#             }\n#             ... on CrossReferencedEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               isCrossRepository\n#               url\n#               resourcePath\n#               willCloseTarget\n#               referencedAt\n#               createdAt\n#             }\n#             ... on AssignedEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               user {\n#                 name\n#                 login\n#               }\n#               createdAt\n#             }\n#             ... on UnassignedEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               user {\n#                 name\n#                 login\n#               }\n#               createdAt\n#             }\n#             ... on LabeledEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               label {\n#                 name\n#                 description\n#                 color\n#               }\n#               createdAt\n#             }\n#             ... on UnlabeledEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               label {\n#                 name\n#                 description\n#                 color\n#               }\n#               createdAt\n#             }\n#             ... on MilestonedEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               milestoneTitle\n#               createdAt\n#             }\n#             ... on DemilestonedEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               milestoneTitle\n#               createdAt\n#             }\n#             ... on RenamedTitleEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               currentTitle\n#               previousTitle\n#               createdAt\n#             }\n#             ... on LockedEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               lockReason\n#               createdAt\n#             }\n#             ... on UnlockedEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               createdAt\n#             }\n#             ... on DeployedEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#             }\n#             ... on DeploymentEnvironmentChangedEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               createdAt\n#             }\n#             ... on HeadRefDeletedEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               headRef {\n#                 id\n#                 name\n#                 prefix\n#               }\n#               headRefName\n#               createdAt\n#             }\n#             ... on HeadRefRestoredEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               createdAt\n#             }\n#             ... on HeadRefForcePushedEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               afterCommit {\n#                 id\n#                 oid\n#               }\n#               beforeCommit {\n#                 id\n#                 oid\n#               }\n#               ref {\n#                 id\n#                 name\n#                 prefix\n#               }\n#               createdAt\n#             }\n#             ... on BaseRefForcePushedEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               afterCommit {\n#                 id\n#                 oid\n#               }\n#               beforeCommit {\n#                 id\n#                 oid\n#               }\n#               ref {\n#                 id\n#                 name\n#                 prefix\n#               }\n#               createdAt\n#             }\n#             ... on ReviewRequestedEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               requestedReviewer {\n#                 ...on User {\n#                   id\n#                   userName: name\n#                   userLogin: login\n#                 }\n#                 ...on Team {\n#                   id\n#                   teamName: name\n#                 }\n#               }\n#               createdAt\n#             }\n#             ... on ReviewRequestRemovedEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               requestedReviewer {\n#                 ...on User {\n#                   id\n#                   userName: name\n#                   userLogin: login\n#                 }\n#                 ...on Team {\n#                   id\n#                   teamName: name\n#                 }\n#               }\n#               createdAt\n#             }\n#             ... on ReviewDismissedEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               message\n#               resourcePath\n#               url\n#               previousReviewState\n#               createdAt\n#             }\n#           }\n#         }\n#         pageInfo {\n#           hasNextPage\n#           endCursor\n#         }\n#       }\n#     }\n#   }\n#   ...RateLimitInfo\n# }\n\n# # FullAttributes\n# query IssueTimelineItems($id: ID!, $first: Int = 100) {\n#   node(id: $id) {\n#     __typename\n#     ... on Issue {\n#       id\n#       author {\n#         __typename\n#         ...custom_actor\n#       }\n#       editor {\n#         __typename\n#         ...custom_actor\n#       }\n#       title\n#       body\n#       bodyText\n#       timeline(first: $first) {\n#         edges {\n#           node {\n#             __typename\n#             ... on Commit {\n#               ...custom_commit\n#             }\n#             ... on IssueComment {\n#               id\n#               author {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               bodyText\n#               createdAt\n#               lastEditedAt\n#               publishedAt\n#             }\n#             ... on ClosedEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               url\n#               resourcePath\n#               createdAt\n#             }\n#             ... on ReopenedEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               createdAt\n#             }\n#             ... on Subscribable {\n#               id\n#               __typename\n#               viewerCanSubscribe\n#               viewerSubscription\n#             }\n#             ... on UnsubscribedEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               createdAt\n#             }\n#             ... on ReferencedEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               commit {\n#                 url\n#                 commitUrl\n#               }\n#               isCrossRepository\n#               isDirectReference\n#               createdAt\n#             }\n#             ... on CrossReferencedEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               isCrossRepository\n#               url\n#               resourcePath\n#               willCloseTarget\n#               referencedAt\n#               createdAt\n#             }\n#             ... on AssignedEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               user {\n#                 name\n#                 login\n#               }\n#               createdAt\n#             }\n#             ... on UnassignedEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               user {\n#                 name\n#                 login\n#               }\n#               createdAt\n#             }\n#             ... on LabeledEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               label {\n#                 name\n#                 description\n#                 color\n#               }\n#               createdAt\n#             }\n#             ... on UnlabeledEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               label {\n#                 name\n#                 description\n#                 color\n#               }\n#               createdAt\n#             }\n#             ... on MilestonedEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               milestoneTitle\n#               createdAt\n#             }\n#             ... on DemilestonedEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               milestoneTitle\n#               createdAt\n#             }\n#             ... on RenamedTitleEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               currentTitle\n#               previousTitle\n#               createdAt\n#             }\n#             ... on LockedEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               lockReason\n#               createdAt\n#             }\n#             ... on UnlockedEvent {\n#               id\n#               actor {\n#                 __typename\n#                 ...custom_actor\n#               }\n#               createdAt\n#             }\n#           }\n#         }\n#         pageInfo {\n#           hasNextPage\n#           endCursor\n#         }\n#       }\n#     }\n#   }\n#   ...RateLimitInfo\n# }\n" ;
@@ -129,7 +129,12 @@ pub enum PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequest
     Organization,
 }
 #[derive(Deserialize, Debug)]
-pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewAuthor { # [ serde ( flatten ) ] pub custom_actor : custom_actor , # [ serde ( flatten ) ] pub on : PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewAuthorOn , }
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewAuthor {
+    #[serde(flatten)]
+    pub custom_actor: custom_actor,
+    #[serde(flatten)]
+    pub on: PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewAuthorOn,
+}
 #[derive(Deserialize, Debug)]
 pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewCommitOfPrReview
 {
@@ -156,10 +161,13 @@ pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullReque
 #[derive(Deserialize, Debug)]
 pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewThreadComments { pub edges : Option < Vec < Option < PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewThreadCommentsEdges > > > , }
 #[derive(Deserialize, Debug)]
-pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewThread { pub id : ID , pub comments : PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewThreadComments , }
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewThread {
+    pub id: ID,
+    pub comments:
+        PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewThreadComments,
+}
 #[derive(Deserialize, Debug)]
-pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewComment
-{
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewComment {
     pub id: ID,
     #[serde(rename = "bodyText")]
     pub body_text: String,
@@ -199,9 +207,7 @@ pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnClosedEve
 #[derive(Deserialize, Debug)]
 pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnClosedEvent {
     pub id: ID,
-    pub actor: Option<
-        PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnClosedEventActor,
-    >,
+    pub actor: Option<PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnClosedEventActor>,
     #[serde(rename = "createdAt")]
     pub created_at: DateTime,
 }
@@ -217,15 +223,13 @@ pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReopenedE
     #[serde(flatten)]
     pub custom_actor: custom_actor,
     #[serde(flatten)]
-    pub on:
-        PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReopenedEventActorOn,
+    pub on: PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReopenedEventActorOn,
 }
 #[derive(Deserialize, Debug)]
 pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReopenedEvent {
     pub id: ID,
-    pub actor: Option<
-        PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReopenedEventActor,
-    >,
+    pub actor:
+        Option<PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReopenedEventActor>,
     #[serde(rename = "createdAt")]
     pub created_at: DateTime,
 }
@@ -241,8 +245,7 @@ pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnAssignedE
     #[serde(flatten)]
     pub custom_actor: custom_actor,
     #[serde(flatten)]
-    pub on:
-        PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnAssignedEventActorOn,
+    pub on: PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnAssignedEventActorOn,
 }
 #[derive(Deserialize, Debug)]
 pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnAssignedEventUser {
@@ -252,12 +255,9 @@ pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnAssignedE
 #[derive(Deserialize, Debug)]
 pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnAssignedEvent {
     pub id: ID,
-    pub actor: Option<
-        PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnAssignedEventActor,
-    >,
-    pub user: Option<
-        PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnAssignedEventUser,
-    >,
+    pub actor:
+        Option<PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnAssignedEventActor>,
+    pub user: Option<PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnAssignedEventUser>,
     #[serde(rename = "createdAt")]
     pub created_at: DateTime,
 }
@@ -273,8 +273,7 @@ pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnUnassigne
     #[serde(flatten)]
     pub custom_actor: custom_actor,
     #[serde(flatten)]
-    pub on:
-        PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnUnassignedEventActorOn,
+    pub on: PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnUnassignedEventActorOn,
 }
 #[derive(Deserialize, Debug)]
 pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnUnassignedEventUser {
@@ -284,12 +283,10 @@ pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnUnassigne
 #[derive(Deserialize, Debug)]
 pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnUnassignedEvent {
     pub id: ID,
-    pub actor: Option<
-        PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnUnassignedEventActor,
-    >,
-    pub user: Option<
-        PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnUnassignedEventUser,
-    >,
+    pub actor:
+        Option<PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnUnassignedEventActor>,
+    pub user:
+        Option<PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnUnassignedEventUser>,
     #[serde(rename = "createdAt")]
     pub created_at: DateTime,
 }
@@ -316,24 +313,26 @@ pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnLabeledEv
 #[derive(Deserialize, Debug)]
 pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnLabeledEvent {
     pub id: ID,
-    pub actor: Option<
-        PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnLabeledEventActor,
-    >,
-    pub label:
-        PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnLabeledEventLabel,
+    pub actor:
+        Option<PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnLabeledEventActor>,
+    pub label: PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnLabeledEventLabel,
     #[serde(rename = "createdAt")]
     pub created_at: DateTime,
 }
 #[derive(Deserialize, Debug)]
 #[serde(tag = "__typename")]
-pub enum PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEventActorOn
-{
+pub enum PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEventActorOn {
     User,
     Bot,
     Organization,
 }
 #[derive(Deserialize, Debug)]
-pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEventActor { # [ serde ( flatten ) ] pub custom_actor : custom_actor , # [ serde ( flatten ) ] pub on : PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEventActorOn , }
+pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEventActor {
+    #[serde(flatten)]
+    pub custom_actor: custom_actor,
+    #[serde(flatten)]
+    pub on: PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEventActorOn,
+}
 #[derive(Deserialize, Debug)]
 pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEventRequestedReviewerOnUser
 {
@@ -354,7 +353,9 @@ pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewReq
 #[serde(tag = "__typename")]
 pub enum PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEventRequestedReviewer
 {
-     User ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEventRequestedReviewerOnUser ) , Team ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEventRequestedReviewerOnTeam ) }
+     User ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEventRequestedReviewerOnUser ) ,
+     Team ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEventRequestedReviewerOnTeam )
+}
 #[derive(Deserialize, Debug)]
 pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEvent { pub id : ID , pub actor : Option < PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEventActor > , # [ serde ( rename = "requestedReviewer" ) ] pub requested_reviewer : Option < PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEventRequestedReviewer > , # [ serde ( rename = "createdAt" ) ] pub created_at : DateTime , }
 #[derive(Deserialize, Debug)]
@@ -387,13 +388,58 @@ pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewReq
 #[serde(tag = "__typename")]
 pub enum PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestRemovedEventRequestedReviewer
 {
-     User ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestRemovedEventRequestedReviewerOnUser ) , Team ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestRemovedEventRequestedReviewerOnTeam ) }
+     User ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestRemovedEventRequestedReviewerOnUser ) ,
+     Team ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestRemovedEventRequestedReviewerOnTeam )
+}
 #[derive(Deserialize, Debug)]
 pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestRemovedEvent { pub id : ID , pub actor : Option < PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestRemovedEventActor > , # [ serde ( rename = "requestedReviewer" ) ] pub requested_reviewer : Option < PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestRemovedEventRequestedReviewer > , # [ serde ( rename = "createdAt" ) ] pub created_at : DateTime , }
 #[derive(Deserialize, Debug)]
 #[serde(tag = "__typename")]
 pub enum PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNode {
-     Commit ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnCommit ) , CommitCommentThread ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnCommitCommentThread ) , PullRequestReview ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReview ) , PullRequestReviewThread ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewThread ) , PullRequestReviewComment ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewComment ) , IssueComment ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnIssueComment ) , ClosedEvent ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnClosedEvent ) , ReopenedEvent ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReopenedEvent ) , AssignedEvent ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnAssignedEvent ) , UnassignedEvent ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnUnassignedEvent ) , LabeledEvent ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnLabeledEvent ) , ReviewRequestedEvent ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEvent ) , ReviewRequestRemovedEvent ( PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestRemovedEvent ) , BaseRefForcePushedEvent , CrossReferencedEvent , DemilestonedEvent , DeployedEvent , DeploymentEnvironmentChangedEvent , HeadRefDeletedEvent , HeadRefForcePushedEvent , HeadRefRestoredEvent , LockedEvent , MergedEvent , MilestonedEvent , ReferencedEvent , RenamedTitleEvent , ReviewDismissedEvent , SubscribedEvent , UnlabeledEvent , UnlockedEvent , UnsubscribedEvent }
+    Commit(PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnCommit),
+    CommitCommentThread(
+        PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnCommitCommentThread,
+    ),
+    PullRequestReview(
+        PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReview,
+    ),
+    PullRequestReviewThread(
+        PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewThread,
+    ),
+    PullRequestReviewComment(
+        PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnPullRequestReviewComment,
+    ),
+    IssueComment(PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnIssueComment),
+    ClosedEvent(PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnClosedEvent),
+    ReopenedEvent(PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReopenedEvent),
+    AssignedEvent(PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnAssignedEvent),
+    UnassignedEvent(PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnUnassignedEvent),
+    LabeledEvent(PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnLabeledEvent),
+    ReviewRequestedEvent(
+        PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestedEvent,
+    ),
+    ReviewRequestRemovedEvent(
+        PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNodeOnReviewRequestRemovedEvent,
+    ),
+    BaseRefForcePushedEvent,
+    CrossReferencedEvent,
+    DemilestonedEvent,
+    DeployedEvent,
+    DeploymentEnvironmentChangedEvent,
+    HeadRefDeletedEvent,
+    HeadRefForcePushedEvent,
+    HeadRefRestoredEvent,
+    LockedEvent,
+    MergedEvent,
+    MilestonedEvent,
+    ReferencedEvent,
+    RenamedTitleEvent,
+    ReviewDismissedEvent,
+    SubscribedEvent,
+    UnlabeledEvent,
+    UnlockedEvent,
+    UnsubscribedEvent,
+}
 #[derive(Deserialize, Debug)]
 pub struct PullRequestTimelineItemsNodeOnPullRequestTimelineEdges {
     pub node: Option<PullRequestTimelineItemsNodeOnPullRequestTimelineEdgesNode>,

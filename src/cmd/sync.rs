@@ -1,5 +1,10 @@
 use super::utils::*;
-use db_utils::*;
+use crate::db_utils::*;
+use crate::model::*;
+use crate::query::watching_repositories;
+use crate::schema::issue_event_conditions;
+use crate::schema::pull_request_event_conditions;
+use crate::schema::repositories;
 use diesel;
 use diesel::connection::Connection;
 use diesel::expression_methods::*;
@@ -7,11 +12,6 @@ use diesel::query_dsl::QueryDsl;
 use diesel::result::Error;
 use diesel::RunQueryDsl;
 use graphql_client::*;
-use model::*;
-use query::watching_repositories;
-use schema::issue_event_conditions;
-use schema::pull_request_event_conditions;
-use schema::repositories;
 
 pub fn sync() {
     let repository_results = request_watching_repositories(None, None);
@@ -26,13 +26,10 @@ pub fn sync() {
             let ids = repositories::table
                 .select(repositories::id)
                 .filter(
-                    repositories::node_id.eq_any(
-                        repository_results
-                            .clone()
-                            .iter()
-                            .map(|repo| &repo.node_id),
-                    ),
-                ).load::<i32>(&connection)?;
+                    repositories::node_id
+                        .eq_any(repository_results.clone().iter().map(|repo| &repo.node_id)),
+                )
+                .load::<i32>(&connection)?;
 
             let mut new_issue_event_conditions = Vec::new();
             let mut new_pull_request_event_conditions = Vec::new();
@@ -61,14 +58,17 @@ pub fn sync() {
                 .values(new_pull_request_event_conditions)
                 .execute(&connection)?;
             Ok(())
-        }).unwrap_or_else(|err| panic!("Import failed: {:?}", err));
+        })
+        .unwrap_or_else(|err| panic!("Import failed: {:?}", err));
 }
 
 fn request_watching_repositories<'a>(
     after: Option<String>,
     repositories: Option<&'a mut Vec<NewRepository>>,
 ) -> Vec<NewRepository> {
-    let q = watching_repositories::WatchingRepositories::build_query(watching_repositories::Variables { first: 100, after });
+    let q = watching_repositories::WatchingRepositories::build_query(
+        watching_repositories::Variables { first: 100, after },
+    );
     let res = request(&q);
     let watching = match res {
         Ok(mut res) => {
@@ -103,7 +103,8 @@ fn request_watching_repositories<'a>(
                 panic!()
             }
             None => panic!(),
-        }).collect::<Vec<_>>();
+        })
+        .collect::<Vec<_>>();
 
     if let Some(repositories) = repositories {
         new_repositories.append(repositories);

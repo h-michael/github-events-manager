@@ -1,4 +1,4 @@
-use db_utils::*;
+use crate::db_utils::*;
 
 embed_migrations!("migrations");
 pub fn init() {
