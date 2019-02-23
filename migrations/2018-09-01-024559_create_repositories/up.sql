@@ -72,6 +72,47 @@ CREATE TABLE IF NOT EXISTS issues (
 );
 CREATE INDEX issues_repository_id ON issues(repository_id);
 
+CREATE TABLE IF NOT EXISTS commits (
+  id                INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  resource_id       INTEGER NOT NULL,
+  node_id           TEXT    NOT NULL UNIQUE,
+  oid               TEXT    NOT NULL,
+  message_body      TEXT    NOT NULL,
+  message_headline  TEXT    NOT NULL,
+  commit_url        TEXT    NOT NULL,
+  committed_date    TEXT    NOT NULL,
+  pushed_date       TEXT
+);
+
+CREATE TABLE IF NOT EXISTS comments (
+  id              INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  created_at      TEXT    NOT NULL,
+  last_edited_at  TEXT,
+  published_at    TEXT,
+  resource_id     INTEGER NOT NULL,
+  resource_type   TEXT    NOT NULL CHECK(resource_type IN ("PULL_REQUEST", "ISSUE")),
+  node_id         TEXT    NOT NULL UNIQUE,
+  body_text       TEXT
+);
+
+/** CREATE TABLE IF NOT EXISTS closed_events (
+/**   id                INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+/**   resource_id       INTEGER NOT NULL,
+/**   node_id           TEXT    NOT NULL UNIQUE,
+/**   actor_id          INTEGER NOT NULL,
+/**   url               TEXT    NOT NULL,
+/**   resource_path     TEXT    NOT NULL,
+/**   created_at        TEXT    NOT NULL
+/** );
+
+/** CREATE TABLE IF NOT EXISTS actors (
+/** 
+/** );
+/** 
+/** CREATE TABLE IF NOT EXISTS (
+/** 
+/** );
+
 /**CREATE TABLE IF NOT EXISTS comments (
 /**  id              INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 /**  created_at      TEXT    NOT NULL,

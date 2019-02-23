@@ -1,8 +1,4 @@
-use crate::schema::issue_event_conditions;
-use crate::schema::issues;
-use crate::schema::pull_request_event_conditions;
-use crate::schema::pull_requests;
-use crate::schema::repositories;
+use crate::schema::*;
 
 #[derive(Debug, Queryable, PartialEq)]
 pub struct Repository {
@@ -136,4 +132,54 @@ pub struct NewPullRequest {
     pub closed: i32,
     pub merged: i32,
     pub last_event_cursor: Option<String>,
+}
+
+#[derive(Debug, Queryable)]
+pub struct Commit {
+    pub id: i32,
+    pub resource_id: i32,
+    pub node_id: String,
+    pub oid: String,
+    pub message_body: String,
+    pub message_headline: String,
+    pub commit_url: String,
+    pub committed_date: String,
+    pub pushed_date: String,
+}
+
+#[derive(Debug, Clone, Insertable)]
+#[table_name = "commits"]
+pub struct NewCommit {
+    pub resource_id: i32,
+    pub node_id: String,
+    pub oid: String,
+    pub message_body: String,
+    pub message_headline: String,
+    pub commit_url: String,
+    pub committed_date: String,
+    pub pushed_date: Option<String>,
+}
+
+#[derive(Debug, Queryable)]
+pub struct Comment {
+    pub id: i32,
+    pub created_at: String,
+    pub last_edited_at: Option<String>,
+    pub pushed_date: Option<String>,
+    pub resource_id: i32,
+    pub resource_type: String,
+    pub node_id: String,
+    pub body_text: String,
+}
+
+#[derive(Debug, Clone, Insertable)]
+#[table_name = "comments"]
+pub struct NewComment {
+    pub created_at: String,
+    pub last_edited_at: Option<String>,
+    pub published_at: Option<String>,
+    pub resource_id: i32,
+    pub resource_type: String,
+    pub node_id: String,
+    pub body_text: String,
 }
