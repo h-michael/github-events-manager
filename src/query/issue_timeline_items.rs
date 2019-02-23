@@ -424,7 +424,7 @@ pub struct ResponseData {
 
 pub struct IssueTimelineItems;
 
-impl<'de> graphql_client::GraphQLQuery<'de> for IssueTimelineItems {
+impl graphql_client::GraphQLQuery for IssueTimelineItems {
     type Variables = Variables;
     type ResponseData = ResponseData;
     fn build_query(variables: Self::Variables) -> graphql_client::QueryBody<Self::Variables> {

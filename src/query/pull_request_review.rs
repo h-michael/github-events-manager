@@ -159,7 +159,7 @@ pub struct ResponseData {
 
 pub struct PullRequestReview;
 
-impl<'de> graphql_client::GraphQLQuery<'de> for PullRequestReview {
+impl graphql_client::GraphQLQuery for PullRequestReview {
     type Variables = Variables;
     type ResponseData = ResponseData;
     fn build_query(variables: Self::Variables) -> graphql_client::QueryBody<Self::Variables> {

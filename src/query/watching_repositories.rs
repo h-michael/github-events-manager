@@ -67,7 +67,7 @@ pub struct ResponseData {
 
 pub struct WatchingRepositories;
 
-impl<'de> graphql_client::GraphQLQuery<'de> for WatchingRepositories {
+impl graphql_client::GraphQLQuery for WatchingRepositories {
     type Variables = Variables;
     type ResponseData = ResponseData;
     fn build_query(variables: Self::Variables) -> graphql_client::QueryBody<Self::Variables> {
